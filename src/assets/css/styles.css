@@ -1,0 +1,104 @@
+.sac{
+  background-color:#333333;
+}
+.device{
+  background-image:url('/src/assets/img/iphone_6_plus_white_port.png');
+  margin-top: 70px;
+}
+h2{
+  color: white;
+  font-family: Lexend;
+}
+.errorCo{
+  color: red!important;
+}
+.botones-inicio{
+  font-family: Lexend, sans-serif;
+  margin-right: 0px;
+  margin-bottom: 10px;
+}
+.name,.title,.description{
+  font-family: Lexend, sans-serif;
+  color: var(--white)!important;
+}
+.box{
+  background:rgb(35,35,35)!important;
+}
+#page-top{
+  background: rgb(51,51,51);
+}
+.Inicio-registro{
+  background: var(--gray-dark);
+}
+.chat-advertisment {
+  width: 40%;
+  margin: 10%;
+  position: fixed;
+  z-index: 1;
+}
+#ine-registro{
+  margin-bottom: 15px;
+}
+@media (max-width: 576px) {
+  .chat-advertisment {
+    width: 70%;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-advertisment {
+    width: 90%;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+.eliminar-cuenta-adv {
+  width: 40%;
+  margin: 15% 40%;
+  position: fixed;
+  z-index: 1;
+}
+
+@media (max-width: 992px) {
+  .eliminar-cuenta-adv {
+    width: 40%;
+    margin: 20% 40%;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .eliminar-cuenta-adv {
+    width: 40%;
+    margin: 28% 40%;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .eliminar-cuenta-adv {
+    width: 50%;
+    margin: 15% 30%;
+    position: fixed;
+    z-index: 1;
+  }
+  .col-12.col-md-4.col-lg-4.col-xl-4.menu-lateral {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .eliminar-cuenta-adv {
+    width: 80%;
+    margin: 15% 10%;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+
