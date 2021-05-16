@@ -1,34 +1,6 @@
-.sac{
-  background-color:#333333;
-}
-.device{
-  background-image:url('/src/assets/img/iphone_6_plus_white_port.png');
-  margin-top: 70px;
-}
-h2{
-  color: white;
-  font-family: Lexend;
-}
-.errorCo{
-  color: red!important;
-}
 .botones-inicio{
   font-family: Lexend, sans-serif;
-  margin-right: 0px;
   margin-bottom: 10px;
-}
-.name,.title,.description{
-  font-family: Lexend, sans-serif;
-  color: var(--white)!important;
-}
-.box{
-  background:rgb(35,35,35)!important;
-}
-#page-top{
-  background: rgb(51,51,51);
-}
-.Inicio-registro{
-  background: var(--gray-dark);
 }
 .chat-advertisment {
   width: 40%;
@@ -36,8 +8,13 @@ h2{
   position: fixed;
   z-index: 1;
 }
-#ine-registro{
-  margin-bottom: 15px;
+h2{
+  color:white;
+  font-family: 'Lexend';
+}
+.device{
+  background-image: url('/src/assets/img/iphone_6_plus_white_port.png');
+  margin-top: 51px;
 }
 @media (max-width: 576px) {
   .chat-advertisment {
@@ -87,9 +64,6 @@ h2{
     position: fixed;
     z-index: 1;
   }
-  .col-12.col-md-4.col-lg-4.col-xl-4.menu-lateral {
-    display: none;
-  }
 }
 
 @media (max-width: 360px) {
@@ -101,4 +75,9 @@ h2{
   }
 }
 
+@media (max-width: 576px) {
+  .col-12.col-md-4.col-lg-4.col-xl-4.menu-lateral {
+    display: none;
+  }
+}
 

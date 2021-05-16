@@ -20,8 +20,5 @@ function App() {
       <Route exact path="/CrearOrg" component={CrearOrg}/>
     </BrowserRouter>
   );
-  
-
-
 }
 export default App;

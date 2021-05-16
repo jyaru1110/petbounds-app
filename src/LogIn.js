@@ -17,47 +17,34 @@ import { gql, useMutation } from '@apollo/client';
 const INICIO_SESION = gql `
     mutation inicioSesion($inicioSesionCorreo: String!, $inicioSesionContra: String!) {
     inicioSesion(correo: $inicioSesionCorreo, contra: $inicioSesionContra) {
-      success
-      message
+      id,
+      flag,
+      cuenta
     }
   }
 `;
 
 function LogIn (){
+    const[datos,setData]=useState({});
     const[inicioSesion,{data}]=useMutation(INICIO_SESION);
     const[values,setValues]=useState({
             correo:'',
             contra:'',
-            contrasenaOk:false,
             correoOk:false,
+            contraOk:false, 
     });
     const handleCampos = (event) => {
         setValues(
-            {...values,[event.target.name]: event.target.value});    
+            {...values,[event.target.name]: event.target.value});  
     };
+    
     const handleSubmit = (event)=>{
-        if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/.test(values.contra)){
-            setValues({...values,contrasenaOk:true});
-            document.getElementById("errorContra").innerHTML = "";
-        } else {
-            document.getElementById("errorContra").innerHTML = "Ingrese de 8 a 20 caracteres. Debe contener mayúsculas, minúsculas y números";
-            setValues({...values,contrasenaOk:false});
-        }
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.correo)){
-            setValues({...values,correoOk:true});
-            document.getElementById("errorCorreo").innerHTML = "";
-        } else {
-            document.getElementById("errorCorreo").innerHTML = "Ingrese correo valido";
-            setValues({...values,correoOk:false});
-        }
-        console.log(values.contrasenaOk)
-        if(values.correoOk){
-            inicioSesion({variables:{
+        event.preventDefault();
+        inicioSesion({variables:{
                 "inicioSesionCorreo": values.correo,
                 "inicioSesionContra": values.contra,
-            }}).then(result=>console.log(result));
-        }
-        event.preventDefault();
+        }}).then(result=>console.log(result));
+       
     };
     return(
         <div>
@@ -70,9 +57,9 @@ function LogIn (){
             </nav>
             <div style={{color:'var(--gray-dark)'}}>
                 <section className="login-dark" style={{color: 'var(--gray-dark)'}}>
-                    <form onSubmit={handleSubmit} style={{paddingTop:'0px'},{marginTop:'-166px'}}>
+                    <form onSubmit={handleSubmit} validate style={{paddingTop:'0px'},{marginTop:'-166px'}}>
                         <div className="illustration"><i className="fa fa-paw" style={{color:'var(--white)'}}></i></div>
-                        <div className="form-group"><input type="text" className="form-control" id='correo' name="correo" autocomplete='email' value={values.correo} onChange={handleCampos} required placeholder="Correo" style={{fontFamily:'Lexend'}}/></div>
+                        <div className="form-group"><input type="text" className="form-control" id='correo' name="correo" autoComplete='email' value={values.correo} onChange={handleCampos} required placeholder="Correo" style={{fontFamily:'Lexend'}}/></div>
                         <div className="form-group"><p className='errorCo' id='errorCorreo'></p></div>
                         <div className="form-group"><input className="form-control" id='contra' type="password" name="contra" value={values.contra} onChange={handleCampos} required placeholder="Contraseña" style={{fontFamily:'Lexend'}}/></div>
                         <div className="form-group"><p className='errorCo' id='errorContra'></p></div>
@@ -82,7 +69,7 @@ function LogIn (){
                 </section>
             </div>
         </div>
-        );
+    );
 }
 reportWebVitals();
 export default LogIn;
