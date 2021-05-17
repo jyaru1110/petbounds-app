@@ -7,6 +7,7 @@ import MenuRegistro from './MenuRegistro';
 import CrearUsuario from './CrearUsuario';  
 import CrearNegocio from './CrearNegocios';  
 import CrearOrg from './CrearOrg';  
+import HomeUs from './HomeUs';
 
 //Función principal de la aplicación, muestra la página de inicio
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route exact path="/CrearUsuario" component={CrearUsuario}/>
       <Route exact path="/CrearNegocio" component={CrearNegocio}/>
       <Route exact path="/CrearOrg" component={CrearOrg}/>
+      <Route exact path="/HomeUs" component={HomeUs}/>
     </BrowserRouter>
   );
 }

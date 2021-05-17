@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import reportWebVitals from './reportWebVitals';
-import './assets/bootstrap/css-inicio/bootstrap.min.css';
+import './assets/bootstrap/css/bootstrap.min.css';
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
 import './assets/css/Registration-Form-with-Photo.css';
@@ -13,7 +13,6 @@ import {Link} from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 
 
-
 const INICIO_SESION = gql `
     mutation inicioSesion($inicioSesionCorreo: String!, $inicioSesionContra: String!) {
     inicioSesion(correo: $inicioSesionCorreo, contra: $inicioSesionContra) {
@@ -24,27 +23,52 @@ const INICIO_SESION = gql `
   }
 `;
 
-function LogIn (){
-    const[datos,setData]=useState({});
-    const[inicioSesion,{data}]=useMutation(INICIO_SESION);
+function LogIn (props){
+    
     const[values,setValues]=useState({
             correo:'',
-            contra:'',
-            correoOk:false,
-            contraOk:false, 
+            contra:''
+    });
+    const[results,setResults]=useState({
+        id:'',
+        flag:false,
+        cuenta:''
+    });
+    const[inicioSesion,{loading}]=useMutation(INICIO_SESION,{
+            onCompleted({inicioSesion}){
+                    if(inicioSesion.flag){
+                        switch(inicioSesion.cuenta){
+                            case 'usuario':
+                                props.history.push('/HomeUs');
+                                break; 
+                        }
+                    }
+                    else{
+                        switch(inicioSesion.cuenta){
+                            case 'existe':
+                                document.getElementById('errorCorreo').innerHTML='La cuenta no está registrada';
+                                break;
+                            case 'contra':
+                                document.getElementById('errorContra').innerHTML='La contraseña es incorrecta';
+                        }
+                        console.log(inicioSesion.cuenta);
+                    }
+            }
+            ,
+            variables:{
+                "inicioSesionCorreo": values.correo,
+                "inicioSesionContra": values.contra,
+            }
     });
     const handleCampos = (event) => {
         setValues(
             {...values,[event.target.name]: event.target.value});  
     };
+
     
     const handleSubmit = (event)=>{
         event.preventDefault();
-        inicioSesion({variables:{
-                "inicioSesionCorreo": values.correo,
-                "inicioSesionContra": values.contra,
-        }}).then(result=>console.log(result));
-       
+        inicioSesion().then(result=>{console.log(result)});
     };
     return(
         <div>

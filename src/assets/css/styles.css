@@ -1,6 +1,171 @@
-.botones-inicio{
+.principal{
+  padding-right: 40px;
+  padding-left: 40px;
+}
+.carnet{
+  padding-right: 0px;
+  padding-left: 0px;
+  border-color: rgb(78,76,76)!important;
+}
+.carnet-relleno{
+  border-top-style: none!important;
+  border-radius: 17px!important;
+  background: #4E4C4C!important;
+  width: 400px;
+  margin-left: -1px;
+  margin-bottom: 15px;
+  margin-right: 0px;
+}
+.carnet-body{
+  background: #4e4c4c;
+  border-style: solid;
+  border-color: rgb(78,76,76);
+  border-radius: 14px;
+  padding: 4px;
+  padding-top: 0px;
+}
+.nombre-mascota{
+  margin-bottom: 1px;
   font-family: Lexend, sans-serif;
-  margin-bottom: 10px;
+  color: rgb(255,255,255);
+}
+.adoptado{
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  padding: 5px;
+  padding-right: 9px;
+  padding-left: 9px;
+  border-radius: 11px;
+  background: var(--red);
+  margin-top: 2px;
+}
+.disponible{
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  padding: 5px;
+  padding-right: 9px;
+  padding-left: 9px;
+  border-radius: 11px;
+  background: var(--success);
+  margin-top: 2px;
+}
+.info-mascota{
+  margin-bottom: 1px;
+  font-family: Lexend, sans-serif;
+  color: rgb(255,255,255);
+}
+.info-org{
+  margin-bottom: 4px;
+  font-family: Lexend, sans-serif;
+  color: rgb(255,255,255);
+}
+.foto-org{
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+}
+.show>.dropdown-menu {
+  display: block;
+  position: absolute;
+}
+.foto-mascota{
+  height: 276px;
+}
+.footer-carnet{
+  height: 40px;
+}
+.detalles{
+  margin: 0px 0px 0px;
+  margin-top: 2px;
+  font-family: Lexend, sans-serif;
+  font-size: 15px;
+  border-style: none;
+  color: rgb(255, 255, 255);
+  height: 33px;
+  width: 87.5625px;
+  margin-bottom: 4px;
+  border-radius: 21px!important;
+}
+.botones-inicio{
+  color:white!important;
+  border:solid 1px white!important;
+  border-radius:30px!important;
+  padding: 10px 30px!important;
+}
+.no-like{
+  font-size: 30px!important;
+  background: rgba(0,0,0,0);
+}
+.like{
+  font-size: 30px!important;
+  color: var(--red)!important;
+}
+.filtros{
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+.sust-filtros{
+  margin-bottom: 60px;
+}
+#col-filtros{
+  position: fixed;
+  z-index: 1;
+}
+#menu-lateral{
+  padding-right: 20px;
+  margin-top: -37px;
+  border-style: none;
+  border-right-style: none;
+  border-right-color: rgb(75,75,75);
+  position: fixed;
+}
+#buscar-icon{
+  color:#757575!important;
+  font-size: 20px!important;
+}
+.texto-menu-lateral-con-foto{
+  font-family: Lexend, sans-serif;
+  color: rgb(255,255,255);
+  font-size: 21px;
+  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.link-menu-lateral{
+  margin-bottom: 15px;
+  padding: 5px;
+  color: rgb(255,255,255);
+  text-decoration: none!important;
+  cursor: pointer;
+}
+.texto-menu-lateral{
+  color: rgb(255,255,255);
+  font-size: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+  font-family: Lexend, sans-serif;
+}
+.fas, .fa, .bi{
+  font-size: 30px!important;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+.link-perfil{
+  cursor: pointer;
+  text-decoration: none!important;
+  color: rgb(255,255,255);
+  margin-bottom: 15px;
+  padding: 5px;
+}
+.foto-perfil-menu-lateral{
+  width: 40px;
+  height: 40px;
+  margin-right: 11px;
+}
+.contenedor-main{
+  padding-right: 0px;
+  padding-left: 0px;
 }
 .chat-advertisment {
   width: 40%;
@@ -13,8 +178,51 @@ h2{
   font-family: 'Lexend';
 }
 .device{
-  background-image: url('/src/assets/img/iphone_6_plus_white_port.png');
-  margin-top: 51px;
+  background: url(/src/assets/img/iphone_6_plus_white_port.png) left/contain no-repeat;
+}
+.errorCo{
+  color: red;
+}
+#header-menu{
+  width: 100%;
+}
+.container-footer{
+  display: flex;
+  justify-content: center;
+  padding-top:25px;
+  padding-bottom:25px;
+  padding-right:0px;
+  padding-left:0px;
+  margin-right:0px;
+  margin-left:0px;
+}
+
+.dropdown-toggle{
+ font-family: 'Lexend';
+ background: #606060!important;
+ border-style: none;
+ font-size:13px;
+ margin-right:10px;
+ margin-bottom:15px;
+}
+#buscar{
+ color: rgb(255,255,255);
+ background: #333333;
+ border-style:none;
+ border-bottom-style:solid;
+ border-bottom-color:#767676;
+ font-family:'Lexend';
+ width: 150px;
+}
+.navigation-clean{
+  padding: 6px;
+  height: 70px;
+  padding-bottom: 0px;
+  padding-top:17px;
+  padding-right: 8;
+  padding-left:8;
+  border-bottom-style:solid;
+  border-bottom-color: #595959
 }
 @media (max-width: 576px) {
   .chat-advertisment {

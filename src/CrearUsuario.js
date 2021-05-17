@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './assets/bootstrap/css-inicio/bootstrap.min.css';
+import './assets/bootstrap/css/bootstrap.min.css';
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
 import './assets/css/Registration-Form-with-Photo.css';

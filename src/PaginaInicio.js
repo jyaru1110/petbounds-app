@@ -1,3 +1,4 @@
+//import './assets/bootstrap/css/bootstrap.min.css';
 import logo from './assets/img/petbounds_blanco.png';
 import React, {Component} from 'react';
 import perritonegro from './assets/img/perritonegro.png';
@@ -7,7 +8,6 @@ import yaosaifoto from './assets/img/clipboard-image-2.png';
 import amselfoto from './assets/img/clipboard-image-4.png';
 import gaelfoto from './assets/img/clipboard-image-3.png';
 import EarthBoundlogo from './assets/img/earthlogoblanco.png';
-import './assets/bootstrap/css-inicio/bootstrap.min.css';
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
 import './assets/css/Registration-Form-with-Photo.css';
@@ -25,27 +25,29 @@ class PaginaInicio extends Component{
               <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-dark" id="mainNav">
                 <div className="container"><img className="img-fluid" src={logo} width="400"/></div>
               </nav>
-              <header className="masthead">
-                <div className="container h-100">
-                    <div className="row justify-content-start h-100">
-                        <div className="col-lg-7 my-auto">
-                            <div className="mx-auto header-content">
-                                <h1 className="d-lg-flex align-items-lg-start mb-5" style={{fontFamily: 'Lexend'}}>Salva. Adopta.<br/>Cuida.<br/></h1>
-                                <h2 className="d-lg-flex justify-content-lg-end mb-5" style={{fontFamily: 'Lexend'}}>Unete a Petbounds y haz esto y mucho más<br/><br/><br/></h2>
-                                <div className="form-group d-lg-flex justify-content-lg-center justify-content-xl-start"><Link to="/IniciaSesion"><button className="btn btn-outline-warning btn-xl js-scroll-trigger botones-inicio">Inicia Sesión</button></Link><Link to="/Registrarse"><button className="btn btn-outline-warning btn-xl js-scroll-trigger botones-inicio">Registrarse</button></Link></div>
+              <header class="masthead" style={{background: '#333333!important'}}>
+                <div class="container h-100" style={{marginTop:'30px'}}>
+                    <div class="row justify-content-start h-100">
+                        <div class="col-lg-7 my-auto" style={{marginBottom: '0px'},{marginTop:'144.5px'},{padding:'0px 15px'}}>
+                            <div class="mx-auto header-content" style={{marginBottom:'60px'},{marginLeft:'67.5px'}}>
+                                <h1 class="d-lg-flex align-items-lg-start mb-5" style={{fontFamily:'Lexend'}}>Salva. Adopta.<br/>Cuida.<br/></h1>
+                                <h2 class="d-lg-flex justify-content-lg-end mb-5" style={{fontFamily:'Lexend'},{color:'var(--white)'}}>Unete a Petbounds y haz esto y mucho más<br/><br/><br/></h2>
+                                <div class="form-group d-lg-flex justify-content-lg-center justify-content-xl-start"><Link to="/IniciaSesion"><a class="btn btn-outline-warning text-uppercase d-xl-flex justify-content-xl-center align-items-xl-center btn-xl js-scroll-trigger botones-inicio" role="button">Iniciar Sesión</a></Link><Link to="/Registrarse"><a class="btn btn-outline-warning text-uppercase text-center d-xl-flex justify-content-xl-center align-items-xl-center btn-xl js-scroll-trigger botones-inicio" role="button" >Registrarse</a></Link></div>
                             </div>
                         </div>
-                        <div className="col-lg-5 my-auto">
-                            <div className="device-container">
-                                <div className="device-mockup iphone6_plus portrait white">
-                                    <div className="device">
-                                        <div className="screen"><img src={perritonegro}/></div>
-                                    </div>
+                    <div class="col-lg-5 d-xl-flex justify-content-xl-end" style={{marginTop:'60px'},{marginBottom:'60px'},{paddingRight:'0px'},{paddingLeft:'0px'}}>
+                        <div class="device-container" style={{height: '100%'}}>
+                            <div class="device-mockup iphone6_plus portrait white">
+                                <div class="device" style={{marginTop:'61px'}}>
+                                    <div class="d-xl-flex justify-content-xl-center align-items-xl-center screen" style={{height:'100%'}}><img class="d-xl-flex" src={perritonegro} style={{height: '571px'}}/></div>
+                                    <div class="button"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <div class="iphone-mockup"></div>
                 </div>
+                </div>
+            </div>
             </header>
             <section className="team-boxed">
                 <div className="container">
@@ -97,8 +99,8 @@ class PaginaInicio extends Component{
                     </div>
                 </div>
             </section>
-            <footer>
-                <div className="container"><img className="img-fluid" width="50" src={EarthBoundlogo}/></div>
+            <footer class="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(34,34,34)'}}>
+                <div class="container d-xl-flex justify-content-xl-center align-items-xl-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/></div>
             </footer>
             </div>
           );
