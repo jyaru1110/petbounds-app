@@ -11,9 +11,6 @@ import './assets/css/Navigation-with-Search.css'
 import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/peticotres20.png';
-import fotoPerfil from './assets/img/31DEBA24-3DE2-4BF7-B669-795C667AF9A1_1_201_a.jpeg'
-import perfilOrg from './assets/img/perfil_org.png'
-import mascota from './assets/img/michi.jpeg';
 import perritoRisas from './assets/img/perrito_risa.png';
 import {Link, useParams} from 'react-router-dom';
 import { gql, useMutation,useQuery } from '@apollo/client';
@@ -164,7 +161,8 @@ function Carnets(props){
     if (error) return {error};
     if (loading) return 'Aguanta';
     else{
-    const textoInfo = data.mascotaSelec.tamano+' · '+data.mascotaSelec.edad+' · '+data.mascotaSelec.raza+' · '+data.mascotaSelec.sexo;
+    var textoInfo = data.mascotaSelec.tamano+' · '+data.mascotaSelec.edad+' · '+data.mascotaSelec.raza+' · '+data.mascotaSelec.sexo;
+    var ruta = "/DetallesMascota/"+data.mascotaSelec.id;
     return(
     <div className="row">
             <div className="col d-inline-flex justify-content-center carnet">
@@ -174,7 +172,7 @@ function Carnets(props){
                         <p className="card-text info-mascota">{textoInfo}</p>
                         <p className="card-text info-org"><img className="rounded-circle foto-org" src={data.mascotaSelec.organizacion.foto}/>{data.mascotaSelec.organizacion.nombre}</p>
                     </div><img className="card-img w-100 d-block foto-mascota" src={data.mascotaSelec.foto}/>
-                    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><button className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)'}}>Detalles</button><button className="btn btn-primary like" type="button"><i className="fa fa-heart" data-bss-hover-animate="pulse" ></i></button></div>
+                    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><Link to={ruta}><button className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)'}}>Detalles</button></Link><button className="btn btn-primary like" type="button"><i className="fa fa-heart" data-bss-hover-animate="pulse" ></i></button></div>
                 </div>
             </div>
     </div>
