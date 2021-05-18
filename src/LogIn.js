@@ -9,7 +9,7 @@ import './assets/css/Team-Boxed.css'
 import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/petbounds_blanco.png';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 
 
@@ -36,10 +36,11 @@ function LogIn (props){
     });
     const[inicioSesion,{loading}]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
+                    var ruta = '/HomeUs/'+inicioSesion.id;
                     if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
                             case 'usuario':
-                                props.history.push('/HomeUs');
+                                props.history.push(ruta);
                                 break; 
                         }
                     }
@@ -51,7 +52,6 @@ function LogIn (props){
                             case 'contra':
                                 document.getElementById('errorContra').innerHTML='La contraseña es incorrecta';
                         }
-                        console.log(inicioSesion.cuenta);
                     }
             }
             ,
@@ -68,7 +68,7 @@ function LogIn (props){
     
     const handleSubmit = (event)=>{
         event.preventDefault();
-        inicioSesion().then(result=>{console.log(result)});
+        inicioSesion();
     };
     return(
         <div>

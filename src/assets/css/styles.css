@@ -49,6 +49,17 @@
   background: var(--success);
   margin-top: 2px;
 }
+
+.erro{
+  margin-top: 20px;
+  display:flex;
+  align-items: center;
+  flex-direction:column;
+}
+.erro h1{
+  font-family: Lexend;
+  color: white;
+}
 .info-mascota{
   margin-bottom: 1px;
   font-family: Lexend, sans-serif;
@@ -63,10 +74,6 @@
   margin-right: 10px;
   width: 25px;
   height: 25px;
-}
-.show>.dropdown-menu {
-  display: block;
-  position: absolute;
 }
 .foto-mascota{
   height: 276px;
@@ -100,20 +107,21 @@
   font-size: 30px!important;
   color: var(--red)!important;
 }
-.filtros{
-  margin-top: 15px;
-  margin-bottom: 25px;
+.iconopet{
+  height: 50px;
 }
 .sust-filtros{
-  margin-bottom: 60px;
+  margin-bottom: 110px;
 }
 #col-filtros{
   position: fixed;
+  background-color: #333333;
   z-index: 1;
+  padding-top: 20px;
 }
 #menu-lateral{
   padding-right: 20px;
-  margin-top: -37px;
+  margin-top: 100px;
   border-style: none;
   border-right-style: none;
   border-right-color: rgb(75,75,75);
@@ -185,6 +193,14 @@ h2{
 }
 #header-menu{
   width: 100%;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #606060;
+}
+#header-menu a{
+  cursor: pointer;
 }
 .container-footer{
   display: flex;

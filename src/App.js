@@ -19,7 +19,7 @@ function App() {
       <Route exact path="/CrearUsuario" component={CrearUsuario}/>
       <Route exact path="/CrearNegocio" component={CrearNegocio}/>
       <Route exact path="/CrearOrg" component={CrearOrg}/>
-      <Route exact path="/HomeUs" component={HomeUs}/>
+      <Route exact path="/HomeUs/:id" component={HomeUs}/>
     </BrowserRouter>
   );
 }
