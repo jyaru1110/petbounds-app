@@ -50,9 +50,11 @@ query ($mascotaSelecId:ID!) {
 }
 `;
 const FEED_MASCOTAS=gql `
-query mascotasFeed {
-        id  
-  }
+    query{
+        mascotasFeed {
+            id  
+        }
+    }
 `;
 function HomeUs(props) {
     const{loading,error,data}=useQuery(USUARIO,{
@@ -115,6 +117,10 @@ function Cuerpo(props) {
     
 }
 function Adopciones(props) {
+    const{loading,error,data}=useQuery(FEED_MASCOTAS)
+    if (loading) return (null);
+    if (error) return{error};
+    else{
     return(
     <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
         <div className="row justify-content-center">
@@ -139,20 +145,25 @@ function Adopciones(props) {
                 </div>
             <div className="col-md-1 col-lg-1 col-xl-2"></div>
             </div>
-            <Carnets></Carnets>
+            {data.mascotasFeed.map(
+                mascotasFeed => (
+                    <Carnets id={mascotasFeed.id}></Carnets>
+                )
+            )}
+            
         </div>
-    );
+    );}
 }
 function Carnets(props){
-    const{loading,error,data}=useQuery(MASCOTA,{
+    const {loading,error,data}=useQuery(MASCOTA,{
         variables:{
-            "mascotaSelecId":"548dbeda-f22a-42ec-a9e6-37b6535d217c",
-        }
-    })
-    if (loading) return (null);
-    if (error) return{error};
+            "mascotaSelecId":props.id
+       }   
+    } 
+    );
+    if (error) return {error};
+    if (loading) return 'Aguanta';
     else{
-    console.log(data);
     const textoInfo = data.mascotaSelec.tamano+' · '+data.mascotaSelec.edad+' · '+data.mascotaSelec.raza+' · '+data.mascotaSelec.sexo;
     return(
     <div className="row">
