@@ -19,7 +19,7 @@ import {Link, useParams} from 'react-router-dom';
 import { gql, useMutation,useQuery } from '@apollo/client';
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
-import $, { param } from 'jquery';
+import $, { data, param } from 'jquery';
 import Popper from 'popper.js';
 
 const USUARIO=gql `
@@ -27,11 +27,33 @@ query ($usuarioId: ID!) {
     usuario(id: $usuarioId) {
       id
       nombre
+      apellidop
       foto
     }
   }
   `;
-
+const MASCOTA=gql`
+query ($mascotaSelecId:ID!) {
+    mascotaSelec(id: $mascotaSelecId){
+        raza
+        edad
+        nombre
+        foto
+        tamano
+        sexo
+        estado
+        organizacion {
+            nombre
+            foto
+        }
+    }
+}
+`;
+const FEED_MASCOTAS=gql `
+query mascotasFeed {
+        id  
+  }
+`;
 function HomeUs(props) {
     const{loading,error,data}=useQuery(USUARIO,{
         variables:{
@@ -72,7 +94,7 @@ function Cuerpo(props) {
         <div className="container contenedor-main">
             <div className="row">
             <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
-            <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><a className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral"/><strong>{data.usuario.nombre}</strong></span></a><a className="link-menu-lateral" ><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
+            <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><a className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={data.usuario.foto}/><strong>{data.usuario.nombre}</strong></span></a><a className="link-menu-lateral" ><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
                             <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"></path>
                             <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z"></path>
                             <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"></path>
@@ -117,42 +139,45 @@ function Adopciones(props) {
                 </div>
             <div className="col-md-1 col-lg-1 col-xl-2"></div>
             </div>
-        <div className="row">
-            <div className="col-lg-12 col-xl-12 d-flex justify-content-center carnet">
-                <div className="card text-left align-self-center carnet-relleno">
-                    <div className="card-body carnet-body">
-                        <h4 className="d-flex justify-content-between card-title nombre-mascota">Michi<AdoptadoBadge/></h4>
-                        <p className="card-text info-mascota">Grande · 1 año · Snauser · Hembra</p>
-                        <p className="card-text info-org"><img className="rounded-circle foto-org" src={perfilOrg}/>Salva perritos, CDMX</p>
-                    </div><img className="card-img w-100 d-block foto-mascota" src={mascota}/>
-                    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><button className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)'}}>Detalles</button><button className="btn btn-primary no-like" type="button"><i className="fa fa-heart-o" data-bss-hover-animate="pulse"></i></button></div>
-                </div>
-            </div>
+            <Carnets></Carnets>
         </div>
-        <div className="row">
+    );
+}
+function Carnets(props){
+    const{loading,error,data}=useQuery(MASCOTA,{
+        variables:{
+            "mascotaSelecId":"548dbeda-f22a-42ec-a9e6-37b6535d217c",
+        }
+    })
+    if (loading) return (null);
+    if (error) return{error};
+    else{
+    console.log(data);
+    const textoInfo = data.mascotaSelec.tamano+' · '+data.mascotaSelec.edad+' · '+data.mascotaSelec.raza+' · '+data.mascotaSelec.sexo;
+    return(
+    <div className="row">
             <div className="col d-inline-flex justify-content-center carnet">
                 <div className="card text-left align-self-center carnet-relleno">
                     <div className="card-body carnet-body">
-                        <h4 className="d-flex justify-content-between card-title nombre-mascota">Michi<DisponibleBadge/></h4>
-                        <p className="card-text info-mascota">Grande · 1 año · Snauser · Hembra</p>
-                        <p className="card-text info-org"><img className="rounded-circle foto-org" src={perfilOrg}/>Salva perritos, CDMX</p>
-                    </div><img className="card-img w-100 d-block foto-mascota" src={mascota}/>
+                        <h4 className="d-flex justify-content-between card-title nombre-mascota">{data.mascotaSelec.nombre}<EstadoBadge estado={data.mascotaSelec.estado}/></h4>
+                        <p className="card-text info-mascota">{textoInfo}</p>
+                        <p className="card-text info-org"><img className="rounded-circle foto-org" src={data.mascotaSelec.organizacion.foto}/>{data.mascotaSelec.organizacion.nombre}</p>
+                    </div><img className="card-img w-100 d-block foto-mascota" src={data.mascotaSelec.foto}/>
                     <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><button className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)'}}>Detalles</button><button className="btn btn-primary like" type="button"><i className="fa fa-heart" data-bss-hover-animate="pulse" ></i></button></div>
                 </div>
             </div>
-        </div>
     </div>
-    
-    );
+    );}
 }
-function AdoptadoBadge(props) {
-    return(
+function EstadoBadge(props) {
+    if(props.estado==1){return(
         <span className="adoptado">Adoptado</span>
     );
 }
-function DisponibleBadge(props){
-    return(
-        <span className="disponible">Disponible</span>
-    );
+    else if(props.estado==0){
+        return(
+            <span className="disponible">Disponible</span>
+        );
+    }
 }
 export default HomeUs;
