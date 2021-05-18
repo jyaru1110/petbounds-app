@@ -1,3 +1,69 @@
+/*Copialo en la app de petbounds jiijijij*/
+.header-blue{
+  background: linear-gradient(var(--dark), var(--gray) 67%)!important;
+}
+.infoPetbounds{
+  display:inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.infoPetbounds h1, .infoPetbounds p{
+  margin-bottom: 30px;
+}
+.infoPetbounds button{
+  align-self: center;
+  margin-bottom: 30px;
+}
+.imagenLogo{
+  width: 209px;
+}
+.toggleColapse{
+  color: var(--white);
+  border-style: none;
+}
+.spanToggle{
+  color: var(--white);
+}
+.navToggle{
+  color: var(--white);
+}
+.spanNavBarText{
+  margin-right: 41px;
+}
+.login{
+  font-family: Lexend, sans-serif!important;
+  cursor: pointer;
+}
+#paw-login{
+  font-size: 100px!important;
+}
+.Registrate{
+  font-family: Lexend, sans-serif;
+  background: var(--cyan);
+}
+h1,p{
+  font-family: Lexend, sans-serif;
+  color: white;
+}
+.registrateMain{
+  font-family: Lexend, sans-serif;
+  width: 200px;
+  color: white!important;
+  background-color: transparent!important;
+  border-radius: 50px!important;
+}
+.device{
+  align-self: center;
+  background: url(/src/assets/img/perritonegro.png) left / contain no-repeat;
+  height: 500px;
+}
+.divPerrito{
+  display: flex!important;
+  align-content: center!important;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+/*hasta aquí*/
 .principal{
   padding-right: 40px;
   padding-left: 40px;
@@ -185,9 +251,6 @@ h2{
   color:white;
   font-family: 'Lexend';
 }
-.device{
-  background: url(/src/assets/img/iphone_6_plus_white_port.png) left/contain no-repeat;
-}
 .errorCo{
   color: red;
 }
@@ -302,6 +365,12 @@ h2{
 @media (max-width: 576px) {
   .col-12.col-md-4.col-lg-4.col-xl-4.menu-lateral {
     display: none;
+  }
+  .divLogo{
+    display: none!important;
+  }
+  .mr-auto{
+    display: none!important;
   }
 }
 

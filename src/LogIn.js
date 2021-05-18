@@ -82,7 +82,7 @@ function LogIn (props){
             <div style={{color:'var(--gray-dark)'}}>
                 <section className="login-dark" style={{color: 'var(--gray-dark)'}}>
                     <form onSubmit={handleSubmit} validate style={{paddingTop:'0px'},{marginTop:'-166px'}}>
-                        <div className="illustration"><i className="fa fa-paw" style={{color:'var(--white)'}}></i></div>
+                        <div className="illustration"><i className="fa fa-paw" id="paw-login" style={{color:'var(--white)'}}></i></div>
                         <div className="form-group"><input type="text" className="form-control" id='correo' name="correo" autoComplete='email' value={values.correo} onChange={handleCampos} required placeholder="Correo" style={{fontFamily:'Lexend'}}/></div>
                         <div className="form-group"><p className='errorCo' id='errorCorreo'></p></div>
                         <div className="form-group"><input className="form-control" id='contra' type="password" name="contra" value={values.contra} onChange={handleCampos} required placeholder="Contraseña" style={{fontFamily:'Lexend'}}/></div>

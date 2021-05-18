@@ -7,6 +7,7 @@ import leconafoto from './assets/img/clipboard-image-1.png';
 import yaosaifoto from './assets/img/clipboard-image-2.png';
 import amselfoto from './assets/img/clipboard-image-4.png';
 import gaelfoto from './assets/img/clipboard-image-3.png';
+import phone from './assets/img/phone.svg'
 import EarthBoundlogo from './assets/img/earthlogoblanco.png';
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
@@ -22,33 +23,26 @@ class PaginaInicio extends Component{
     render(){
         return (
             <div className = "app-petbounds">
-              <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-dark" id="mainNav">
-                <div className="container"><img className="img-fluid" src={logo} width="400"/></div>
-              </nav>
-              <header class="masthead" style={{background: '#333333!important'}}>
-                <div class="container h-100" style={{marginTop:'30px'}}>
-                    <div class="row justify-content-start h-100">
-                        <div class="col-lg-7 my-auto" style={{marginBottom: '0px'},{marginTop:'144.5px'},{padding:'0px 15px'}}>
-                            <div class="mx-auto header-content" style={{marginBottom:'60px'},{marginLeft:'67.5px'}}>
-                                <h1 class="d-lg-flex align-items-lg-start mb-5" style={{fontFamily:'Lexend'}}>Salva. Adopta.<br/>Cuida.<br/></h1>
-                                <h2 class="d-lg-flex justify-content-lg-end mb-5" style={{fontFamily:'Lexend'},{color:'var(--white)'}}>Unete a Petbounds y haz esto y mucho más<br/><br/><br/></h2>
-                                <div class="form-group d-lg-flex justify-content-lg-center justify-content-xl-start"><Link to="/IniciaSesion"><a class="btn btn-outline-warning text-uppercase d-xl-flex justify-content-xl-center align-items-xl-center btn-xl js-scroll-trigger botones-inicio" role="button">Iniciar Sesión</a></Link><Link to="/Registrarse"><a class="btn btn-outline-warning text-uppercase text-center d-xl-flex justify-content-xl-center align-items-xl-center btn-xl js-scroll-trigger botones-inicio" role="button" >Registrarse</a></Link></div>
-                            </div>
-                        </div>
-                    <div class="col-lg-5 d-xl-flex justify-content-xl-end" style={{marginTop:'60px'},{marginBottom:'60px'},{paddingRight:'0px'},{paddingLeft:'0px'}}>
-                        <div class="device-container" style={{height: '100%'}}>
-                            <div class="device-mockup iphone6_plus portrait white">
-                                <div class="device" style={{marginTop:'61px'}}>
-                                    <div class="d-xl-flex justify-content-xl-center align-items-xl-center screen" style={{height:'100%'}}><img class="d-xl-flex" src={perritonegro} style={{height: '571px'}}/></div>
-                                    <div class="button"></div>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="iphone-mockup"></div>
+             <header className="header-blue">
+        <nav className="navbar navbar-dark navbar-expand-md navigation-clean-search">
+            <div className="container-fluid"><a className="navbar-brand divLogo"><img className="imagenLogo" src={logo}/></a>
+                    <form className="form-inline mr-auto" target="_self"></form><span className="navbar-text spanNavBarText"> <Link to="/IniciaSesion" className="login">Log In</Link></span><Link to="/Registrarse" className="btn btn-light action-button Registrate" role="button">Sign Up</Link>
+            </div>
+        </nav>
+        <div className="container hero">
+            <div className="row">
+                <div className="col-12 col-lg-6 col-xl-5 offset-xl-1 infoPetbounds">
+                    <h1>Salva. Adopta. Cuida</h1>
+                    <p>En Petbounds, organizaciones que rescatan animales en condiciones de calle ponen a disposición de los usuarios la oportunidad de adoptar una mascota</p><Link to="/Registrarse" class="btn btn-light btn-lg action-button registrateMain" type="button">Regístrate aquí</Link>
                 </div>
+                <div className="col-md-12 col-lg-5 offset-lg-1 offset-xl-0 phone-holder divPerrito">
+                    <div className="phone-mockup divPerrito"><img class="device" src={phone}/>
+                        <div className="screen"></div>
+                    </div>
                 </div>
             </div>
-            </header>
+        </div>
+    </header>
             <section className="team-boxed">
                 <div className="container">
                     <div className="intro">
@@ -60,7 +54,7 @@ class PaginaInicio extends Component{
                             <div className="box"><img className="rounded-circle" src={jyarufoto}/>
                                 <h3 className="name">Jyarü Hernández</h3>
                                 <p className="title">WEB DEVELOPER</p>
-                                <p className="description">Apasionado de la programación y la robotica con un profundo amor por los animales y la naturaleza</p>
+                                <p className="description">Fan de star wars, la programación y las mamás solteras que de preferencia no tengan hijos</p>
                                 <div className="social"><a href="https://www.facebook.com/jochitoquisde"><i className="fa fa-facebook-official"></i></a><a href="https://twitter.com/JyaruH"><i className="fa fa-twitter"></i></a><a href="https://www.instagram.com/jyaru__hernandez/"><i className="fa fa-instagram"></i></a></div>
                             </div>
                         </div>
