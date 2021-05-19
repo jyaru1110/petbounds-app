@@ -116,7 +116,7 @@ function Cuerpo(props) {
                                     <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Perro" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Gato" className="dropdown-item" onClick={handleClick}></input></div>
                                 </div>
                                 <div className="dropdown"><button className="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button" style={{ fontFamily: 'Lexend' }, { background: '#606060' }, { borderStyle: 'none' }, { fontSize: '13px' }, { marginRight: '10px' }}>Estado</button>
-                                    <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Adoptado" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Disponible" className="dropdown-item" onClick={handleClick}></input></div>
+                                    <div className="dropdown-menu"><button value="Todos" className="dropdown-item" onClick={handleClick}>Todos</button><button value="1" className="dropdown-item" onClick={handleClick}>Adoptado</button><button value="0" className="dropdown-item" onClick={handleClick}>Disponible</button></div>
                                 </div><span><i className="fa fa-search" id='buscar-icon' style={{ marginRight: '5px' }, { fontSize: 'medium!important' }}></i><input type="search" id='buscar' onChange={handleChange} placeholder="Buscar" /></span>
                             </div>
                             <div className="col-md-1 col-lg-1 col-xl-2"></div>
@@ -151,7 +151,7 @@ function Carnets(props) {
                 {data.mascotasFeed.filter((mascotasFeed)=>{
                         if(props.filtro=="" || props.filtro=="Todos"){
                             return mascotasFeed;
-                        }else if(mascotasFeed.nombre.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.sexo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tipo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tamano.toLowerCase().includes(props.filtro.toLowerCase())){
+                        }else if(mascotasFeed.nombre.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.sexo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tipo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tamano.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.estado.toString().includes(props.filtro.toLowerCase()) || mascotasFeed.organizacion.nombre.toLowerCase().includes(props.filtro.toLowerCase())){
                             return mascotasFeed;
                         }
                 }).map((mascotasFeed) => (
