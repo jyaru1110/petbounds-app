@@ -1,4 +1,13 @@
-
+.carnets{
+  margin-top: 90px;
+}
+.logo-petbounds{
+  height:49px!important;
+  position: fixed;
+  margin-left: 20px;
+  margin-top: 15px;
+  z-index: 2;
+}
 .dropdown button{
   font-size:13px!important;
 }
@@ -179,13 +188,13 @@ h1,p{
   color: var(--red)!important;
 }
 .sust-filtros{
-  margin-bottom: 110px;
+  margin-bottom: 50px;
 }
 #col-filtros{
   position: fixed;
   background-color: #333333;
   z-index: 1;
-  margin-top: 50px;
+  padding-top: 60px;
 }
 #menu-lateral{
   padding-right: 20px;
@@ -257,14 +266,15 @@ h2{
   color: red;
 }
 #header-menu{
-  padding-top: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-bottom: 5px;
   width:100%;
   z-index: 2;
   align-self: center;
   position: fixed!important;
+  background-color: #333333;
 }
 
 .texto-menu-sup img{
@@ -360,6 +370,13 @@ h2{
     margin: 28% 40%;
     position: fixed;
     z-index: 1;
+  }
+  .carnets{
+    margin-top: 80px;
+  }
+  #col-filtros{
+    margin-top: 50px;
+    padding-top: 15px;
   }
 }
 

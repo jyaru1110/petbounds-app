@@ -47,10 +47,29 @@ const FEED_MASCOTAS = gql`
       }
   }
 `;
-function HomeUs(props) {
+function HomeUs(props){
+    return(
+        <div>
+            <Header/>
+            <Cuerpo id={props.match.params.id}/>
+        </div>
+    );
+}
+function Header(props){
+    return(
+        <div>
+        <div class="d-inline-flex justify-content-between align-items-center" id="header-menu" style={{color: 'var(--white)'}}><a className='texto-menu-sup'><img class="rounded-circle"src={perritoRisas}/></a><a className='texto-menu-sup'>Adopciones</a><a className='texto-menu-sup'>Servicios</a><a className='texto-menu-sup'>Donaciones</a></div>
+        <div>
+            <img className="logo-petbounds" src={logo}/>
+        </div>
+        </div>
+    );
+    
+}
+function Cuerpo(props) {
     const { loading, error, data } = useQuery(USUARIO, {
         variables: {
-            "usuarioId": props.match.params.id
+            "usuarioId": props.id
         },
     });
     if (loading) return null;
@@ -58,9 +77,6 @@ function HomeUs(props) {
     else {
         return (
             <div className="container contenedor-main">
-                    <div class="d-inline-flex justify-content-between align-items-center" id="header-menu" style={{color: 'var(--white)'}}><a className='texto-menu-sup'><img class="rounded-circle"src={perritoRisas}/></a><a className='texto-menu-sup'>Adopciones</a><a className='texto-menu-sup'>Servicios</a><a className='texto-menu-sup'>Donaciones</a></div>
-                    <div><img class="logo-petbounds" src={logo} style={{"height":"49px"}}/>
-                    </div>
                         <div className="row">
                             <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
                             <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><a className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={data.usuario.foto} /><strong>{data.usuario.nombre}</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></a><a className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
@@ -97,7 +113,7 @@ function HomeUs(props) {
                                     </div>
                                     <div className="col-md-1 col-lg-1 col-xl-2"></div>
                                 </div>
-                                <Carnets id={props.match.params.id}></Carnets>
+                                <Carnets id={props.id}></Carnets>
                             </div>
                             <div className="col-12 col-lg-2 col-xl-3"></div>
                         </div>
@@ -124,7 +140,7 @@ function Carnets(props) {
     else {
         var textoInfo = data.mascotasFeed.tamano + ' · ' + data.mascotasFeed.edad + ' · ' + data.mascotasFeed.raza + ' · ' + data.mascotasFeed.sexo;
         return (
-            <div>
+            <div className="carnets">
                         {data.mascotasFeed.map(mascotasFeed => (
                             <div className="row">
                                 <div className="col d-inline-flex justify-content-center carnet">
