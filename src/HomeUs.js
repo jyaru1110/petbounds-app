@@ -16,7 +16,7 @@ import { Link, useParams } from 'react-router-dom';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
-import $, { data, param } from 'jquery';
+import $, { data, event, param } from 'jquery';
 import Popper from 'popper.js';
 
 const USUARIO = gql`
@@ -39,6 +39,7 @@ const FEED_MASCOTAS = gql`
           foto
           tamano
           sexo
+          tipo
           estado
           organizacion{
               nombre
@@ -67,6 +68,13 @@ function Header(props) {
 
 }
 function Cuerpo(props) {
+    const[nombre,setNombre] = useState("");
+    const handleChange = (event)=>{
+        setNombre(event.target.value)
+    }
+    const handleClick=(event)=>{
+        setNombre(event.target.value);
+    }
     const { loading, error, data } = useQuery(USUARIO, {
         variables: {
             "usuarioId": props.id
@@ -99,21 +107,21 @@ function Cuerpo(props) {
                             </div>
                             <div className="col-12 col-md-8 col-lg-7 col-xl-7 d-inline-flex justify-content-center flex-wrap" id="col-filtros" style={{ paddingRight: '0px' }, { paddingLeft: '0px' }}>
                                 <div className="dropdown"><button className="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button">Tamaño</button>
-                                    <div className="dropdown-menu"><a className="dropdown-item" href="#">Alto</a><a className="dropdown-item" href="#">Grande</a><a className="dropdown-item" href="#">Venti</a></div>
+                                    <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input className="dropdown-item" value="Grande" type="button" onClick={handleClick}></input><input className="dropdown-item" type="button" value="Mediano" onClick={handleClick}></input><input type="button" value="Chico" className="dropdown-item" onClick={handleClick}></input></div>
                                 </div>
                                 <div className="dropdown"><button className="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button" style={{ fontFamily: 'Lexend' }, { borderStyle: 'none' }, { background: '#606060' }, { fontSize: '13px' }, { marginRight: '10px' }}>Sexo&nbsp;</button>
-                                    <div className="dropdown-menu"><a className="dropdown-item" href="#">Masculino</a><a className="dropdown-item" href="#">Femenino</a><a className="dropdown-item" href="#">Keti</a></div>
+                                    <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Hembra" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Macho" className="dropdown-item" onClick={handleClick}></input></div>
                                 </div>
                                 <div className="dropdown"><button className="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button" style={{ fontFamily: 'Lexend' }, { background: '#606060' }, { borderStyle: 'none' }, { fontSize: '13px' }, { margiTop: '0px' }, { marginRight: '10px' }}>Animal</button>
-                                    <div className="dropdown-menu"><a className="dropdown-item" href="#">Perro</a><a className="dropdown-item" href="#">Gato</a><a className="dropdown-item" href="#">Mamut</a></div>
+                                    <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Perro" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Gato" className="dropdown-item" onClick={handleClick}></input></div>
                                 </div>
                                 <div className="dropdown"><button className="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button" style={{ fontFamily: 'Lexend' }, { background: '#606060' }, { borderStyle: 'none' }, { fontSize: '13px' }, { marginRight: '10px' }}>Estado</button>
-                                    <div className="dropdown-menu"><a className="dropdown-item" href="#">Adoptado</a><a className="dropdown-item" href="#">Disponible</a></div>
-                                </div><span><i className="fa fa-search" id='buscar-icon' style={{ marginRight: '5px' }, { fontSize: 'medium!important' }}></i><input type="search" id='buscar' placeholder="Buscar" /></span>
+                                    <div className="dropdown-menu"><input type="button" value="Todos" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Adoptado" className="dropdown-item" onClick={handleClick}></input><input type="button" value="Disponible" className="dropdown-item" onClick={handleClick}></input></div>
+                                </div><span><i className="fa fa-search" id='buscar-icon' style={{ marginRight: '5px' }, { fontSize: 'medium!important' }}></i><input type="search" id='buscar' onChange={handleChange} placeholder="Buscar" /></span>
                             </div>
                             <div className="col-md-1 col-lg-1 col-xl-2"></div>
                         </div>
-                        <Carnets idUs={props.id}></Carnets>
+                        <Carnets idUs={props.id} filtro={nombre}></Carnets>
                     </div>
                     <div className="col-12 col-lg-2 col-xl-3"></div>
                 </div>
@@ -140,7 +148,13 @@ function Carnets(props) {
     else {
         return (
             <div className="carnets">
-                {data.mascotasFeed.map(mascotasFeed => (
+                {data.mascotasFeed.filter((mascotasFeed)=>{
+                        if(props.filtro=="" || props.filtro=="Todos"){
+                            return mascotasFeed;
+                        }else if(mascotasFeed.nombre.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.sexo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tipo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tamano.toLowerCase().includes(props.filtro.toLowerCase())){
+                            return mascotasFeed;
+                        }
+                }).map((mascotasFeed) => (
                     <div className="row">
                         <div className="col d-inline-flex justify-content-center carnet">
                             <div className="card text-left align-self-center carnet-relleno">
