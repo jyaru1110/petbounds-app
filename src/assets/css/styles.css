@@ -1,3 +1,68 @@
+.noAdoptable{
+  font-family:Lexend;
+  font-size:25px;
+  height:49px;
+  border-radius:16px;
+  margin-top:9px;
+  border-color:rgb(255, 255, 255);
+  border-top-color:rgb(255,255,255);
+  border-right-color:255;
+  border-bottom-color:255;
+  border-left-color: 255;
+  background: rgba(89,89,89,0);
+}
+.adoptable{
+  font-family:Lexend;
+  color:rgb(255, 255, 255);
+  background:#c1222e!important;
+  border-style:none;
+  border-radius:16px!important;
+  font-size:25px!important;
+  margin-top:10px;
+}
+.main-detalles{
+  margin-top:-1px;
+  margin-bottom:45px;
+  padding-top:20px;
+}
+.imagen-mascota-detalles{
+  width:209px;
+  height:209px;
+}
+.descripcion-detalles{
+  font-family:Lexend;
+  color: rgb(255,255,255);
+  margin-bottom:15px;
+  text-align:left;
+  font-size:20px;
+  padding-left:12px;
+}
+.info-org-detalles{
+  font-family:Lexend;
+  color:rgb(255,255,255);
+  margin-bottom:14px;
+  text-align:left;
+  font-size:20px;
+  padding-left:12px
+}
+.desc-detalles{
+  text-align:justify;
+  font-family:Lexend;
+  font-size:20px;
+  padding: 0px 5px;
+  padding-right:15px;
+  padding-left:15px;
+}
+.foto-org-detalles{
+  width:35px;
+  height:35px;
+  margin-top:0px;
+  margin-right:5px;
+}
+.nombre-mascota-detalles{
+  font-family:Lexend;
+  padding-top: 0px;
+}
 .carnets{
   margin-top: 90px;
 }
@@ -372,7 +437,7 @@ h2{
     z-index: 1;
   }
   .carnets{
-    margin-top: 80px;
+    margin-top: 90px;
   }
   #col-filtros{
     margin-top: 50px;

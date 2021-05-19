@@ -48,8 +48,7 @@ function LogIn (props){
                                 document.getElementById('errorContra').innerHTML='La contraseña es incorrecta';
                         }
                     }
-            }
-            ,
+            },
             variables:{
                 "inicioSesionCorreo": values.correo,
                 "inicioSesionContra": values.contra,

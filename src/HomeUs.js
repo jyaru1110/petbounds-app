@@ -113,7 +113,7 @@ function Cuerpo(props) {
                                     </div>
                                     <div className="col-md-1 col-lg-1 col-xl-2"></div>
                                 </div>
-                                <Carnets id={props.id}></Carnets>
+                                <Carnets idUs={props.id}></Carnets>
                             </div>
                             <div className="col-12 col-lg-2 col-xl-3"></div>
                         </div>
@@ -138,7 +138,6 @@ function Carnets(props) {
     if (error) return {error};
     if (loading) return (null);
     else {
-        var textoInfo = data.mascotasFeed.tamano + ' · ' + data.mascotasFeed.edad + ' · ' + data.mascotasFeed.raza + ' · ' + data.mascotasFeed.sexo;
         return (
             <div className="carnets">
                         {data.mascotasFeed.map(mascotasFeed => (
@@ -147,10 +146,10 @@ function Carnets(props) {
                                     <div className="card text-left align-self-center carnet-relleno">
                                         <div className="card-body carnet-body">
                                             <h4 className="d-flex justify-content-between card-title nombre-mascota">{mascotasFeed.nombre}<EstadoBadge estado={mascotasFeed.estado} /></h4>
-                                            <p className="card-text info-mascota">{textoInfo}</p>
+                                            <p className="card-text info-mascota">{mascotasFeed.tamano} · {mascotasFeed.edad} · {mascotasFeed.raza} · {mascotasFeed.sexo}</p>
                                             <p className="card-text info-org"><img className="rounded-circle foto-org" src={mascotasFeed.organizacion.foto} />{mascotasFeed.organizacion.nombre}</p>
                                         </div><img className="card-img w-100 d-block foto-mascota" src={mascotasFeed.foto} />
-                                        <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><button className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{ background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)' }}>Detalles</button><button className="btn btn-primary like" type="button"><i className="fa fa-heart" data-bss-hover-animate="pulse"></i></button></div>
+                                        <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={mascotasFeed.id}/><button className="btn btn-primary like" type="button"><i className="fa fa-heart" data-bss-hover-animate="pulse"></i></button></div>
                                     </div>
                                 </div>
                             </div>
@@ -158,6 +157,12 @@ function Carnets(props) {
                     </div>
         );
     }
+}
+function BotonDetalles(props){
+    var ruta = "/Detalles/" + props.idUs + "/" + props.idMas;
+    return(
+            <Link to={ruta} className="btn btn-primary detalles" data-bss-hover-animate="pulse" type="button" style={{ background: 'linear-gradient(-29deg, var(--indigo), var(--red)), rgba(0,123,255,0)' }}>Detalles</Link>
+    );
 }
 function EstadoBadge(props) {
     if (props.estado == 1) {
