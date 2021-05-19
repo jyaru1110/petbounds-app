@@ -11,6 +11,9 @@
   border-left-color: 255;
   background: rgba(89,89,89,0);
 }
+.like-container{
+  color: white!important;
+}
 .adoptable{
   font-family:Lexend;
   color:rgb(255, 255, 255);

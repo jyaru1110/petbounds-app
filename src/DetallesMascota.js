@@ -19,15 +19,6 @@ import 'bootstrap/dist/js/bootstrap.js';
 import $, { data, param } from 'jquery';
 import Popper from 'popper.js';
 
-const SOLICITUDES = gql`
-    query($solicitudesUsuarioId: ID!) {
-    solicitudesUsuario(id: $solicitudesUsuarioId) {
-      mascota {
-        id
-      }
-    }
-  }
-`;
 const HACER_SOLICITUD = gql`
     mutation ($registroSolicitudUsuarioId: ID!, $registroSolicitudMascotaId: ID!) {
     registroSolicitud(usuarioId: $registroSolicitudUsuarioId, mascotaId: $registroSolicitudMascotaId) {
@@ -66,12 +57,12 @@ query ($usuarioId: ID!) {
   `;
 
 function DetallesMascota(props) {
-    return (
-        <div>
-            <Header />
-            <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
-        </div>
-    );
+        return (
+            <div>
+                <Header />
+                <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
+            </div>
+        );
 }
 function Header(props) {
     return (
@@ -160,7 +151,6 @@ function Mascota(props) {
     }
 }
 function EstadoMascota(props) {
-    const [bandera,setBandera] = useState(false);
     const [hacerSolicitud, {loading}] = useMutation(HACER_SOLICITUD, {
         onCompleted({registroSolicitud}) {
             if (registroSolicitud.success) {
@@ -173,32 +163,9 @@ function EstadoMascota(props) {
             "registroSolicitudMascotaId": props.idMas
         }
     });
-    const { status, error, data, refetch } = useQuery(SOLICITUDES, {
-        variables: {
-            "solicitudesUsuarioId": props.idUs
-        },
-    });
-    const onClick = () => {
-        refetch();
-        if (error) return { error };
-        if (status) return null;
-        else {
-            data.solicitudesUsuario.map(solicitudesUsuario => {
-                if (solicitudesUsuario.mascota.id == props.idMas) {
-                    setBandera(true);
-                }
-            })
-            
-            if (bandera != true) {
-                hacerSolicitud();
-            }else{
-                console.log('ya lo solicitaste, puñetas');
-            }
-        }
-    }
     if (props.estado == 0) {
         return (
-            <button className="btn btn-primary adoptable" type="button" onClick={onClick}>Adoptar</button>
+            <button className="btn btn-primary adoptable" type="button" onClick={hacerSolicitud}>Adoptar</button>
         );
     }
     else if (props.estado == 1) {
