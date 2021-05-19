@@ -36,7 +36,7 @@ class PaginaInicio extends Component{
                     <p>En Petbounds, organizaciones que rescatan animales en condiciones de calle ponen a disposición de los usuarios la oportunidad de adoptar una mascota</p><Link to="/Registrarse" class="btn btn-light btn-lg action-button registrateMain" type="button">Regístrate aquí</Link>
                 </div>
                 <div className="col-md-12 col-lg-5 offset-lg-1 offset-xl-0 phone-holder divPerrito">
-                    <div className="phone-mockup divPerrito"><img class="device" src={phone}/>
+                    <div className="phone-mockup divPerrito"><img class="device" id="device-ini" src={phone}/>
                         <div className="screen"></div>
                     </div>
                 </div>

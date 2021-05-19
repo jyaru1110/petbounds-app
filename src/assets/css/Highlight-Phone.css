@@ -11,9 +11,7 @@
   }
 }
 
-.highlight-phone p {
-  color: #7d8285;
-}
+
 
 .highlight-phone h2 {
   font-weight: bold;
@@ -21,7 +19,6 @@
   line-height: 1.5;
   padding-top: 0;
   margin-top: 0;
-  color: inherit;
 }
 
 .highlight-phone .intro {

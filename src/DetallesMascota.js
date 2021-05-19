@@ -16,6 +16,7 @@ import { Link, useParams } from 'react-router-dom';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
+import {useHistory} from 'react-router-dom'
 import $, { data, param } from 'jquery';
 import Popper from 'popper.js';
 
@@ -100,7 +101,7 @@ function Cuerpo(props) {
                         <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
                     </svg><strong>Salir</strong></span></a>
                     </div>
-                    <Mascota idUs={props.idUs} idMas={props.idMas} />
+                    <Mascota idUs={props.idUs} idMas={props.idMas}/>
                 </div>
             </div>
         );
@@ -151,11 +152,12 @@ function Mascota(props) {
     }
 }
 function EstadoMascota(props) {
+    let history = useHistory();
     const [hacerSolicitud, {loading}] = useMutation(HACER_SOLICITUD, {
         onCompleted({registroSolicitud}) {
             if (registroSolicitud.success) {
-                console.log('si')
-                var route = '/Confirmacion' + props.idUs + props.idMas;
+                var route = '/ConfirmacionSolicitud/' + props.idUs +'/'+ props.idMas;
+                history.push(route);
             }
         },
         variables: {

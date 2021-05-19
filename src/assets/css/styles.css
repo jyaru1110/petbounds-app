@@ -135,10 +135,13 @@ h1,p{
   background-color: transparent!important;
   border-radius: 50px!important;
 }
-.device{
+#device-ini{
   align-self: center;
   background: url(/src/assets/img/perritonegro.png) left / contain no-repeat;
   height: 500px;
+}
+#screen-con{
+  background: url(/src/assets/img/fondo-patita.png) center / contain no-repeat;
 }
 .divPerrito{
   display: flex!important;
@@ -343,6 +346,7 @@ h2{
   align-self: center;
   position: fixed!important;
   background-color: #333333;
+  border-bottom: gray 1px solid;
 }
 
 .texto-menu-sup img{
@@ -463,6 +467,9 @@ h2{
     margin: 15% 10%;
     position: fixed;
     z-index: 1;
+  }
+  .carnets{
+    margin-top: 50px;
   }
 }
 

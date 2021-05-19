@@ -155,7 +155,7 @@ function Carnets(props) {
                             return mascotasFeed;
                         }
                 }).map((mascotasFeed) => (
-                    <div className="row">
+                    <div className="row" key={mascotasFeed.id}>
                         <div className="col d-inline-flex justify-content-center carnet">
                             <div className="card text-left align-self-center carnet-relleno">
                                 <div className="card-body carnet-body">
