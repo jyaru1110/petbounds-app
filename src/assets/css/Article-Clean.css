@@ -138,7 +138,7 @@
 }
 
 .anuncio-chat {
-  /*position: fixed;*/
+  position: fixed;
 }
 
 .body-chat {
@@ -165,13 +165,13 @@
   }
 }
 
-@media (min-width: 767px) {
+@media (min-width: 768px) {
   #header-menu {
     display: none!important;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .container.contedor-main {
     margin-top: 25px!important;
   }

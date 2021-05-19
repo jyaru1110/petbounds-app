@@ -1,4 +1,10 @@
-/*Copialo en la app de petbounds jiijijij*/
+
+.dropdown button{
+  font-size:13px!important;
+}
+.texto-menu-sup{
+  color: var(--white);font-family: Lexend, sans-serif;
+}
 .header-blue{
   background: linear-gradient(var(--dark), var(--gray) 67%)!important;
 }
@@ -63,7 +69,6 @@ h1,p{
   flex-direction: column;
   margin-bottom: 5px;
 }
-/*hasta aquí*/
 .principal{
   padding-right: 40px;
   padding-left: 40px;
@@ -173,9 +178,6 @@ h1,p{
   font-size: 30px!important;
   color: var(--red)!important;
 }
-.iconopet{
-  height: 50px;
-}
 .sust-filtros{
   margin-bottom: 110px;
 }
@@ -183,7 +185,7 @@ h1,p{
   position: fixed;
   background-color: #333333;
   z-index: 1;
-  padding-top: 20px;
+  margin-top: 50px;
 }
 #menu-lateral{
   padding-right: 20px;
@@ -195,7 +197,7 @@ h1,p{
 }
 #buscar-icon{
   color:#757575!important;
-  font-size: 20px!important;
+  font-size: 15px!important;
 }
 .texto-menu-lateral-con-foto{
   font-family: Lexend, sans-serif;
@@ -255,12 +257,19 @@ h2{
   color: red;
 }
 #header-menu{
-  width: 100%;
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 5px;
-  border-bottom: solid 1px #606060;
+  width:100%;
+  z-index: 2;
+  align-self: center;
+  position: fixed!important;
+}
+
+.texto-menu-sup img{
+  width:40px!important;
+  height:40px!important;
 }
 #header-menu a{
   cursor: pointer;
@@ -286,6 +295,7 @@ h2{
 }
 #buscar{
  color: rgb(255,255,255);
+ font-size: 13px;
  background: #333333;
  border-style:none;
  border-bottom-style:solid;
@@ -316,6 +326,15 @@ h2{
     width: 90%;
     position: fixed;
     z-index: 1;
+  }
+  .dropdown button, #buscar,#buscar-icon{
+    font-size:10px!important;
+  }
+  #col-filtros button{
+    margin-bottom: 5px;
+  }
+  .sust-filtros{
+    margin-bottom: 90px;
   }
 }
 

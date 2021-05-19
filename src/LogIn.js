@@ -29,11 +29,6 @@ function LogIn (props){
             correo:'',
             contra:''
     });
-    const[results,setResults]=useState({
-        id:'',
-        flag:false,
-        cuenta:''
-    });
     const[inicioSesion,{loading}]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
                     var ruta = '/HomeUs/'+inicioSesion.id;
