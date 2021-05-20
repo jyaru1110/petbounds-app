@@ -1,3 +1,34 @@
+.imagen-perfil-menu{
+  width: 100px!important;
+  height: 100px;
+  align-self: center;
+  margin-bottom:20px;
+}
+.hola-menu{
+  align-self: center;
+  font-family: Lexend;
+}
+.bi-person{
+  font-size: 20px;
+}
+.toggle-menu-left{
+  color: white!important;
+  align-self: flex-start;
+
+}
+.perfil-menu-text{
+  font-family: Lexend!important;
+  color: white !important;
+  margin-bottom: 15px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-decoration: none!important;
+  cursor: pointer;
+}
+.perfil-menu-text:hover{
+  background-color: #292929;
+}
 .noAdoptable{
   font-family:Lexend;
   font-size:25px;
@@ -24,13 +55,14 @@
   margin-top:10px;
 }
 .main-detalles{
-  margin-top:-1px;
+  margin-top:100px;
   margin-bottom:45px;
   padding-top:20px;
 }
 .imagen-mascota-detalles{
   width:209px;
   height:209px;
+  margin-bottom: 20px;
 }
 .descripcion-detalles{
   font-family:Lexend;
@@ -80,7 +112,14 @@
   font-size:13px!important;
 }
 .texto-menu-sup{
-  color: var(--white);font-family: Lexend, sans-serif;
+  color: var(--white);
+  font-family: Lexend, sans-serif;
+  text-decoration: none!important;
+  padding:5px;
+  border-radius: 20px;
+}
+.texto-menu-sup:hover{
+  background-color: #292929;
 }
 .header-blue{
   background: linear-gradient(var(--dark), var(--gray) 67%)!important;
@@ -269,7 +308,7 @@ h1,p{
 }
 #menu-lateral{
   padding-right: 20px;
-  margin-top: 100px;
+  margin-top: 150px;
   border-style: none;
   border-right-style: none;
   border-right-color: rgb(75,75,75);
@@ -283,9 +322,7 @@ h1,p{
   font-family: Lexend, sans-serif;
   color: rgb(255,255,255);
   font-size: 21px;
-  padding: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 5px;
 }
 .link-menu-lateral{
   margin-bottom: 15px;
@@ -293,13 +330,17 @@ h1,p{
   color: rgb(255,255,255);
   text-decoration: none!important;
   cursor: pointer;
+  width: 300px;
+  border-radius: 10px;
+}
+.link-menu-lateral:hover{
+  background-color: #292929;
 }
 .texto-menu-lateral{
   color: rgb(255,255,255);
   font-size: 20px;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding: 0px;
   font-family: Lexend, sans-serif;
 }
 .fas, .fa, .bi{
@@ -313,6 +354,11 @@ h1,p{
   color: rgb(255,255,255);
   margin-bottom: 15px;
   padding: 5px;
+  width: 300px;
+  border-radius: 10px;
+}
+.link-perfil:hover{
+  background-color: #292929;
 }
 .foto-perfil-menu-lateral{
   width: 40px;
@@ -444,11 +490,11 @@ h2{
     z-index: 1;
   }
   .carnets{
-    margin-top: 90px;
+    margin-top: 100px;
   }
   #col-filtros{
     margin-top: 50px;
-    padding-top: 15px;
+    padding-top: 25px;
   }
 }
 
