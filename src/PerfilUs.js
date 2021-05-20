@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import reportWebVitals from './reportWebVitals';
 import './assets/bootstrap/css/bootstrap.min.css';
 import './assets/fonts/font-awesome.min.css';
 import './assets/fonts/fontawesome5-overrides.min.css';
@@ -11,61 +12,40 @@ import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/petbounds_blanco.png';
 import perritoRisas from './assets/img/perrito_risa.png';
-import { Link} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-const HACER_SOLICITUD = gql`
-    mutation ($registroSolicitudUsuarioId: ID!, $registroSolicitudMascotaId: ID!) {
-    registroSolicitud(usuarioId: $registroSolicitudUsuarioId, mascotaId: $registroSolicitudMascotaId) {
-      success
-    }
-  }
-  
-`;
-const MASCOTA = gql`
-query ($mascotaSelecId: ID!) {
-    mascotaSelec(id: $mascotaSelecId) {
-      raza
-      edad
-      historia
-      nombre
-      foto
-      tamano
-      sexo
-      estado
-      organizacion {
-        foto
-        nombre
-      }
-    }
-  }
-`;
 const USUARIO = gql`
 query ($usuarioId: ID!) {
     usuario(id: $usuarioId) {
       id
-      nickname
+      nombre
       apellidop
+      apellidom
       foto
+      nickname
+      nacimiento
+      identificacion
+      comprobante
     }
   }
   `;
 
-function DetallesMascota(props) {
-        return (
-            <div>
-                <Header id={props.match.params.idUs}/>
-                <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
-            </div>
-        );
+function PerfilUs(props) {
+    return (
+        <div>
+            <Header id={props.match.params.idUs} />
+            <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
+        </div>
+    );
 }
 function Header(props) {
     const [estado, setEstado] = useState(false);
     const handleClick = () => {
-        var estadoN =! estado;
+        var estadoN = !estado;
         setEstado(estadoN)
     }
     const { loading, error, data } = useQuery(USUARIO, {
@@ -76,7 +56,7 @@ function Header(props) {
     if (loading) return null;
     if (error) return null;
     else {
-        var rutaPerfil= "/PerfilUs/" + props.id;
+        var rutaPerfil = "/PerfilUs/" + props.id;
         var rutaHome = "/HomeUs/" + props.id;
         var rutaServicios = "/ServiciosUs/" + props.id;
         var rutaDonaciones = "/DonacionesUs/" + props.id;
@@ -92,9 +72,9 @@ function Header(props) {
                 </div>
                 {estado === false ? (null) : (
                     <div className="text-left d-flex flex-column justify-content-start align-self-end ml-auto justify-content-sm-start" id="menu"><button className="btn toggle-menu-left" onClick={handleClick}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                  </svg></button><img className="rounded-circle imagen-perfil-menu" onClick={handleClick} src={data.usuario.foto} />
-                        <h6 className="text-white hola-menu">Hola, {data.usuario.nickname}</h6><Link to={rutaPerfil} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                    </svg></button><img className="rounded-circle imagen-perfil-menu" onClick={handleClick} src={data.usuario.foto} />
+                        <h6 className="text-white hola-menu">Hola, {data.usuario.nombre}</h6><Link to={rutaPerfil} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person">
                             <path fill-rule="evenodd" d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
                         </svg>Ver perfil</Link><Link to={rutaMisAdopciones} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-text" style={{ marginRight: '5px' }, { fontSize: '31px' }}>
                             <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"></path>
@@ -132,7 +112,7 @@ function Cuerpo(props) {
             <div className="container contenedor-main">
                 <div className="row">
                     <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
-                    <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><Link to={rutaPerfil} className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={data.usuario.foto} /><strong>{data.usuario.nickname}</strong></span></Link><Link to={rutaHome} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></Link><Link to={rutaServicios} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></Link><Link to={rutaDonaciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></Link><Link to={rutaMisAdopciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
+                    <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><Link to={rutaPerfil} className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={data.usuario.foto} /><strong>{data.usuario.nombre}</strong></span></Link><Link to={rutaHome} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></Link><Link to={rutaServicios} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></Link><Link to={rutaDonaciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></Link><Link to={rutaMisAdopciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
                         <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"></path>
                         <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z"></path>
                         <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"></path>
@@ -144,82 +124,54 @@ function Cuerpo(props) {
                         <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
                     </svg><strong>Salir</strong></span></Link>
                     </div>
-                    <Mascota idUs={props.idUs} idMas={props.idMas}/>
+                    <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-perfil">
+                        <div className="dropleft d-md-flex justify-content-end align-self-end justify-content-md-center align-items-md-center" id="menu-perfil"><button className="btn btn-primary dropdown-toggle d-md-flex align-items-md-center dropdown-menu-perfil" aria-expanded="false" data-toggle="dropdown" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-three-dots" style={{fontSize: '30px!important'}}>
+                            <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                        </svg></button>
+                            <div className="dropdown-menu " style={{marginRight:'0px'},{width:'193.891px'},{background:'#333333'},{boxShadow:'4px 3px 20px rgb(34,34,34)'}}>
+                                <a className="dropdown-item d-md-flex align-items-md-center editar-eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-pencil-fill" style={{marginRight: '10px'}}>
+                                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
+                                </svg>Editar perfil</a>
+                            <a className="dropdown-item d-md-flex align-items-md-center editar-eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person-x-fill" style={{marginRight: '10px'}}>
+                                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"></path>
+                            </svg>Eliminar cuenta</a></div>
+                        </div><img className="rounded-circle foto-perfil-perfil" src={data.usuario.foto}/>
+                            <h4 className="nick-name-perfil"><strong>{data.usuario.nickname}</strong></h4>
+                            <div className="align-self-start">
+                                <h6 className="title-nombre">Nombre completo:</h6>
+                                <h5 className="nombre-perfil-perfil"><strong>{data.usuario.nombre} {data.usuario.apellidop} {data.usuario.apellidom}</strong></h5>
+                            </div>
+                            <div className="align-self-start">
+                                <h6 className="title-nombre">Fecha de nacimiento:</h6>
+                                <h5 className="nombre-perfil-perfil"><strong>{data.usuario.nacimiento}</strong></h5>
+                            </div>
+                            <div className="d-inline-flex flex-column align-self-start">
+                                <h6 className="title-nombre">Documentos:</h6><a href={data.usuario.identificacion} target="blank" className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento" role="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-file-text" style={{marginRight: '10px'}}>
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"></path>
+                                    <path fill-rule="evenodd" d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>Identificación</a><a href={data.usuario.comprobante} target="blank" className="btn btn-primary" type="button" style={{marginTop: '10px'},{borderStyle:'none'},{background: '#606060'}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-file-text" style={{marginRight:'10px'}}>
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"></path>
+                                    <path fill-rule="evenodd" d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>Comprobante</a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </div>
         );
     }
 }
+
 function Error(props) {
     return (
-        <div className="erro">
-            <h1>
-                HEEEEY PILLIN
+                <div className="erro">
+                    <h1>
+                        HEEEEY PILLIN
             </h1>
-            <img src={perritoRisas} />
-            <Link to="/Registrarse"><h1>Registrate aquí x fas (;</h1></Link>
-        </div>
+                    <img src={perritoRisas} />
+                    <Link to="/Registrarse"><h1>Registrate aquí x fas (;</h1></Link>
+                </div>
     );
 
 }
-function Mascota(props) {
-    const { loading, error, data } = useQuery(MASCOTA, {
-        variables: {
-            "mascotaSelecId": props.idMas
-        },
-    });
-    if (loading) return null;
-    if (error) return null;
-    else {
-        var desc = data.mascotaSelec.tamano + ' · ' + data.mascotaSelec.edad + ' · ' + data.mascotaSelec.raza + ' · ' + data.mascotaSelec.sexo;
-        return (
-            <div className="col-md-8 col-lg-8 col-xl-8 main-detalles">
-                <div className="row">
-                    <div className="col-md-12 d-inline-flex justify-content-center"><img className="rounded-circle pulse animated imagen-mascota-detalles" src={data.mascotaSelec.foto} /></div>
-                    <div className="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-white d-table justify-content-center pulse animated">
-                        <div className="text-white intro">
-                            <h2 className="text-center nombre-mascota-detalles"><strong>{data.mascotaSelec.nombre}</strong></h2>
-                            <p className="text-left descripcion-detalles"><em>{desc}</em></p>
-                            <p className="text-left align-items-center align-content-center info-org-detalles"><img class="rounded-circle foto-org-detalles" src={data.mascotaSelec.organizacion.foto} />{data.mascotaSelec.organizacion.nombre}</p>
-                        </div>
-                        <div className="text">
-                            <p className="desc-detalles">Descripción: {data.mascotaSelec.historia}</p>
-                            <figure className="figure d-block"></figure>
-                            <p></p>
-                            <EstadoMascota estado={data.mascotaSelec.estado} idUs={props.idUs} idMas={props.idMas} />
-                            <p id="errorSolicitud" className="descripcion-detalles" style={{marginTop:"10px"}}></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-function EstadoMascota(props) {
-    let history = useHistory();
-    const [hacerSolicitud, {loading}] = useMutation(HACER_SOLICITUD, {
-        onCompleted({registroSolicitud}) {
-            if (registroSolicitud.success) {
-                var route = '/ConfirmacionSolicitud/' + props.idUs +'/'+ props.idMas;
-                history.push(route);
-            }else{
-                document.getElementById("errorSolicitud").innerHTML="Lo lamentamos pero ya hiciste esta solicitud :/";
-            }
-        },
-        variables: {
-            "registroSolicitudUsuarioId": props.idUs,
-            "registroSolicitudMascotaId": props.idMas
-        }
-    });
-    if (props.estado == 0) {
-        return (
-            <button className="btn btn-primary adoptable" type="button" onClick={hacerSolicitud}>Adoptar</button>
-        );
-    }
-    else if (props.estado == 1) {
-        return (
-            null
-        );
-    }
-}
-export default DetallesMascota;
+export default PerfilUs;
+

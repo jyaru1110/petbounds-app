@@ -9,7 +9,7 @@ import './assets/css/Team-Boxed.css'
 import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/petbounds_blanco.png';
-import {Link,Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 
 

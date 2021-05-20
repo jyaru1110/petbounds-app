@@ -4,6 +4,49 @@
   align-self: center;
   margin-bottom:20px;
 }
+.foto-perfil-perfil{
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+.nick-name-perfil{
+  color: var(--white);
+  font-family:Lexend;
+  margin-bottom: 20px;
+}
+.boton-documento{
+  border-style:none;
+  background:#606060!important;
+  margin-bottom:20px;
+  font-family: Lexend;
+}
+.principal-perfil{
+  margin-top: 100px;
+}
+.nombre-perfil-perfil{
+  color: var(--white);
+  font-family: Lexend;
+  margin-bottom: 30px;
+}
+.title-nombre{
+  color:rgba(255,255,255,0.48);
+  font-family: Lexend;
+}
+.dropdown-menu-perfil{
+  background:rgb(51,51,51)!important;
+}
+.editar-eliminar{
+  color: var(--white)!important;
+  background: #333333;
+  font-family: Lexend;
+  cursor: pointer;
+}
+.editar-eliminar:hover{
+  background-color: #1a1a1a!important;
+}
+.dropdown-menu{
+  background-color: #333333!important;
+}
 .hola-menu{
   align-self: center;
   font-family: Lexend;
@@ -415,7 +458,6 @@ h2{
 
 .dropdown-toggle{
  font-family: 'Lexend';
- background: #606060!important;
  border-style: none;
  font-size:13px;
  margin-right:10px;

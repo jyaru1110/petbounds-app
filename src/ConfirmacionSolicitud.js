@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import reportWebVitals from './reportWebVitals';
+import React from 'react';
 import './assets/bootstrap/css/bootstrap.min.css';
 import './assets/fonts/font-awesome.min.css';
 import './assets/fonts/fontawesome5-overrides.min.css';
@@ -10,15 +9,11 @@ import './assets/css/Navigation-Clean.css'
 import './assets/css/Navigation-with-Search.css'
 import './index.css';
 import './assets/fonts/font-awesome.min.css';
-import logo from './assets/img/petbounds_blanco.png';
-import perritoRisas from './assets/img/perrito_risa.png';
-import { Link, useParams } from 'react-router-dom';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { Link} from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
 import phone from './assets/img/phone.svg'
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
-import $, { data, param } from 'jquery';
-import Popper from 'popper.js';
 
 const MASCOTA = gql`
 query ($mascotaSelecId: ID!) {
