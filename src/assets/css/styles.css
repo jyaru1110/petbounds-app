@@ -28,6 +28,9 @@
   font-family: Lexend;
   margin-bottom: 30px;
 }
+.dropdown-toggle{
+  background-color: #606060!important;
+}
 .title-nombre{
   color:rgba(255,255,255,0.48);
   font-family: Lexend;
@@ -44,7 +47,7 @@
 .editar-eliminar:hover{
   background-color: #1a1a1a!important;
 }
-.dropdown-menu{
+.drop-left-menu{
   background-color: #333333!important;
 }
 .hola-menu{

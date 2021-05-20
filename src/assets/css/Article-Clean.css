@@ -95,11 +95,11 @@
 
 .btn.btn-primary {
   border-style: none;
-  background: rgba(0,0,0,0);
 }
 
 #menu-perfil {
   position: absolute;
+  background-color: #333333!important;
 }
 
 .menu-perfil {
