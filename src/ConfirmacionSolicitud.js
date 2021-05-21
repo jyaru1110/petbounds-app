@@ -46,7 +46,7 @@ function ConfirmacionSolicitud(props) {
   } else {
     var ruta = "/HomeUs/" + props.match.params.idUs;
     return (
-      <section className="highlight-phone" style={{ background: "#333333" }}>
+      <section className="highlight-phone" style={{ background: "#222222" }}>
         <div class="container" style={{ height: "440.547px" }}>
           <div class="row">
             <div class="col-md-8">
