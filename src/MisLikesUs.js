@@ -26,13 +26,6 @@ query ($usuarioId: ID!) {
     }
   }
   `;
-const LIKE = gql`
-mutation ($registroFavoritoUsuarioId: ID!, $registroFavoritoMascotaId: ID!) {
-    registroFavorito(usuarioId: $registroFavoritoUsuarioId, mascotaId: $registroFavoritoMascotaId) {
-      success
-    }
-  }
-`;
 const UNLIKE = gql`
 mutation ($borrarFavoritoId: ID!) {
     borrarFavorito(id: $borrarFavoritoId) {
@@ -41,30 +34,32 @@ mutation ($borrarFavoritoId: ID!) {
   }
   
 `;
-const FEED_MASCOTAS = gql`
-  query{
-      mascotasFeed {
+const FEED_LIKES= gql`
+query ($favoritosUsuarioId: ID!) {
+    favoritosUsuario(id: $favoritosUsuarioId) {
+      id
+      mascotaFav{
           id
-          raza
+          tipo
           edad
           nombre
           foto
           tamano
           sexo
-          tipo
           estado
           organizacion{
               nombre
               foto
-          } 
+          }
       }
+    }
   }
 `;
-function HomeUs(props) {
+function MisLikesUs(props) {
     return (
         <div>
-            <Header id={props.match.params.id} />
-            <Cuerpo id={props.match.params.id} />
+            <Header idUs={props.match.params.idUs} />
+            <Cuerpo idUs={props.match.params.idUs} />
         </div>
     );
 }
@@ -76,7 +71,7 @@ function Header(props) {
     }
     const { loading, error, data } = useQuery(USUARIO, {
         variables: {
-            "usuarioId": props.id
+            "usuarioId": props.idUs
         },
     });
     if (loading) return null;
@@ -127,18 +122,18 @@ function Cuerpo(props) {
     }
     const { loading, error, data } = useQuery(USUARIO, {
         variables: {
-            "usuarioId": props.id
+            "usuarioId": props.idUs
         },
     });
     if (loading) return null;
     if (error) return <Error></Error>;
     else {
-        var rutaPerfil= "/PerfilUs/" + props.id;
-        var rutaHome = "/HomeUs/" + props.id;
-        var rutaServicios = "/ServiciosUs/" + props.id;
-        var rutaDonaciones = "/DonacionesUs/" + props.id;
-        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-        var rutaMisLikes = "/MisLikesUs/" + props.id;
+        var rutaPerfil= "/PerfilUs/" + props.idUs;
+        var rutaHome = "/HomeUs/" + props.idUs;
+        var rutaServicios = "/ServiciosUs/" + props.idUs;
+        var rutaDonaciones = "/DonacionesUs/" + props.idUs;
+        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
+        var rutaMisLikes = "/MisLikesUs/" + props.idUs;
         //Aquí link al soporte xfas jeje
         var rutaAyuda = "";
         return (
@@ -179,7 +174,7 @@ function Cuerpo(props) {
                             </div>
                             <div className="col-md-1 col-lg-1 col-xl-2"></div>
                         </div>
-                        <Carnets idUs={props.id} filtro={nombre}></Carnets>
+                        <Carnets idUs={props.idUs} filtro={nombre}></Carnets>
                     </div>
                     <div className="col-12 col-lg-2 col-xl-3"></div>
                 </div>
@@ -200,28 +195,32 @@ function Error(props) {
 
 }
 function Carnets(props) {
-    const { loading, error, data } = useQuery(FEED_MASCOTAS);
+    const { loading, error, data } = useQuery(FEED_LIKES,{
+        variables:{
+            'favoritosUsuarioId':props.idUs
+        }
+    });
     if (error) return { error };
     if (loading) return (null);
     else {
         return (
             <div className="carnets">
-                {data.mascotasFeed.filter((mascotasFeed) => {
+                {data.favoritosUsuario.filter((favoritosUsuario) => {
                     if (props.filtro == "" || props.filtro == "Todos") {
-                        return mascotasFeed;
-                    } else if (mascotasFeed.nombre.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.sexo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tipo.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.tamano.toLowerCase().includes(props.filtro.toLowerCase()) || mascotasFeed.estado.toString().includes(props.filtro.toLowerCase()) || mascotasFeed.organizacion.nombre.toLowerCase().includes(props.filtro.toLowerCase())) {
-                        return mascotasFeed;
+                        return favoritosUsuario.mascotaFav;
+                    } else if (favoritosUsuario.mascotaFav.nombre.toLowerCase().includes(props.filtro.toLowerCase()) || favoritosUsuario.mascotaFav.sexo.toLowerCase().includes(props.filtro.toLowerCase()) || favoritosUsuario.mascotaFav.tipo.toLowerCase().includes(props.filtro.toLowerCase()) || favoritosUsuario.mascotaFav.tamano.toLowerCase().includes(props.filtro.toLowerCase()) || favoritosUsuario.mascotaFav.estado.toString().includes(props.filtro.toLowerCase()) || favoritosUsuario.mascotaFav.organizacion.nombre.toLowerCase().includes(props.filtro.toLowerCase())) {
+                        return favoritosUsuario.mascotaFav;
                     }
-                }).map((mascotasFeed) => (
-                    <div className="row" key={mascotasFeed.id}>
-                        <div className="col d-inline-flex justify-content-center carnet">
+                }).map((favoritosUsuario) => (
+                    <div className="row">
+                        <div className="col d-inline-flex justify-content-center carnet" key={favoritosUsuario.id}>
                             <div className="card text-left align-self-center carnet-relleno">
                                 <div className="card-body carnet-body">
-                                    <h4 className="d-flex justify-content-between card-title nombre-mascota">{mascotasFeed.nombre}<EstadoBadge estado={mascotasFeed.estado} /></h4>
-                                    <p className="card-text info-mascota">{mascotasFeed.tamano} · {mascotasFeed.edad} · {mascotasFeed.raza} · {mascotasFeed.sexo}</p>
-                                    <p className="card-text info-org"><img className="rounded-circle foto-org" src={mascotasFeed.organizacion.foto} />{mascotasFeed.organizacion.nombre}</p>
-                                </div><img className="card-img w-100 d-block foto-mascota" src={mascotasFeed.foto} />
-                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={mascotasFeed.id} /><Like idUs={props.idUs} idMas={mascotasFeed.id}/>
+                                    <h4 className="d-flex justify-content-between card-title nombre-mascota">{favoritosUsuario.mascotaFav.nombre}<EstadoBadge estado={favoritosUsuario.mascotaFav.estado} /></h4>
+                                    <p className="card-text info-mascota">{favoritosUsuario.mascotaFav.tamano} · {favoritosUsuario.mascotaFav.edad} · {favoritosUsuario.mascotaFav.raza} · {favoritosUsuario.mascotaFav.sexo}</p>
+                                    <p className="card-text info-org"><img className="rounded-circle foto-org" src={favoritosUsuario.mascotaFav.organizacion.foto} />{favoritosUsuario.mascotaFav.organizacion.nombre}</p>
+                                </div><img className="card-img w-100 d-block foto-mascota" src={favoritosUsuario.mascotaFav.foto} />
+                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={favoritosUsuario.mascotaFav.id} /><Like id={favoritosUsuario.id}/>
                                 </div>
                             </div>
                         </div>
@@ -232,41 +231,18 @@ function Carnets(props) {
     }
 }
 function Like(props) {
-    const [likes, setLikes] = useState({
-        like: false,
-        idBorrar: "6973941b-24d1-402a-9cf8-d5ed79924431"
-    });
-    const [darLike] = useMutation(LIKE,{
-        variables:{
-            'registroFavoritoUsuarioId' : props.idUs,
-            'registroFavoritoMascotaId' : props.idMas
-        }
-    });
     const [unLike] = useMutation(UNLIKE,{
         variables:{
-            "borrarFavoritoId":likes.idBorrar
+            "borrarFavoritoId":props.id
         }
     })
  
     const onClick = () => {
-        let localLiked = likes.like;
-        if(localLiked == false){
-            darLike();
-        }
-        else{
-            unLike();
-        }
-        localLiked = !localLiked;
-        setLikes({ like: localLiked });
+        unLike();
     };
     return (
         <button class="btn like-container" onClick={onClick}>
-            {likes.like === false ? (
-                <i className="fa fa fa-heart-o" style={{ color: 'white!important' }} data-bss-hover-animate="pulse"></i>
-            ) : (
-                    <i className="fa fa-heart like" onClick={onClick} data-bss-hover-animate="pulse"></i>
-                )
-            }
+            <i className="fa fa-heart like" data-bss-hover-animate="pulse"></i>
         </button>
     );
 }
@@ -288,4 +264,4 @@ function EstadoBadge(props) {
         );
     }
 }
-export default HomeUs;
+export default MisLikesUs;

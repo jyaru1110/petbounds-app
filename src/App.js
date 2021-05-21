@@ -11,6 +11,7 @@ import HomeUs from './HomeUs';
 import DetallesMascota from './DetallesMascota'
 import ConfirmacionSolicitud from './ConfirmacionSolicitud'
 import PerfilUs from './PerfilUs';
+import MisLikesUs from './MisLikesUs'
 
 //Función principal de la aplicación, muestra la página de inicio
 function App() {
@@ -26,6 +27,7 @@ function App() {
       <Route exact path="/PerfilUs/:idUs" component={PerfilUs}/>
       <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota}/>
       <Route exact path="/ConfirmacionSolicitud/:idUs/:idMas" component={ConfirmacionSolicitud}/>
+      <Route exact path="/MisLikesUs/:idUs" component={MisLikesUs}/>
     </BrowserRouter>
   );
 }
