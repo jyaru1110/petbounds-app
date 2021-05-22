@@ -26,10 +26,39 @@ query ($usuarioId: ID!) {
     }
   }
   `;
+const LIKE_UNLIKE=gql`
+    query ($favoritoFlagUsuarioId: ID!, $favoritoFlagMascotaId: ID!) {
+    favoritoFlag(usuarioId: $favoritoFlagUsuarioId, mascotaId: $favoritoFlagMascotaId) {
+      success
+    }
+  }
+`;
+const FEED_LIKES= gql`
+query ($favoritosUsuarioId: ID!) {
+    favoritosUsuario(id: $favoritosUsuarioId) {
+      id
+      mascotaFav{
+          id
+          tipo
+          edad
+          nombre
+          foto
+          tamano
+          sexo
+          estado
+          organizacion{
+              nombre
+              foto
+          }
+      }
+    }
+  }
+`;
 const LIKE = gql`
 mutation ($registroFavoritoUsuarioId: ID!, $registroFavoritoMascotaId: ID!) {
     registroFavorito(usuarioId: $registroFavoritoUsuarioId, mascotaId: $registroFavoritoMascotaId) {
       success
+      message
     }
   }
 `;
@@ -218,7 +247,7 @@ function Carnets(props) {
                             <div className="card text-left align-self-center carnet-relleno">
                                 <div className="card-body carnet-body">
                                     <h4 className="d-flex justify-content-between card-title nombre-mascota">{mascotasFeed.nombre}<EstadoBadge estado={mascotasFeed.estado} /></h4>
-                                    <p className="card-text info-mascota">{mascotasFeed.tamano} · {mascotasFeed.edad} · {mascotasFeed.raza} · {mascotasFeed.sexo}</p>
+                                    <p className="card-text info-mascota">{mascotasFeed.tamano} · {mascotasFeed.edad} · {mascotasFeed.tipo} · {mascotasFeed.sexo}</p>
                                     <p className="card-text info-org"><img className="rounded-circle foto-org" src={mascotasFeed.organizacion.foto} />{mascotasFeed.organizacion.nombre}</p>
                                 </div><img className="card-img w-100 d-block foto-mascota" src={mascotasFeed.foto} />
                                 <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={mascotasFeed.id} /><Like idUs={props.idUs} idMas={mascotasFeed.id}/>
@@ -232,32 +261,79 @@ function Carnets(props) {
     }
 }
 function Like(props) {
+    const{loading,error,data} = useQuery(LIKE_UNLIKE,{
+        variables:{
+            'favoritoFlagUsuarioId':props.idUs,
+            'favoritoFlagMascotaId':props.idMas
+        }
+    });
+    if(error){return null}
+    if(loading){return null}
+    else{
+        return(
+            <BotonLike like={data.favoritoFlag.success} idUs={props.idUs} idMas={props.idMas}/>
+        );
+    };
+}
+function BotonLike(props) {
     const [likes, setLikes] = useState({
-        like: false,
-        idBorrar: "6973941b-24d1-402a-9cf8-d5ed79924431"
+        like: props.like,
+        idBorrar: "",
     });
     const [darLike] = useMutation(LIKE,{
         variables:{
-            'registroFavoritoUsuarioId' : props.idUs,
-            'registroFavoritoMascotaId' : props.idMas
-        }
+                'registroFavoritoUsuarioId' : props.idUs,
+                'registroFavoritoMascotaId' : props.idMas
+        },
+        onCompleted({registroFavorito}){
+            setLikes({idBorrar:registroFavorito.message})
+        },
+        update(proxy,result){
+            const dato = proxy.readQuery({
+                query: FEED_LIKES,
+                variables:{
+                    "favoritosUsuarioId":props.idUs
+                }
+            })
+            proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},data:{
+                favoritosUsuario:{
+                    _typename:"favorito",
+                    id:result.message,
+                    mascotaFav:{
+                        _typename:"mascota",
+                        edad:"5 meses",
+                        estado: 0,
+                        foto: null,
+                        id:props.idMas,
+                        nombre:"Misifu",
+                        sexo:"Hembra",
+                        tamano:"Grande",
+                        tipo:"Grande",
+                        organizacion:{
+                            _typename:"organizacion",
+                            nombre:"perritos",
+                            foto:null
+                        }
+                    }
+                }
+            }})
+        } 
     });
     const [unLike] = useMutation(UNLIKE,{
         variables:{
             "borrarFavoritoId":likes.idBorrar
         }
-    })
- 
+    });
     const onClick = () => {
-        let localLiked = likes.like;
-        if(localLiked == false){
+        if(likes.like == false){
             darLike();
+            setLikes({ like: true });
         }
         else{
             unLike();
+            setLikes({ like: false });
         }
-        localLiked = !localLiked;
-        setLikes({ like: localLiked });
+        
     };
     return (
         <button class="btn like-container" onClick={onClick}>

@@ -7,6 +7,8 @@
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
     "bootstrap": "^4.6.0",
     "graphql": "^15.5.0",
     "hooks": "^0.3.2",

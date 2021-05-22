@@ -217,10 +217,10 @@ function Carnets(props) {
                             <div className="card text-left align-self-center carnet-relleno">
                                 <div className="card-body carnet-body">
                                     <h4 className="d-flex justify-content-between card-title nombre-mascota">{favoritosUsuario.mascotaFav.nombre}<EstadoBadge estado={favoritosUsuario.mascotaFav.estado} /></h4>
-                                    <p className="card-text info-mascota">{favoritosUsuario.mascotaFav.tamano} · {favoritosUsuario.mascotaFav.edad} · {favoritosUsuario.mascotaFav.raza} · {favoritosUsuario.mascotaFav.sexo}</p>
+                                    <p className="card-text info-mascota">{favoritosUsuario.mascotaFav.tamano} · {favoritosUsuario.mascotaFav.edad} · {favoritosUsuario.mascotaFav.tipo} · {favoritosUsuario.mascotaFav.sexo}</p>
                                     <p className="card-text info-org"><img className="rounded-circle foto-org" src={favoritosUsuario.mascotaFav.organizacion.foto} />{favoritosUsuario.mascotaFav.organizacion.nombre}</p>
                                 </div><img className="card-img w-100 d-block foto-mascota" src={favoritosUsuario.mascotaFav.foto} />
-                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={favoritosUsuario.mascotaFav.id} /><Like id={favoritosUsuario.id}/>
+                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={favoritosUsuario.mascotaFav.id} /><Like id={favoritosUsuario.id} idUs={props.idUs}/>
                                 </div>
                             </div>
                         </div>
@@ -234,8 +234,20 @@ function Like(props) {
     const [unLike] = useMutation(UNLIKE,{
         variables:{
             "borrarFavoritoId":props.id
-        }
-    })
+        },
+        update(proxy){
+            const dato = proxy.readQuery({
+                query: FEED_LIKES,
+                variables:{
+                    "favoritosUsuarioId":props.idUs
+                }
+            })
+            dato.favoritosUsuario.filter((favoritosUsuario) => favoritosUsuario.favoritoUsuarioId !== props.id)
+            proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},dato})
+            console.log(props.id)
+            console.log(dato);
+        },
+    });
  
     const onClick = () => {
         unLike();
