@@ -26,6 +26,13 @@ query ($usuarioId: ID!) {
     }
   }
   `;
+const LIKE_UNLIKE=gql`
+  query ($favoritoFlagUsuarioId: ID!, $favoritoFlagMascotaId: ID!) {
+  favoritoFlag(usuarioId: $favoritoFlagUsuarioId, mascotaId: $favoritoFlagMascotaId) {
+    success
+  }
+}
+`;
 const UNLIKE = gql`
 mutation ($borrarFavoritoId: ID!) {
     borrarFavorito(id: $borrarFavoritoId) {
@@ -220,7 +227,7 @@ function Carnets(props) {
                                     <p className="card-text info-mascota">{favoritosUsuario.mascotaFav.tamano} · {favoritosUsuario.mascotaFav.edad} · {favoritosUsuario.mascotaFav.tipo} · {favoritosUsuario.mascotaFav.sexo}</p>
                                     <p className="card-text info-org"><img className="rounded-circle foto-org" src={favoritosUsuario.mascotaFav.organizacion.foto} />{favoritosUsuario.mascotaFav.organizacion.nombre}</p>
                                 </div><img className="card-img w-100 d-block foto-mascota" src={favoritosUsuario.mascotaFav.foto} />
-                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={favoritosUsuario.mascotaFav.id} /><Like id={favoritosUsuario.id} idUs={props.idUs}/>
+                                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center footer-carnet"><BotonDetalles idUs={props.idUs} idMas={favoritosUsuario.mascotaFav.id} /><Like id={favoritosUsuario.id} idMas={favoritosUsuario.mascotaFav.id} idUs={props.idUs}/>
                                 </div>
                             </div>
                         </div>
@@ -242,11 +249,16 @@ function Like(props) {
                     "favoritosUsuarioId":props.idUs
                 }
             })
+            proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
+                favoritoFlag:{
+                    _typename:"Response",
+                    success:false
+                }
+            }})
             const date = dato.favoritosUsuario.filter(favoritosUsuario => favoritosUsuario.id !== props.id)
-            console.log(date)
-            console.log(props.id)
+            
             proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},data:{
-                date
+                favoritosUsuario:{date}
             }})
         },
     });

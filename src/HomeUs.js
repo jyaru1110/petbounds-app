@@ -295,13 +295,6 @@ function BotonLike(props) {
                     "favoritosUsuarioId":props.idUs
                 }
             });
-            const date = proxy.readQuery({
-                query:LIKE_UNLIKE,
-                variables:{
-                    'favoritoFlagUsuarioId':props.idUs,
-                    'favoritoFlagMascotaId':props.idMas
-                }
-            });
             proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
                 favoritoFlag:{
                     _typename:"Response",
@@ -314,19 +307,7 @@ function BotonLike(props) {
                     id:result.message,
                     mascotaFav:{
                         _typename:"mascota",
-                        edad:"5 meses",
-                        estado: 0,
-                        foto: null,
                         id:props.idMas,
-                        nombre:"Misifu",
-                        sexo:"Hembra",
-                        tamano:"Grande",
-                        tipo:"Grande",
-                        organizacion:{
-                            _typename:"organizacion",
-                            nombre:"perritos",
-                            foto:null
-                        }
                     }
                 }
             }})
@@ -335,6 +316,14 @@ function BotonLike(props) {
     const [unLike] = useMutation(UNLIKE,{
         variables:{
             "borrarFavoritoId":likes.idBorrar
+        },
+        update(proxy){
+            proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
+                favoritoFlag:{
+                    _typename:"Response",
+                    success:false
+                }
+            }})
         }
     });
     const onClick = () => {
