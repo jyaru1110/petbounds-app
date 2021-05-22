@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './assets/bootstrap/css/bootstrap.min.css';
 import './assets/fonts/font-awesome.min.css';
 import './assets/fonts/fontawesome5-overrides.min.css';
@@ -242,13 +242,14 @@ function Like(props) {
                     "favoritosUsuarioId":props.idUs
                 }
             })
-            dato.favoritosUsuario.filter((favoritosUsuario) => favoritosUsuario.favoritoUsuarioId !== props.id)
-            proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},dato})
+            const date = dato.favoritosUsuario.filter(favoritosUsuario => favoritosUsuario.id !== props.id)
+            console.log(date)
             console.log(props.id)
-            console.log(dato);
+            proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},data:{
+                date
+            }})
         },
     });
- 
     const onClick = () => {
         unLike();
     };

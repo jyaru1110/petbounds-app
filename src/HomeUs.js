@@ -294,7 +294,20 @@ function BotonLike(props) {
                 variables:{
                     "favoritosUsuarioId":props.idUs
                 }
-            })
+            });
+            const date = proxy.readQuery({
+                query:LIKE_UNLIKE,
+                variables:{
+                    'favoritoFlagUsuarioId':props.idUs,
+                    'favoritoFlagMascotaId':props.idMas
+                }
+            });
+            proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
+                favoritoFlag:{
+                    _typename:"Response",
+                    success:true
+                }
+            }})
             proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},data:{
                 favoritosUsuario:{
                     _typename:"favorito",
