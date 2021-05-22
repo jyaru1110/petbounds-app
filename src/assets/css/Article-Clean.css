@@ -132,6 +132,17 @@
 
 .label_input_file {
   cursor: pointer;
+  padding: 0px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  color: var(--white);
+  font-family: Lexend, sans-serif;
+  height: 30px;
+  background: #606060;
+  border-radius: 15px;
+  margin-bottom: 15px;
 }
 
 .header-chat {

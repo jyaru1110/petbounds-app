@@ -12,7 +12,7 @@ import DetallesMascota from './DetallesMascota'
 import ConfirmacionSolicitud from './ConfirmacionSolicitud'
 import PerfilUs from './PerfilUs';
 import MisLikesUs from './MisLikesUs'
-
+import EditarPerfilUs from './EditarPerfilUs'
 //Función principal de la aplicación, muestra la página de inicio
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
       <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota}/>
       <Route exact path="/ConfirmacionSolicitud/:idUs/:idMas" component={ConfirmacionSolicitud}/>
       <Route exact path="/MisLikesUs/:idUs" component={MisLikesUs}/>
+      <Route exact path="/EditarPerfilUs/:idUs" component={EditarPerfilUs}/>
     </BrowserRouter>
   );
 }

@@ -4,6 +4,47 @@
   align-self: center;
   margin-bottom:20px;
 }
+.dropleft .dropdown-toggle::before{
+  border-right: none!important
+}
+.form-control{
+  height: 30px!important;
+  background: #606060!important;
+  border-style: none!important;
+  border-top-style: none!important;
+  border-radius: 15px!important;
+  color: var(--white)!important;
+  font-family: lexend;
+}
+.form-control::placeholder{
+  color:white!important;
+  opacity: 0.5!important;
+}
+.foto_icon{
+  background: rgba(255,255,255,0.39);
+  width: 30px;
+  height: 30px;
+  border-radius: 16px;
+}
+#foto-icon-editar{
+  margin-right: 0px!important;
+  font-size: 20px!important;
+}
+.form-group h6{
+  color: white;
+}
+.principal-editar{
+  margin-top: 100px;
+}
+.foto-editar{
+  width: 150px;
+  height: 150px;
+}
+.submit-editar{
+  background: #055ada;
+  margin-bottom: 21px;
+  border-radius: 15px;
+}
 .foto-perfil-perfil{
   width: 150px;
   height: 150px;

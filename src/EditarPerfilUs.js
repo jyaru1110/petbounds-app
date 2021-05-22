@@ -11,8 +11,8 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import perritoRisas from "./assets/img/perrito_risa.png";
-import { Link} from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { Link, useParams } from "react-router-dom";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
@@ -33,7 +33,7 @@ const USUARIO = gql`
   }
 `;
 
-function PerfilUs(props) {
+function EditarPerfilUs(props) {
   return (
     <div>
       <Header id={props.match.params.idUs} />
@@ -218,13 +218,13 @@ function Cuerpo(props) {
   if (loading) return null;
   if (error) return <Error></Error>;
   else {
-    var rutaPerfil = "/PerfilUs/" + props.idUs;
-    var rutaEditarPerfil  = "/EditarPerfilUs/" + props.idUs;
-    var rutaHome = "/HomeUs/" + props.idUs;
-    var rutaServicios = "/ServiciosUs/" + props.idUs;
-    var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-    var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    const rutaPerfil = "/PerfilUs/" + props.idUs;
+    const rutaHome = "/HomeUs/" + props.idUs;
+    const rutaServicios = "/ServiciosUs/" + props.idUs;
+    const rutaDonaciones = "/DonacionesUs/" + props.idUs;
+    const rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
+    const rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    const nombreCompleto = data.usuario.nombre+" "+data.usuario.apellidop+" "+data.apellidom;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -331,8 +331,35 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-perfil">
-            <div
+          <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-editar">
+                <form className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
+                    <div className="form-group">
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img class="rounded-circle foto-editar" src={data.usuario.foto}/><input class="form-control-file file" type="file" id="foto_perfil_file"/><label for="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                                        <path fill-rule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
+                                        <path fill-rule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+                                        <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
+                                    </svg></span></label></div>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre usuario:</h6><input className="form-control" type="text" placeholder={data.usuario.nickname}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre completo:</h6><input className="form-control" type="text" placeholder={nombreCompleto}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Fecha de nacimiento:</h6><input className="form-control" type="date" placeholder={data.usuario.nacimiento}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" for="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
+                                <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor"></path>
+                                <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor"></path>
+                            </svg>INE</label><input className="form-control-file file" type="file" id="ine_editar" style={{marginBottom: '10px'}}/><label className="d-flex align-items-center label_input_file" for="comprobante_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{fontSize: '22px'},{marginRight: '5px'}}>
+                                <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor"></path>
+                                <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor"></path>
+                            </svg>Comprobante</label><input className="form-control-file file" type="file" id="comprobante_editar"/>
+                    </div><button class="btn btn-primary submit-editar" type="submit">Guardar cambios</button>
+                </form>
+                <div
               className="dropleft d-md-flex justify-content-end align-self-end justify-content-md-center align-items-md-center"
               id="menu-perfil"
             >
@@ -368,22 +395,11 @@ function Cuerpo(props) {
                   { boxShadow: "4px 3px 20px rgb(0,0,0)" })
                 }
               >
-                <Link to={rutaEditarPerfil} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="bi bi-pencil-fill"
-                    style={{ marginRight: "10px" }}
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
-                    ></path>
-                  </svg>
-                  Editar perfil
+                <Link to={rutaPerfil} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-person" style={{marginRight: '10px'}}>
+                                <path fill-rule="evenodd" d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+                </svg>
+                  Ver perfil
                 </Link>
                 <a className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
                   <svg
@@ -404,89 +420,7 @@ function Cuerpo(props) {
                 </a>
               </div>
             </div>
-            <img
-              className="rounded-circle foto-perfil-perfil"
-              src={data.usuario.foto}
-            />
-            <h4 className="nick-name-perfil">
-              <strong>{data.usuario.nickname}</strong>
-            </h4>
-            <div className="align-self-start">
-              <h6 className="title-nombre">Nombre completo:</h6>
-              <h5 className="nombre-perfil-perfil">
-                <strong>
-                  {data.usuario.nombre} {data.usuario.apellidop}{" "}
-                  {data.usuario.apellidom}
-                </strong>
-              </h5>
             </div>
-            <div className="align-self-start">
-              <h6 className="title-nombre">Fecha de nacimiento:</h6>
-              <h5 className="nombre-perfil-perfil">
-                <strong>{data.usuario.nacimiento}</strong>
-              </h5>
-            </div>
-            <div className="d-inline-flex flex-column align-self-start">
-              <h6 className="title-nombre">Documentos:</h6>
-              <a
-                href={data.usuario.identificacion}
-                target="blank"
-                className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
-                role="button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  class="bi bi-file-text"
-                  style={{ marginRight: "10px" }}
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"
-                  ></path>
-                  <path
-                    fill-rule="evenodd"
-                    d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
-                  ></path>
-                </svg>
-                Identificación
-              </a>
-              <a
-                href={data.usuario.comprobante}
-                target="blank"
-                className="btn btn-primary"
-                type="button"
-                style={
-                  ({ marginTop: "10px" },
-                  { borderStyle: "none" },
-                  { background: "#606060" })
-                }
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  class="bi bi-file-text"
-                  style={{ marginRight: "10px" }}
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"
-                  ></path>
-                  <path
-                    fill-rule="evenodd"
-                    d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
-                  ></path>
-                </svg>
-                Comprobante
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -504,4 +438,4 @@ function Error(props) {
     </div>
   );
 }
-export default PerfilUs;
+export default EditarPerfilUs;
