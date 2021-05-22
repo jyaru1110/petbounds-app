@@ -41,9 +41,15 @@
   height: 150px;
 }
 .submit-editar{
-  background: #055ada;
-  margin-bottom: 21px;
-  border-radius: 15px;
+  background: #055ada!important;
+  margin-bottom: 21px!important;
+  border-radius: 15px!important;
+}
+.no_hay{
+  margin-top: 100px;
+}
+.no_hay .texto-link{
+  color: rgb(255,255,255)!important
 }
 .foto-perfil-perfil{
   width: 150px;

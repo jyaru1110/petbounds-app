@@ -11,6 +11,7 @@ import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/petbounds_blanco.png';
 import perritoRisas from './assets/img/perrito_risa.png';
+import perritoXD from './assets/img/perritoxd.png'
 import { Link} from 'react-router-dom';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import 'bootstrap';
@@ -84,12 +85,12 @@ function Header(props) {
     if (loading) return null;
     if (error) return null;
     else {
-        var rutaPerfil= "/PerfilUs/" + props.id;
-        var rutaHome = "/HomeUs/" + props.id;
-        var rutaServicios = "/ServiciosUs/" + props.id;
-        var rutaDonaciones = "/DonacionesUs/" + props.id;
-        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-        var rutaMisLikes = "/MisLikesUs/" + props.id;
+        var rutaPerfil= "/PerfilUs/" + props.idUs;
+        var rutaHome = "/HomeUs/" + props.idUs;
+        var rutaServicios = "/ServiciosUs/" + props.idUs;
+        var rutaDonaciones = "/DonacionesUs/" + props.idUs;
+        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
+        var rutaMisLikes = "/MisLikesUs/" + props.idUs;
         //Aquí link al soporte xfas jeje
         var rutaAyuda = "";
         return (
@@ -210,6 +211,18 @@ function Carnets(props) {
     if (error) return { error };
     if (loading) return (null);
     else {
+        if(data.favoritosUsuario.length==0){
+            const rutaHome = "/HomeUs/"+props.idUs;
+            return(
+            <div class="row no_hay">
+                    <div class="col">
+                        <div class="d-flex flex-column align-items-center align-items-xl-center">
+                            <p style={{color: 'rgb(255,255,255)'},{fontFamily: 'Lexend'}}><strong>¡Vaya!, parece que aún no likeas nada ._.XD</strong><br/></p><img style={{width: '40%'}} src={perritoXD}/><Link className="texto-link" to={rutaHome} style={{fontFamily: 'Lexend'}}>Da likes a mascotas aquí</Link>
+                        </div>
+                    </div>
+            </div>
+            );
+        }
         return (
             <div className="carnets">
                 {data.favoritosUsuario.filter((favoritosUsuario) => {
