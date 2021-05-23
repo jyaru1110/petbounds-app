@@ -17,6 +17,7 @@ import "bootstrap";
 import'filereader';
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
+import { get } from "jquery";
 
 const USUARIO = gql`
   query ($usuarioId: ID!) {
@@ -212,9 +213,20 @@ function Header(props) {
   }
 }
 function Cuerpo(props) {
-  const onChange=(e)=>{
+  const handleIdentifacion=(e)=>{
+    var fileList = e.target.files;
+    console.log(fileList[0].name)
+    var texto_poner = fileList[0].name.substr(0,28)
+    document.getElementById('identificacion-label').innerHTML=texto_poner
+  }
+  const handleComprobante=(e)=>{
+    var fileList = e.target.files;
+    console.log(fileList[0].name)
+    var texto_poner = fileList[0].name.substr(0,29)
+    document.getElementById('comprobante-label').innerHTML=texto_poner
+  }
+  const handleFotoPerfil=(e)=>{
       var fileList =  e.target.files;
-      console.log(fileList)
       const reader = new FileReader();
       reader.addEventListener('load', (event) => {
         document.getElementById('foto-perfil-editar').setAttribute('src',event.target.result);
@@ -236,7 +248,6 @@ function Cuerpo(props) {
     const rutaDonaciones = "/DonacionesUs/" + props.idUs;
     const rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
     const rutaMisLikes = "/MisLikesUs/" + props.idUs;
-    const nombreCompleto = data.usuario.nombre+" "+data.usuario.apellidop+" "+data.apellidom;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -346,7 +357,7 @@ function Cuerpo(props) {
           <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-editar">
                 <form className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
                     <div className="form-group">
-                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img class="rounded-circle foto-editar" id="foto-perfil-editar" src={data.usuario.foto}/><input class="form-control-file file" type="file" id="foto_perfil_file" onChange={onChange} accept="image/png, image/jpeg"/><label for="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img class="rounded-circle foto-editar" id="foto-perfil-editar" src={data.usuario.foto}/><input class="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label for="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
                                         <path fill-rule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
                                         <path fill-rule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
                                         <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
@@ -356,19 +367,25 @@ function Cuerpo(props) {
                         <h6 style={{fontFamily: 'Lexend'}}>Nombre usuario:</h6><input className="form-control" type="text" placeholder={data.usuario.nickname}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Nombre completo:</h6><input className="form-control" type="text" placeholder={nombreCompleto}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input className="form-control" type="text" placeholder={data.usuario.nombre}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input className="form-control" type="text" placeholder={data.usuario.apellidop}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input className="form-control" type="text" placeholder={data.usuario.apellidom}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
                         <h6 style={{fontFamily: 'Lexend'}}>Fecha de nacimiento:</h6><input className="form-control" type="date" placeholder={data.usuario.nacimiento}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" for="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" id='identificacion-label' for="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
                                 <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor"></path>
                                 <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor"></path>
-                            </svg>INE</label><input className="form-control-file file" type="file" id="ine_editar" style={{marginBottom: '10px'}}/><label className="d-flex align-items-center label_input_file" for="comprobante_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
+                            </svg>Identificación</label><input onChange={handleIdentifacion} className="form-control-file file" type="file" id="ine_editar" style={{marginBottom: '10px'}}/><label id="comprobante-label" className="d-flex align-items-center label_input_file" for="comprobante_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
                                 <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor"></path>
                                 <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor"></path>
-                            </svg>Comprobante</label><input className="form-control-file file" type="file" id="comprobante_editar"/>
+                            </svg>Comprobante</label><input onChange={handleComprobante} className="form-control-file file" type="file" id="comprobante_editar"/>
                     </div><button class="btn btn-primary submit-editar" type="submit">Guardar cambios</button>
                 </form>
                 <div

@@ -119,6 +119,7 @@
 .foto_icon {
   position: absolute;
   cursor: pointer;
+  margin-top: -20px;
 }
 
 .file {
