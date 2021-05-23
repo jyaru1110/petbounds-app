@@ -30,6 +30,7 @@ const LIKE_UNLIKE=gql`
     query ($favoritoFlagUsuarioId: ID!, $favoritoFlagMascotaId: ID!) {
     favoritoFlag(usuarioId: $favoritoFlagUsuarioId, mascotaId: $favoritoFlagMascotaId) {
       success
+      message
     }
   }
 `;
@@ -271,14 +272,14 @@ function Like(props) {
     if(loading){return null}
     else{
         return(
-            <BotonLike like={data.favoritoFlag.success} idUs={props.idUs} idMas={props.idMas}/>
+            <BotonLike like={data.favoritoFlag.success} idUs={props.idUs} idMas={props.idMas} idBorrar={data.favoritoFlag.message}/>
         );
     };
 }
 function BotonLike(props) {
     const [likes, setLikes] = useState({
         like: props.like,
-        idBorrar: "",
+        idBorrar: props.idBorrar,
     });
     const [darLike] = useMutation(LIKE,{
         variables:{
@@ -312,6 +313,18 @@ function BotonLike(props) {
             "borrarFavoritoId":likes.idBorrar
         },
         update(proxy){
+            const dato = proxy.readQuery({
+                query: FEED_LIKES,
+                variables:{
+                    "favoritosUsuarioId":props.idUs
+                }
+            })
+            if(dato!=null){
+                const date = dato.favoritosUsuario.filter(favoritosUsuario => favoritosUsuario.id !== props.idBorrar)
+                proxy.writeQuery({query:FEED_LIKES,variables:{"favoritosUsuarioId":props.idUs},data:{
+                    favoritosUsuario:{date}
+                }})
+            }
             proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
                 favoritoFlag:{
                     _typename:"Response",
