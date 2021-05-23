@@ -298,7 +298,7 @@ function EstadoBadge(props) {
     }
     else if (props.estado == 0) {
         return (
-            <span className="disponible">Disponible</span>
+            null
         );
     }
 }

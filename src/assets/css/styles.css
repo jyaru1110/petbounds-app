@@ -323,16 +323,6 @@ h1,p{
   background: var(--red);
   margin-top: 2px;
 }
-.disponible{
-  color: rgb(255, 255, 255);
-  font-size: 15px;
-  padding: 5px;
-  padding-right: 9px;
-  padding-left: 9px;
-  border-radius: 11px;
-  background: var(--success);
-  margin-top: 2px;
-}
 
 .erro{
   margin-top: 20px;
