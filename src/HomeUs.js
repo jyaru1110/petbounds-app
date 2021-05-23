@@ -289,12 +289,6 @@ function BotonLike(props) {
             setLikes({idBorrar:registroFavorito.message})
         },
         update(proxy,result){
-            const dato = proxy.readQuery({
-                query: FEED_LIKES,
-                variables:{
-                    "favoritosUsuarioId":props.idUs
-                }
-            });
             proxy.writeQuery({query:LIKE_UNLIKE,variables:{'favoritoFlagUsuarioId':props.idUs,'favoritoFlagMascotaId':props.idMas},data:{
                 favoritoFlag:{
                     _typename:"Response",

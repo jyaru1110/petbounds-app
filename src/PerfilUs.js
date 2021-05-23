@@ -37,7 +37,7 @@ function PerfilUs(props) {
   return (
     <div>
       <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
+      <Cuerpo idUs={props.match.params.idUs}/>
     </div>
   );
 }
