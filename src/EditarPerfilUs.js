@@ -33,7 +33,13 @@ const USUARIO = gql`
     }
   }
 `;
-
+const ELIMINAR_USUARIO=gql`
+  mutation ($borrarUsuarioId: ID!) {
+    borrarUsuario(id: $borrarUsuarioId) {
+      success
+  }
+}
+`;
 const UPDATE_USUARIO=gql`
   mutation ($modificacionUsuarioId: String!, $modificacionUsuarioNombre: String, $modificacionUsuarioApellidop: String, $modificacionUsuarioApellidom: String) {
   modificacionUsuario(id: $modificacionUsuarioId, nombre: $modificacionUsuarioNombre, apellidop: $modificacionUsuarioApellidop, apellidom: $modificacionUsuarioApellidom) {
@@ -222,6 +228,20 @@ function Header(props) {
 }
 function Cuerpo(props) {
   let history = useHistory();
+  const [estado,setEstado] = useState(true)
+  const eliminar = () => {
+    setEstado(!estado)
+  }
+  const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
+    onCompleted({borrarUsuario}){
+      if(borrarUsuario.success){
+        history.push("/")
+      }
+    },
+    variables:{
+      "borrarUsuarioId":props.idUs
+    }
+  })
   const handleIdentifacion=(e)=>{
     var fileList = e.target.files;
     console.log(fileList[0].name)
@@ -301,6 +321,10 @@ function Cuerpo(props) {
     var rutaAyuda = "";
     return (
       <div className="container contenedor-main">
+        {estado === false ? (<div className="eliminar-cuenta-adv">
+        <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu cuenta?</h3>
+        <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarCuenta}>Sí, eliminar</button></div>
+    </div>):(null)}
         <div className="row">
           <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
           <div
@@ -470,7 +494,7 @@ function Cuerpo(props) {
                 </svg>
                   Ver perfil
                 </Link>
-                <a className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+                <button className="dropdown-item d-md-flex align-items-md-center editar-eliminar" onClick={eliminar}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
@@ -486,7 +510,7 @@ function Cuerpo(props) {
                     ></path>
                   </svg>
                   Eliminar cuenta
-                </a>
+                </button>
               </div>
             </div>
             </div>

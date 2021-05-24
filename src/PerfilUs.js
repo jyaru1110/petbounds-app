@@ -12,7 +12,7 @@ import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import perritoRisas from "./assets/img/perrito_risa.png";
 import { Link} from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery,useMutation } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
@@ -32,7 +32,13 @@ const USUARIO = gql`
     }
   }
 `;
-
+const ELIMINAR_USUARIO=gql`
+  mutation ($borrarUsuarioId: ID!) {
+    borrarUsuario(id: $borrarUsuarioId) {
+      success
+  }
+}
+`;
 function PerfilUs(props) {
   return (
     <div>
@@ -210,6 +216,21 @@ function Header(props) {
   }
 }
 function Cuerpo(props) {
+  let history=useHistory()
+  const [estado,setEstado] = useState(true)
+  const eliminar = () => {
+    setEstado(!estado)
+  }
+  const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
+    onCompleted({borrarUsuario}){
+      if(borrarUsuario.success){
+        history.push("/")
+      }
+    },
+    variables:{
+      "borrarUsuarioId":props.idUs
+    }
+  })
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
       usuarioId: props.idUs,
@@ -229,6 +250,10 @@ function Cuerpo(props) {
     var rutaAyuda = "";
     return (
       <div className="container contenedor-main">
+        {estado === false ? (<div className="eliminar-cuenta-adv">
+        <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu cuenta?</h3>
+        <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarCuenta}>Sí, eliminar</button></div>
+    </div>):(null)}
         <div className="row">
           <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
           <div
@@ -385,7 +410,7 @@ function Cuerpo(props) {
                   </svg>
                   Editar perfil
                 </Link>
-                <a className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+                <button className="dropdown-item d-md-flex align-items-md-center editar-eliminar" onClick={eliminar}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
@@ -401,7 +426,7 @@ function Cuerpo(props) {
                     ></path>
                   </svg>
                   Eliminar cuenta
-                </a>
+                </button>
               </div>
             </div>
             <img
@@ -492,7 +517,6 @@ function Cuerpo(props) {
     );
   }
 }
-
 function Error(props) {
   return (
     <div className="erro">

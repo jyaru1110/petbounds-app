@@ -1,3 +1,18 @@
+.eliminar-cuenta-adv div{
+  padding: 23px;
+  width: 100%;
+}
+.boton-cancelar{
+  color: var(--blue)!important;
+  font-family:Lexend;
+}
+.boton-eliminar{
+  color: var(--white);
+  background: var(--blue);
+  border-radius: 11px!important;
+  padding: 9px 30px!important;
+  font-family: 'Lexend'!important;
+}
 .imagen-perfil-menu{
   width: 100px!important;
   height: 100px;
@@ -551,27 +566,30 @@ h2{
 }
 
 .eliminar-cuenta-adv {
+  margin-left: 400px!important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 40%;
-  margin: 15% 40%;
+  margin-top: 15%;
   position: fixed;
   z-index: 1;
+  background: rgba(255,255,255,0.78);
+  border-radius: 15px;
+  height: 25%,
 }
 
 @media (max-width: 992px) {
   .eliminar-cuenta-adv {
-    width: 40%;
-    margin: 20% 40%;
-    position: fixed;
-    z-index: 1;
+    margin-left: 250px!important;
+    width: 50%;
   }
 }
 
 @media (max-width: 768px) {
   .eliminar-cuenta-adv {
-    width: 40%;
-    margin: 28% 40%;
-    position: fixed;
-    z-index: 1;
+    margin-left: 10px!important;
+    width: 70%;
   }
   .carnets{
     margin-top: 100px;
@@ -584,19 +602,17 @@ h2{
 
 @media (max-width: 576px) {
   .eliminar-cuenta-adv {
-    width: 50%;
-    margin: 15% 30%;
-    position: fixed;
-    z-index: 1;
+    margin-left: 10px!important;
+    width: 90%;
+    margin-top: 100px;
   }
 }
 
 @media (max-width: 360px) {
   .eliminar-cuenta-adv {
-    width: 80%;
-    margin: 15% 10%;
-    position: fixed;
-    z-index: 1;
+    margin-left: 0px!important;
+    width: 90%;
+    margin-top: 100px;
   }
   .carnets{
     margin-top: 50px;
