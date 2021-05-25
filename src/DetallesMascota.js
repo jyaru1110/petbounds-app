@@ -55,6 +55,8 @@ const USUARIO = gql`
       nickname
       apellidop
       foto
+      identificacion
+      comprobante
     }
   }
 `;
@@ -356,7 +358,8 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          <Mascota idUs={props.idUs} idMas={props.idMas} />
+          {data.usuario.comprobante === null || data.usuario.identificacion === null ?(<Mascota idUs={props.idUs} idMas={props.idMas} docs={false}/>):(<Mascota idUs={props.idUs} idMas={props.idMas} docs={true}/>)}
+          
         </div>
       </div>
     );
@@ -425,6 +428,7 @@ function Mascota(props) {
                 estado={data.mascotaSelec.estado}
                 idUs={props.idUs}
                 idMas={props.idMas}
+                docs={props.docs}
               />
               <p
                 id="errorSolicitud"
@@ -440,14 +444,20 @@ function Mascota(props) {
 }
 function EstadoMascota(props) {
   let history = useHistory();
-  const [hacerSolicitud, { loading }] = useMutation(HACER_SOLICITUD, {
+  const validarDocs=()=>{
+    if(props.docs){
+      hacerSolicitud()
+    }else{
+      document.getElementById("errorSolicitud").innerHTML ="Sube tus documentos en editar perfil para adoptar :)";
+    }
+  }
+  const [hacerSolicitud] = useMutation(HACER_SOLICITUD, {
     onCompleted({ registroSolicitud }) {
       if (registroSolicitud.success) {
         var route = "/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
         history.push(route);
       } else {
-        document.getElementById("errorSolicitud").innerHTML =
-          "Lo lamentamos pero ya hiciste esta solicitud :/";
+        document.getElementById("errorSolicitud").innerHTML ="Lo lamentamos pero ya hiciste esta solicitud :/";
       }
     },
     variables: {
@@ -460,7 +470,7 @@ function EstadoMascota(props) {
       <button
         className="btn btn-primary adoptable"
         type="button"
-        onClick={hacerSolicitud}
+        onClick={validarDocs}
       >
         Adoptar
       </button>
