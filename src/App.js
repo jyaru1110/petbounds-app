@@ -13,6 +13,7 @@ import ConfirmacionSolicitud from './ConfirmacionSolicitud'
 import PerfilUs from './PerfilUs';
 import MisLikesUs from './MisLikesUs'
 import EditarPerfilUs from './EditarPerfilUs'
+import MisAdopcionesUs from './MisAdopcionesUs'
 //Función principal de la aplicación, muestra la página de inicio
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route exact path="/ConfirmacionSolicitud/:idUs/:idMas" component={ConfirmacionSolicitud}/>
       <Route exact path="/MisLikesUs/:idUs" component={MisLikesUs}/>
       <Route exact path="/EditarPerfilUs/:idUs" component={EditarPerfilUs}/>
+      <Route exact path="/MisAdopcionesUs/:idUs" component={MisAdopcionesUs}/>
     </BrowserRouter>
   );
 }
