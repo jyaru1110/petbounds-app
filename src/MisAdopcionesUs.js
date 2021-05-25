@@ -11,42 +11,30 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import perritoRisas from "./assets/img/perrito_risa.png";
+import perritoXD from './assets/img/perritoxd.png'
 import { Link } from "react-router-dom";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
 
-const HACER_SOLICITUD = gql`
-  mutation (
-    $registroSolicitudUsuarioId: ID!
-    $registroSolicitudMascotaId: ID!
-  ) {
-    registroSolicitud(
-      usuarioId: $registroSolicitudUsuarioId
-      mascotaId: $registroSolicitudMascotaId
-    ) {
-      success
-    }
-  }
-`;
-const MASCOTA = gql`
-  query ($mascotaSelecId: ID!) {
-    mascotaSelec(id: $mascotaSelecId) {
-      raza
-      edad
-      historia
-      nombre
-      foto
-      tamano
-      sexo
-      estado
-      organizacion {
-        foto
+const SOLICITUDES = gql`
+    query ($solicitudesUsuarioId: ID!) {
+    solicitudesUsuario(id: $solicitudesUsuarioId) {
+      mascota {
+        raza
+        edad
+        tamano
+        sexo
         nombre
+        organizacion {
+          foto
+          nombre
+        }
       }
     }
   }
+  
 `;
 const USUARIO = gql`
   query ($usuarioId: ID!) {
@@ -358,10 +346,48 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
+            <BloqueSoli idUs={props.idUs}/>   
         </div>
       </div>
     );
   }
+}
+function BloqueSoli(props){
+    const {data,error,loading}=useQuery(SOLICITUDES,{
+        variables:{
+            "solicitudesUsuarioId":props.idUs
+        }
+    });
+    if(error) return null;
+    if(loading) return loading;
+    else{
+        if(data.solicitudesUsuario.length==0){
+            const rutaHome = "/HomeUs/"+props.idUs;
+            return(
+                <div class="row no_hay">
+                    <div class="col">
+                        <div class="d-flex flex-column align-items-center align-items-xl-center">
+                            <p style={{color: 'rgb(255,255,255)'},{fontFamily: 'Lexend'}}><strong>¡Vaya!, parece que aún no tienes solicitudes ._.XD</strong><br/></p><img style={{width: '40%'}} src={perritoXD}/><Link className="texto-link" to={rutaHome} style={{fontFamily: 'Lexend'}}>Da likes a mascotas aquí</Link>
+                        </div>
+                    </div>
+                </div>
+            );  
+    }
+    else{
+    return(
+        <div className="col contenedor-solicitudes">
+            {data.solicitudesUsuario.map((solicitudesUsuario)=>(
+                    <Link to="/" className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesUsuario.mascota.organizacion.foto}/>
+                        <div className="relleno-solicitud">
+                            <h4 id="titulo-soli">{solicitudesUsuario.mascota.organizacion.nombre}</h4>
+                            <p><em>{solicitudesUsuario.mascota.nombre} · {solicitudesUsuario.mascota.tamano} · {solicitudesUsuario.mascota.edad} · {solicitudesUsuario.mascota.raza} · {solicitudesUsuario.mascota.sexo}</em><br/></p>
+                        </div>
+                    </Link>
+            ))}
+            
+        </div>
+    );
+    }}
 }
 function Error(props) {
   return (
