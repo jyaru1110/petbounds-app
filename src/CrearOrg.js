@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/css/Login-Form-Dark-1.css";
 import "./assets/css/Login-Form-Dark.css";
@@ -9,10 +9,71 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
+import { gql, useMutation } from '@apollo/client';
 
-class CrearOrg extends Component {
-  render() {
-    return (
+const REGISTRO_ORG = gql`
+  mutation ($registroOrgCorreo: String!, $registroOrgContra: String!, $registroOrgNombre: String!, $registroOrgTelefono: String!, $registroOrgPagina: String, $registroOrgDireccion: String) {
+  registroOrg(correo: $registroOrgCorreo, contra: $registroOrgContra, nombre: $registroOrgNombre, telefono: $registroOrgTelefono, pagina: $registroOrgPagina, direccion: $registroOrgDireccion) {
+    id
+  }
+}
+`;
+
+function CrearOrg (props){
+  const [values,setValues]=useState({
+    correo:'',
+    nombre:'',
+    contrasena:'',
+    direccion:'',
+    telefono:'',
+    pagina:''
+  });
+  const[registro]=useMutation(REGISTRO_ORG,{
+    onCompleted({registroOrg}){
+      if(registroOrg!=null){
+        props.history.push('/IniciaSesion')
+      }else{
+        alert("El correo ya está registrado")
+      }
+        
+    },
+    variables:{
+      "registroOrgCorreo":values.correo,
+      "registroOrgContra":values.contra,
+      "registroOrgNombre":values.nombre,
+      "registroOrgTelefono":values.telefono,
+      "registroOrgPagina":values.pagina,
+      "registroOrgDireccion":values.direccion
+    }
+  });
+  const handleChange = (e) => {
+    setValues({...values,[e.target.name]:e.target.value})
+  };
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    var i = 0
+    if(values.nombre!==' '&&values.correo!==' '&&values.contrasena!==' '&&values.telefono!==' '&&values.direccion!==''&&values.pagina!==' '){
+      i++
+    }else{
+      alert('Contesta correctamente todos los campos')
+    }
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.correo)) {
+      i++;
+      document.getElementById('errorCorreo').innerHTML=""
+    }else{
+      document.getElementById('errorCorreo').innerHTML="Escribe correctamente el correo"
+    }
+    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/.test(values.contrasena)) {
+      i++;
+      document.getElementById('errorContra').innerHTML=""
+    }else{
+      document.getElementById('errorContra').innerHTML="La contraseña debe tener más de 8 caracteres, mayúsculas y números"
+    }
+    if(i==3){
+      registro();
+    }
+  };
+  return (
       <div>
         <nav
           className="navbar navbar-light navbar-expand-lg fixed-top bg-dark"
@@ -32,46 +93,70 @@ class CrearOrg extends Component {
             </Link>
           </div>
         </nav>
-        <section class="register-photo">
-          <div class="form-container">
-            <form method="post">
-              <h2 class="text-center">
+        <section className="register-photo">
+          <div className="form-container">
+            <form onSubmit={handleSubmit}>
+              <h2 className="text-center">
                 <strong>Crea tu cuenta</strong>
               </h2>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="email"
-                  name="correo-org"
+                  name="correo"
                   placeholder="Correo"
+                  value={values.correo}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Nombre de la organización"
+                  name="nombre"
+                  onChange={handleChange}
+                  value={values.nombre}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  type="tel"
+                  placeholder="Número telefónico de la organización"
+                  name="telefono"
+                  onChange={handleChange}
+                  value={values.telefono}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  type="password"
+                  placeholder="Contraseña"
+                  name="contrasena"
+                  onChange={handleChange}
+                  value={values.contrasena}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  placeholder="Página web"
+                  name="pagina"
+                  onChange={handleChange}
+                  value={values.pagina}
                 />
               </div>
               <div class="form-group">
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="Nombre de la organización"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  type="tel"
-                  placeholder="Número telefónico de la organización"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  type="password"
-                  placeholder="Contraseña"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  type="url"
-                  placeholder="Página web"
+                  placeholder="Dirección"
+                  name="direccion"
+                  onChange={handleChange}
+                  value={values.direccion}
                 />
               </div>
               <div class="form-group">
@@ -79,14 +164,13 @@ class CrearOrg extends Component {
                   Crear cuenta
                 </button>
               </div>
-              <a class="already" href="login.html">
+              <Link to="/IniciaSesion" class="already" >
                 ¿Ya tienes una cuenta? Inicia sesión aquí&nbsp;
-              </a>
+              </Link>
             </form>
           </div>
         </section>
       </div>
     );
-  }
 }
 export default CrearOrg;

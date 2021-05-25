@@ -10,6 +10,7 @@ import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from '@apollo/client';
+
 const REGISTRO_USUARIO =gql`
   mutation ($registroUsuarioCorreo: String!, $registroUsuarioContra: String!, $registroUsuarioNombre: String!, $registroUsuarioApellidoP: String!, $registroUsuarioApellidoM: String!, $registroUsuarioNickname: String!, $registroUsuarioNacimiento: Date, $registroUsuarioGenero: String) {
   registroUsuario(correo: $registroUsuarioCorreo, contra: $registroUsuarioContra, nombre: $registroUsuarioNombre, apellidoP: $registroUsuarioApellidoP, apellidoM: $registroUsuarioApellidoM, nickname: $registroUsuarioNickname, nacimiento: $registroUsuarioNacimiento, genero: $registroUsuarioGenero) {
@@ -55,7 +56,7 @@ function CrearUsuario(props){
   const handleSubmit = (e) =>{
     e.preventDefault()
     var i = 0
-    if(values.nombre!=' '&&values.correo!=' '&&values.contrasena!=' '&&values.apellidop!=' '&&values.apellidom!=' '&&values.nickname!=' '&&values.genero!='Género'){
+    if(values.nombre!==' '&&values.correo!==' '&&values.contrasena!==' '&&values.apellidop!==' '&&values.apellidom!==' '&&values.nickname!==' '&&values.genero!=='Género'){
       i++
     }else{
       alert('Contesta correctamente todos los campos')
@@ -96,17 +97,17 @@ function CrearUsuario(props){
             </Link>
           </div>
         </nav>
-        <section class="register-photo">
-          <div class="form-container">
+        <section className="register-photo">
+          <div className="form-container">
             <form onSubmit={handleSubmit}>
-              <h2 class="text-center">
+              <h2 className="text-center">
                 <strong>Crea tu cuenta</strong>
               </h2>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   value={values.correo}
                   onChange={handleChange}
-                  class="form-control"
+                  className="form-control"
                   type="email"
                   name="correo"
                   required
@@ -114,53 +115,53 @@ function CrearUsuario(props){
                 />
               </div>
               <div className="form-group"><p className='errorCo' id='errorCorreo'></p></div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   value={values.nombre}
                   onChange={handleChange}
-                  class="form-control"
+                  className="form-control"
                   name="nombre"
                   type="text"
                   required
                   placeholder="Nombre"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   value={values.apellidop}
                   onChange={handleChange}
-                  class="form-control"
+                  className="form-control"
                   name="apellidop"
                   type="text"
                   required
                   placeholder="Apellido paterno"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   value={values.apellidom}
                   onChange={handleChange}
-                  class="form-control"
+                  className="form-control"
                   name="apellidom"
                   type="text"
                   required
                   placeholder="Apellido materno"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   value={values.nickname}
                   onChange={handleChange}
-                  class="form-control"
+                  className="form-control"
                   type="text"
                   name="nickname"
                   required
                   placeholder="Nombre de usuario"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="password"
                   value={values.contrasena}
                   onChange={handleChange}
@@ -170,21 +171,21 @@ function CrearUsuario(props){
                 />
               </div>
               <div className="form-group"><p className='errorCo' id='errorContra'></p></div>
-              <h3 class="d-lg-flex justify-content-lg-start already">
+              <h3 className="d-lg-flex justify-content-lg-start already">
                 Fecha de nacimiento
               </h3>
-              <input class="form-control" type="date" name="nacimiento" value={values.nacimiento} onChange={handleChange} required/>
-              <select class="form-control" onChange={handleChange} value={values.genero} name="genero" required>
+              <input className="form-control" type="date" name="nacimiento" value={values.nacimiento} onChange={handleChange} required/>
+              <select className="form-control" onChange={handleChange} value={values.genero} name="genero" required>
                   <option value="">Género</option>
                   <option value="femenino">Femenino</option>
                   <option value="masculino">Masculino</option>
               </select>
-              <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
                   Crear cuenta
                 </button>
               </div>
-              <Link to="/IniciaSesion" class="already" href="login.html">
+              <Link to="/IniciaSesion" className="already" href="login.html">
                 ¿Ya tienes una cuenta? Inicia sesión aquí
               </Link>
             </form>
