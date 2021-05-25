@@ -6,6 +6,12 @@
   color: var(--blue)!important;
   font-family:Lexend;
 }
+#identificacion-label, #comprobante-label{
+  width: 10000px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .boton-eliminar{
   color: var(--white);
   background: var(--blue);
