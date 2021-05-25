@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/css/Login-Form-Dark-1.css";
 import "./assets/css/Login-Form-Dark.css";
@@ -9,10 +9,74 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
+import { gql, useMutation } from '@apollo/client';
+const REGISTRO_USUARIO =gql`
+  mutation ($registroUsuarioCorreo: String!, $registroUsuarioContra: String!, $registroUsuarioNombre: String!, $registroUsuarioApellidoP: String!, $registroUsuarioApellidoM: String!, $registroUsuarioNickname: String!, $registroUsuarioNacimiento: Date, $registroUsuarioGenero: String) {
+  registroUsuario(correo: $registroUsuarioCorreo, contra: $registroUsuarioContra, nombre: $registroUsuarioNombre, apellidoP: $registroUsuarioApellidoP, apellidoM: $registroUsuarioApellidoM, nickname: $registroUsuarioNickname, nacimiento: $registroUsuarioNacimiento, genero: $registroUsuarioGenero) {
+    id
+  }
+}
+`;
 
-class CrearUsuario extends Component {
-  render() {
-    return (
+function CrearUsuario(props){
+  const [values,setValues]=useState({
+    correo:'',
+    nickname:'',
+    nombre:'',
+    apellidop:'',
+    apellidom:'',
+    contrasena:'',
+    nacimiento:null,
+    genero:''
+  });
+  const[registro]=useMutation(REGISTRO_USUARIO,{
+    onCompleted({registroUsuario}){
+      if(registroUsuario!=null){
+        props.history.push('/IniciaSesion')
+      }else{
+        alert("El correo ya está registrado")
+      }
+        
+    },
+    variables:{
+      "registroUsuarioCorreo":values.correo,
+      "registroUsuarioContra":values.contrasena,
+      "registroUsuarioNombre":values.nombre,
+      "registroUsuarioApellidoP":values.apellidop,
+      "registroUsuarioApellidoM":values.apellidom,
+      "registroUsuarioNacimiento":values.nacimiento,
+      "registroUsuarioNickname":values.nickname,
+      "registroUsuarioGenero":values.genero
+    }
+  });
+  const handleChange = (e) => {
+    setValues({...values,[e.target.name]:e.target.value})
+  };
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    var i = 0
+    if(values.nombre!=' '&&values.correo!=' '&&values.contrasena!=' '&&values.apellidop!=' '&&values.apellidom!=' '&&values.nickname!=' '&&values.genero!='Género'){
+      i++
+    }else{
+      alert('Contesta correctamente todos los campos')
+    }
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.correo)) {
+      i++;
+      document.getElementById('errorCorreo').innerHTML=""
+    }else{
+      document.getElementById('errorCorreo').innerHTML="Escribe correctamente el correo"
+    }
+    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/.test(values.contrasena)) {
+      i++;
+      document.getElementById('errorContra').innerHTML=""
+    }else{
+      document.getElementById('errorContra').innerHTML="La contraseña debe tener más de 8 caracteres, mayúsculas y números"
+    }
+    if(i==3){
+      registro();
+    }
+  };
+  return (
       <div>
         <nav
           className="navbar navbar-light navbar-expand-lg fixed-top bg-dark"
@@ -34,29 +98,63 @@ class CrearUsuario extends Component {
         </nav>
         <section class="register-photo">
           <div class="form-container">
-            <form method="post">
+            <form onSubmit={handleSubmit}>
               <h2 class="text-center">
                 <strong>Crea tu cuenta</strong>
               </h2>
               <div class="form-group">
                 <input
+                  value={values.correo}
+                  onChange={handleChange}
                   class="form-control"
                   type="email"
-                  name="email"
+                  name="correo"
+                  required
                   placeholder="Correo"
                 />
               </div>
+              <div className="form-group"><p className='errorCo' id='errorCorreo'></p></div>
               <div class="form-group">
                 <input
+                  value={values.nombre}
+                  onChange={handleChange}
                   class="form-control"
+                  name="nombre"
                   type="text"
-                  placeholder="Nombre completo"
+                  required
+                  placeholder="Nombre"
                 />
               </div>
               <div class="form-group">
                 <input
+                  value={values.apellidop}
+                  onChange={handleChange}
+                  class="form-control"
+                  name="apellidop"
+                  type="text"
+                  required
+                  placeholder="Apellido paterno"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  value={values.apellidom}
+                  onChange={handleChange}
+                  class="form-control"
+                  name="apellidom"
+                  type="text"
+                  required
+                  placeholder="Apellido materno"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  value={values.nickname}
+                  onChange={handleChange}
                   class="form-control"
                   type="text"
+                  name="nickname"
+                  required
                   placeholder="Nombre de usuario"
                 />
               </div>
@@ -64,47 +162,35 @@ class CrearUsuario extends Component {
                 <input
                   class="form-control"
                   type="password"
+                  value={values.contrasena}
+                  onChange={handleChange}
+                  name="contrasena"
+                  required
                   placeholder="Contraseña"
                 />
-                <div class="form-check">
-                  <label class="form-check-label"></label>
-                </div>
               </div>
-              <a class="d-lg-flex justify-content-lg-start already">
+              <div className="form-group"><p className='errorCo' id='errorContra'></p></div>
+              <h3 class="d-lg-flex justify-content-lg-start already">
                 Fecha de nacimiento
-              </a>
-              <input class="form-control" type="date" name="Fecha-Nacimiento" />
-              <select class="form-control">
-                <optgroup label="Género">
-                  <option value="12" selected="">
-                    Género
-                  </option>
-                  <option value="13">Femenino</option>
-                  <option value="14">Masculino</option>
-                </optgroup>
+              </h3>
+              <input class="form-control" type="date" name="nacimiento" value={values.nacimiento} onChange={handleChange} required/>
+              <select class="form-control" onChange={handleChange} value={values.genero} name="genero" required>
+                  <option value="">Género</option>
+                  <option value="femenino">Femenino</option>
+                  <option value="masculino">Masculino</option>
               </select>
-              <h2 class="text-center">
-                <strong>Sube tus archivos (INE y comprobante)</strong>
-              </h2>
-              <input class="form-control-file" type="file" id="ine-registro" />
-              <input
-                class="form-control-file"
-                type="file"
-                id="comprobante-registro"
-              />
               <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">
                   Crear cuenta
                 </button>
               </div>
-              <a class="already" href="login.html">
-                ¿Ya tienes una cuenta? Inicia sesión aquí&nbsp;
-              </a>
+              <Link to="/IniciaSesion" class="already" href="login.html">
+                ¿Ya tienes una cuenta? Inicia sesión aquí
+              </Link>
             </form>
           </div>
         </section>
       </div>
     );
-  }
 }
 export default CrearUsuario;

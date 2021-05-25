@@ -24,7 +24,6 @@ const INICIO_SESION = gql `
 `;
 
 function LogIn (props){
-    
     const[values,setValues]=useState({
             correo:'',
             contra:''
