@@ -336,6 +336,8 @@ function Cuerpo(props) {
           modificar_usuario();
         }).catch(e=>console.log(e))
       })
+    }else{
+      modificar_usuario();
     }
     
   }
