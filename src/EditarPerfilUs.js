@@ -364,7 +364,7 @@ function Cuerpo(props) {
               apellidom:values.apellidom,
               apellidop:values.apellidop,
               foto:localStorage.getItem('foto'),
-              identifacion:localStorage.getItem('iden'),
+              identificacion:localStorage.getItem('iden'),
               comprobante:localStorage.getItem('compro'),
           }
       }})
