@@ -41,8 +41,8 @@ const ELIMINAR_USUARIO=gql`
 }
 `;
 const UPDATE_USUARIO=gql`
-  mutation ($modificacionUsuarioId: String!, $modificacionUsuarioNombre: String, $modificacionUsuarioApellidop: String, $modificacionUsuarioApellidom: String, $modificacionUsuarioFoto: String) {
-  modificacionUsuario(id: $modificacionUsuarioId, nombre: $modificacionUsuarioNombre, apellidop: $modificacionUsuarioApellidop, apellidom: $modificacionUsuarioApellidom, foto: $modificacionUsuarioFoto) {
+  mutation ($modificacionUsuarioId: String!, $modificacionUsuarioNombre: String, $modificacionUsuarioApellidop: String, $modificacionUsuarioApellidom: String, $modificacionUsuarioFoto: String, $modificacionUsuarioIdentificacion: String, $modificacionUsuarioComprobante: String) {
+  modificacionUsuario(id: $modificacionUsuarioId, nombre: $modificacionUsuarioNombre, apellidop: $modificacionUsuarioApellidop, apellidom: $modificacionUsuarioApellidom, foto: $modificacionUsuarioFoto, identificacion: $modificacionUsuarioIdentificacion, comprobante: $modificacionUsuarioComprobante) {
     success
     message
   }
@@ -237,17 +237,12 @@ function Cuerpo(props) {
     nombre:'',
     apellidop:'',
     apellidom:'',
-    fotoURL:'',
-    identURL:'',
-    comproURL:'',   
-    foto:null,
-    iden:null,
-    compro:null,
   });
   const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
     onCompleted({borrarUsuario}){
       if(borrarUsuario.success){
         history.push("/")
+        console.log(localStorage.getItem('foto'));
       }
     },
     variables:{
@@ -257,19 +252,103 @@ function Cuerpo(props) {
   const handleIdentifacion=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    setValues({iden:fileList[0]})
+    const enlaceIden = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    fetch(enlaceIden,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+      const formData = new FormData();
+      Object.keys(data.data.fields).forEach(key => {
+        formData.append(key, data.data.fields[key]);
+      });
+      formData.append("file", fileList[0]);
+      const xhr = new XMLHttpRequest();
+      function getUrl(){
+        return new Promise(function(resolve,reject){
+        xhr.open("POST", data.data.url, true);
+        xhr.send(formData)
+        xhr.onload = function () {
+          if (this.status === 204) {
+            resolve(
+             'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
+            );
+          } 
+          else{
+            reject(this.responseText);
+          }
+        }
+        })
+      }
+      getUrl().then((result)=>{
+        localStorage.setItem('iden',result)
+        console.log(localStorage.getItem('iden'))
+      }).catch(e=>console.log(e))
+    })
     document.getElementById('identificacion-label').innerHTML=texto_poner
   }
   const handleComprobante=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    setValues({compro:fileList[0]})
+    const enlaceCompro = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+      fetch(enlaceCompro,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+        const formData = new FormData();
+        Object.keys(data.data.fields).forEach(key => {
+          formData.append(key, data.data.fields[key]);
+        });
+        formData.append("file", fileList[0]);
+        const xhr = new XMLHttpRequest();
+        function getUrl(){
+          return new Promise(function(resolve,reject){
+          xhr.open("POST", data.data.url, true);
+          xhr.send(formData)
+          xhr.onload = function () {
+            if (this.status === 204) {
+              resolve(
+               'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
+              );
+            } 
+            else{
+              reject(this.responseText);
+            }
+          }
+          })
+        }
+        getUrl().then((result)=>{
+          localStorage.setItem('compro',result)
+          console.log(localStorage.getItem('compro'))
+        }).catch(e=>console.log(e))
+      })
     document.getElementById('comprobante-label').innerHTML=texto_poner
   }
   const handleFotoPerfil=(e)=>{
       var fileList =  e.target.files;
-      setValues({foto:fileList[0]})
       const reader = new FileReader();
+      const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+      fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+        const formData = new FormData();
+        Object.keys(data.data.fields).forEach(key => {
+          formData.append(key, data.data.fields[key]);
+        });
+        formData.append("file", fileList[0]);
+        const xhr = new XMLHttpRequest();
+        function getUrl(){
+          return new Promise(function(resolve,reject){
+          xhr.open("POST", data.data.url, true);
+          xhr.send(formData)
+          xhr.onload = function () {
+            if (this.status === 204) {
+              resolve(
+               'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
+              );
+            } 
+            else{
+              reject(this.responseText);
+            }
+          }
+          })
+        }
+        getUrl().then((result)=>{
+          localStorage.setItem('foto',result)
+          console.log(localStorage.getItem('foto'))
+        }).catch(e=>console.log(e))
+      })
       reader.addEventListener('load', (event) => {
         document.getElementById('foto-perfil-editar').setAttribute('src',event.target.result);
       });
@@ -284,9 +363,20 @@ function Cuerpo(props) {
               nombre:values.nombre,
               apellidom:values.apellidom,
               apellidop:values.apellidop,
-              foto:values.fotoURL
+              foto:localStorage.getItem('foto'),
+              identifacion:localStorage.getItem('iden'),
+              comprobante:localStorage.getItem('compro'),
           }
       }})
+    },
+    variables:{
+      "modificacionUsuarioId":props.idUs,
+      "modificacionUsuarioNombre":values.nombre,
+      "modificacionUsuarioApellidop":values.apellidop,
+      "modificacionUsuarioApellidom":values.apellidom,
+      "modificacionUsuarioFoto":localStorage.getItem('foto'),
+      "modificacionUsuarioIdentificacion":localStorage.getItem('iden'),
+      "modificacionUsuarioComprobante":localStorage.getItem('compro'),
     },
     onCompleted({modificacionUsuario}){
       if(modificacionUsuario.success){
@@ -294,52 +384,13 @@ function Cuerpo(props) {
         history.push(route)
       }
     },
-    variables:{
-      "modificacionUsuarioId":props.idUs,
-      "modificacionUsuarioNombre":values.nombre,
-      "modificacionUsuarioApellidop":values.apellidop,
-      "modificacionUsuarioApellidom":values.apellidom,
-      "modificacionUsuarioFoto":values.fotoURL,
-    }
     })
   const handleCampos = (e)=>{
     setValues({...values,[e.target.name]:e.target.value})
   }
   const onSubmit=(e)=>{
     e.preventDefault()
-    if(values.foto!==null){
-      const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + values.foto.name + '&cont=' + values.foto.type;
-      fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
-        const formData = new FormData();
-        Object.keys(data.data.fields).forEach(key => {
-          formData.append(key, data.data.fields[key]);
-        });
-        formData.append("file", values.foto);
-        const xhr = new XMLHttpRequest();
-
-        function getUrl(){
-          return new Promise(function(resolve,reject){
-          xhr.open("POST", data.data.url, true);
-          xhr.send(formData)
-          xhr.onload = function () {
-            if (this.status === 204) {
-              resolve('https://archivospetbounds.s3-us-west-2.amazonaws.com/' + values.foto.name);
-            } 
-            else{
-              reject(this.responseText);
-            }
-          }
-          })
-        }
-        getUrl().then((result)=>{
-          setValues({fotoURL:result})
-          modificar_usuario();
-        }).catch(e=>console.log(e))
-      })
-    }else{
-      modificar_usuario();
-    }
-    
+    modificar_usuario();
   }
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
