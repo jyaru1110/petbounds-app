@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -41,9 +41,10 @@ const ELIMINAR_USUARIO=gql`
 }
 `;
 const UPDATE_USUARIO=gql`
-  mutation ($modificacionUsuarioId: String!, $modificacionUsuarioNombre: String, $modificacionUsuarioApellidop: String, $modificacionUsuarioApellidom: String) {
-  modificacionUsuario(id: $modificacionUsuarioId, nombre: $modificacionUsuarioNombre, apellidop: $modificacionUsuarioApellidop, apellidom: $modificacionUsuarioApellidom) {
+  mutation ($modificacionUsuarioId: String!, $modificacionUsuarioNombre: String, $modificacionUsuarioApellidop: String, $modificacionUsuarioApellidom: String, $modificacionUsuarioFoto: String) {
+  modificacionUsuario(id: $modificacionUsuarioId, nombre: $modificacionUsuarioNombre, apellidop: $modificacionUsuarioApellidop, apellidom: $modificacionUsuarioApellidom, foto: $modificacionUsuarioFoto) {
     success
+    message
   }
 }
 
@@ -231,7 +232,18 @@ function Cuerpo(props) {
   const [estado,setEstado] = useState(true)
   const eliminar = () => {
     setEstado(!estado)
-  }
+  };
+  const [values,setValues] = useState({
+    nombre:'',
+    apellidop:'',
+    apellidom:'',
+    fotoURL:'',
+    identURL:'',
+    comproURL:'',   
+    foto:null,
+    iden:null,
+    compro:null,
+  });
   const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
     onCompleted({borrarUsuario}){
       if(borrarUsuario.success){
@@ -244,30 +256,25 @@ function Cuerpo(props) {
   })
   const handleIdentifacion=(e)=>{
     var fileList = e.target.files;
-    console.log(fileList[0].name)
     var texto_poner = fileList[0].name
+    setValues({iden:fileList[0]})
     document.getElementById('identificacion-label').innerHTML=texto_poner
   }
   const handleComprobante=(e)=>{
     var fileList = e.target.files;
-    console.log(fileList[0].name)
     var texto_poner = fileList[0].name
+    setValues({compro:fileList[0]})
     document.getElementById('comprobante-label').innerHTML=texto_poner
   }
   const handleFotoPerfil=(e)=>{
       var fileList =  e.target.files;
+      setValues({foto:fileList[0]})
       const reader = new FileReader();
       reader.addEventListener('load', (event) => {
         document.getElementById('foto-perfil-editar').setAttribute('src',event.target.result);
       });
       reader.readAsDataURL(fileList[0]);
   }
-  const [values,setValues] = useState({
-    nombre:'',
-    apellidop:'',
-    apellidom:'',
-
-  })
   const [modificar_usuario] = useMutation(UPDATE_USUARIO,{
     update(proxy){
       proxy.writeQuery({query:USUARIO,variables:{"usuarioId":props.idUs},data:{
@@ -276,19 +283,23 @@ function Cuerpo(props) {
               id:props.id,
               nombre:values.nombre,
               apellidom:values.apellidom,
-              apellidop:values.apellidop
+              apellidop:values.apellidop,
+              foto:values.fotoURL
           }
       }})
     },
     onCompleted({modificacionUsuario}){
-      var route="/PerfilUs/" + props.idUs;
-      history.push(route);
+      if(modificacionUsuario.success){
+        const route = "/PerfilUs/"+props.idUs;
+        history.push(route)
+      }
     },
     variables:{
       "modificacionUsuarioId":props.idUs,
       "modificacionUsuarioNombre":values.nombre,
       "modificacionUsuarioApellidop":values.apellidop,
       "modificacionUsuarioApellidom":values.apellidom,
+      "modificacionUsuarioFoto":values.fotoURL,
     }
     })
   const handleCampos = (e)=>{
@@ -296,12 +307,37 @@ function Cuerpo(props) {
   }
   const onSubmit=(e)=>{
     e.preventDefault()
-    if(values.nombre!=''&&values.apellidom!=''&&values.apellidop!=''){
-      modificar_usuario();
+    if(values.foto!==null){
+      const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + values.foto.name + '&cont=' + values.foto.type;
+      fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+        const formData = new FormData();
+        Object.keys(data.data.fields).forEach(key => {
+          formData.append(key, data.data.fields[key]);
+        });
+        formData.append("file", values.foto);
+        const xhr = new XMLHttpRequest();
+
+        function getUrl(){
+          return new Promise(function(resolve,reject){
+          xhr.open("POST", data.data.url, true);
+          xhr.send(formData)
+          xhr.onload = function () {
+            if (this.status === 204) {
+              resolve('https://archivospetbounds.s3-us-west-2.amazonaws.com/' + values.foto.name);
+            } 
+            else{
+              reject(this.responseText);
+            }
+          }
+          })
+        }
+        getUrl().then((result)=>{
+          setValues({fotoURL:result})
+          modificar_usuario();
+        }).catch(e=>console.log(e))
+      })
     }
-    else{
-      alert('Completa los campos amigo');
-    }
+    
   }
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
