@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { gql, useMutation } from '@apollo/client';
 
 const REGISTRO_ORG = gql`
-  mutation ($registroOrgCorreo: String!, $registroOrgContra: String!, $registroOrgNombre: String!, $registroOrgTelefono: String!, $registroOrgPagina: String, $registroOrgDireccion: String) {
+mutation ($registroOrgCorreo: String!, $registroOrgContra: String!, $registroOrgNombre: String!, $registroOrgTelefono: String!, $registroOrgPagina: String, $registroOrgDireccion: String) {
   registroOrg(correo: $registroOrgCorreo, contra: $registroOrgContra, nombre: $registroOrgNombre, telefono: $registroOrgTelefono, pagina: $registroOrgPagina, direccion: $registroOrgDireccion) {
     id
   }
@@ -35,11 +35,10 @@ function CrearOrg (props){
       }else{
         alert("El correo ya está registrado")
       }
-        
     },
     variables:{
       "registroOrgCorreo":values.correo,
-      "registroOrgContra":values.contra,
+      "registroOrgContra":values.contrasena,
       "registroOrgNombre":values.nombre,
       "registroOrgTelefono":values.telefono,
       "registroOrgPagina":values.pagina,
@@ -53,7 +52,7 @@ function CrearOrg (props){
     e.preventDefault()
     var i = 0
     if(values.nombre!==' '&&values.correo!==' '&&values.contrasena!==' '&&values.telefono!==' '&&values.direccion!==''&&values.pagina!==' '){
-      i++
+      i++;
     }else{
       alert('Contesta correctamente todos los campos')
     }
@@ -69,7 +68,7 @@ function CrearOrg (props){
     }else{
       document.getElementById('errorContra').innerHTML="La contraseña debe tener más de 8 caracteres, mayúsculas y números"
     }
-    if(i==3){
+    if(i===3){
       registro();
     }
   };
@@ -109,6 +108,7 @@ function CrearOrg (props){
                   onChange={handleChange}
                   required
                 />
+                <div className="form-group"><p className='errorCo' id='errorCorreo'></p></div>
               </div>
               <div className="form-group">
                 <input
@@ -140,6 +140,7 @@ function CrearOrg (props){
                   value={values.contrasena}
                 />
               </div>
+              <div className="form-group"><p className='errorCo' id='errorContra'></p></div>
               <div className="form-group">
                 <input
                   className="form-control"

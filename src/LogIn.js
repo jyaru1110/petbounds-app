@@ -30,12 +30,15 @@ function LogIn (props){
     });
     const[inicioSesion,{loading}]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
-                    var ruta = '/HomeUs/'+inicioSesion.id;
+                    var rutaUs = '/HomeUs/'+inicioSesion.id;
+                    var rutaOrg = '/HomeOrg/'+inicioSesion.id;
                     if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
                             case 'usuario':
-                                props.history.push(ruta);
+                                props.history.push(rutaUs);
                                 break; 
+                            case 'org':
+                                props.history.push(rutaOrg);
                         }
                     }
                     else{

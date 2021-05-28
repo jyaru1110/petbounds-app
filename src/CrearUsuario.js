@@ -37,7 +37,6 @@ function CrearUsuario(props){
       }else{
         alert("El correo ya está registrado")
       }
-        
     },
     variables:{
       "registroUsuarioCorreo":values.correo,
@@ -73,7 +72,7 @@ function CrearUsuario(props){
     }else{
       document.getElementById('errorContra').innerHTML="La contraseña debe tener más de 8 caracteres, mayúsculas y números"
     }
-    if(i==3){
+    if(i===3){
       registro();
     }
   };

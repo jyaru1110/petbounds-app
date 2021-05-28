@@ -17,55 +17,21 @@ import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
 
-const HACER_SOLICITUD = gql`
-  mutation (
-    $registroSolicitudUsuarioId: ID!
-    $registroSolicitudMascotaId: ID!
-  ) {
-    registroSolicitud(
-      usuarioId: $registroSolicitudUsuarioId
-      mascotaId: $registroSolicitudMascotaId
-    ) {
-      success
-    }
-  }
-`;
-const MASCOTA = gql`
-  query ($mascotaSelecId: ID!) {
-    mascotaSelec(id: $mascotaSelecId) {
-      raza
-      edad
-      historia
+
+const ORGANIZACION = gql`
+query ($organizacionId: ID!) {
+    organizacion(id: $organizacionId) {
       nombre
       foto
-      tamano
-      sexo
-      estado
-      organizacion {
-        foto
-        nombre
-      }
     }
   }
-`;
-const USUARIO = gql`
-  query ($usuarioId: ID!) {
-    usuario(id: $usuarioId) {
-      id
-      nickname
-      apellidop
-      foto
-      identificacion
-      comprobante
-    }
-  }
+  
 `;
 
-function DetallesMascota(props) {
+function HomeOrg(props) {
   return (
     <div>
-      <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
+      <Header id={props.match.params.idOrg}></Header>
     </div>
   );
 }
@@ -75,22 +41,19 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  const { loading, error, data } = useQuery(USUARIO, {
+  const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
-      usuarioId: props.id,
+      "organizacionId": props.id
     },
   });
-  if (loading) return <Error></Error>;
+  if (loading) return null;
   if (error) return null;
   else {
-    var rutaPerfil = "/PerfilUs/" + props.id;
-    var rutaHome = "/HomeUs/" + props.id;
-    var rutaServicios = "/ServiciosUs/" + props.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
+    var rutaPerfil = "/PerfilOrg/" + props.id;
+    var rutaHome = "/HomeOrg/" + props.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
     return (
       <div>
         <div
@@ -99,16 +62,19 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img class="rounded-circle" src={data.usuario.foto} />
+            <img class="rounded-circle" src={data.organizacion.foto} />
           </a>
-          <Link to={rutaHome} className="texto-menu-sup">
-            Adopciones
+          <Link to={rutaHome} className="texto-menu-org">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+                <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
+            </svg>
           </Link>
           <Link to={rutaServicios} className="texto-menu-sup">
-            Servicios
+            
           </Link>
           <Link to={rutaDonaciones} className="texto-menu-sup">
-            Donaciones
+            
           </Link>
         </div>
         <div>
@@ -139,10 +105,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={data.usuario.foto}
+              src={data.organizacion.foto}
             />
             <h6 className="text-white hola-menu">
-              Hola, {data.usuario.nickname}
+              Hola, {data.organizacion.nombre}
             </h6>
             <Link
               to={rutaPerfil}
@@ -188,7 +154,6 @@ function Header(props) {
               Mis solicitudes
             </Link>
             <Link
-              to={rutaMisLikes}
               className="d-flex justify-content-start align-items-center perfil-menu-text"
             >
               <svg
@@ -237,8 +202,9 @@ function Header(props) {
     );
   }
 }
+/*
 function Cuerpo(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
+  /*const { loading, error, data } = useQuery(USUARIO, {
     variables: {
       usuarioId: props.idUs,
     },
@@ -375,108 +341,6 @@ function Error(props) {
       </Link>
     </div>
   );
-}
-function Mascota(props) {
-  const { loading, error, data } = useQuery(MASCOTA, {
-    variables: {
-      mascotaSelecId: props.idMas,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    var desc =
-      data.mascotaSelec.tamano +
-      " · " +
-      data.mascotaSelec.edad +
-      " · " +
-      data.mascotaSelec.raza +
-      " · " +
-      data.mascotaSelec.sexo;
-    return (
-      <div className="col-md-8 col-lg-8 col-xl-8 main-detalles">
-        <div className="row">
-          <div className="col-md-12 d-inline-flex justify-content-center">
-            <img
-              className="rounded-circle pulse animated imagen-mascota-detalles"
-              src={data.mascotaSelec.foto}
-            />
-          </div>
-          <div className="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-white d-table justify-content-center pulse animated">
-            <div className="text-white intro">
-              <h2 className="text-center nombre-mascota-detalles">
-                <strong>{data.mascotaSelec.nombre}</strong>
-              </h2>
-              <p className="text-left descripcion-detalles">
-                <em>{desc}</em>
-              </p>
-              <p className="text-left align-items-center align-content-center info-org-detalles">
-                <img
-                  class="rounded-circle foto-org-detalles"
-                  src={data.mascotaSelec.organizacion.foto}
-                />
-                {data.mascotaSelec.organizacion.nombre}
-              </p>
-            </div>
-            <div className="text">
-              <p className="desc-detalles">
-                Descripción: {data.mascotaSelec.historia}
-              </p>
-              <figure className="figure d-block"></figure>
-              <p></p>
-              <EstadoMascota
-                estado={data.mascotaSelec.estado}
-                idUs={props.idUs}
-                idMas={props.idMas}
-                docs={props.docs}
-              />
-              <p
-                id="errorSolicitud"
-                className="descripcion-detalles"
-                style={{ marginTop: "10px" }}
-              ></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-function EstadoMascota(props) {
-  let history = useHistory();
-  const validarDocs=()=>{
-    if(props.docs){
-      hacerSolicitud()
-    }else{
-      document.getElementById("errorSolicitud").innerHTML ="Sube tus documentos en editar perfil para adoptar :)";
-    }
-  }
-  const [hacerSolicitud] = useMutation(HACER_SOLICITUD, {
-    onCompleted({ registroSolicitud }) {
-      if (registroSolicitud.success) {
-        var route = "/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
-        history.push(route);
-      } else {
-        document.getElementById("errorSolicitud").innerHTML ="Lo lamentamos pero ya hiciste esta solicitud :/";
-      }
-    },
-    variables: {
-      registroSolicitudUsuarioId: props.idUs,
-      registroSolicitudMascotaId: props.idMas,
-    },
-  });
-  if (props.estado == 0) {
-    return (
-      <button
-        className="btn btn-primary adoptable"
-        type="button"
-        onClick={validarDocs}
-      >
-        Adoptar
-      </button>
-    );
-  } else if (props.estado == 1) {
-    return null;
-  }
-}
-export default DetallesMascota;
+}*/
+
+export default HomeOrg;

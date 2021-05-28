@@ -1,3 +1,6 @@
+.texto-menu-org{
+  color:white;
+}
 .eliminar-cuenta-adv div{
   padding: 23px;
   width: 100%;
@@ -254,6 +257,7 @@
 }
 .texto-menu-sup:hover{
   background-color: #292929;
+  color:white;
 }
 .header-blue{
   background: linear-gradient(var(--dark), var(--gray) 67%)!important;

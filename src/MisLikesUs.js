@@ -83,7 +83,7 @@ function Header(props) {
         },
     });
     if (loading) return null;
-    if (error) return null;
+    if (error) return <Error></Error>;
     else {
         var rutaPerfil= "/PerfilUs/" + props.idUs;
         var rutaHome = "/HomeUs/" + props.idUs;

@@ -14,7 +14,8 @@ import PerfilUs from './PerfilUs';
 import MisLikesUs from './MisLikesUs'
 import EditarPerfilUs from './EditarPerfilUs'
 import MisAdopcionesUs from './MisAdopcionesUs'
-//Función principal de la aplicación, muestra la página de inicio
+import HomeOrg from './HomeOrg'
+
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +32,7 @@ function App() {
       <Route exact path="/MisLikesUs/:idUs" component={MisLikesUs}/>
       <Route exact path="/EditarPerfilUs/:idUs" component={EditarPerfilUs}/>
       <Route exact path="/MisAdopcionesUs/:idUs" component={MisAdopcionesUs}/>
+      <Route exact path="/HomeOrg/:idOrg" component={HomeOrg}/>
     </BrowserRouter>
   );
 }
