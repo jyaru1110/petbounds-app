@@ -171,14 +171,13 @@ function Cuerpo(props) {
   );
   const handleSubmit = (e) =>{
     e.preventDefault();
-    console.log(values.bandera)
     if(values.bandera===false){
       localStorage.setItem('fotoMascota',' ')
     }
-    if(values.nombre!=='' && values.nombre!==' '){
+    if(values.nombre!=='' && values.nombre!==' ' && values.tamano!=='' && values.tamano!=='Tamaño'&& values.sexo!=='' && values.sexo!=='Sexo'){
       registrarMas();
     }else{
-      alert('¿Como se llama la mascota?')
+      alert('Llena correctamente los datos')
     }
     
   };
@@ -280,14 +279,14 @@ function Cuerpo(props) {
                         </div>
                     </div><input className="form-control input-add" type="text" name="nombre" onChange={handleCampos} placeholder="Nombre mascota"/><input className="form-control input-add" name="raza" onChange={handleCampos} type="text" placeholder="Raza"/><input className="form-control input-add" type="text" name="animal" onChange={handleCampos} placeholder="Animal"/>
                         <select className="form-control input-add" name="tamano" value={values.tamano} onChange={handleCampos} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
-                            <optgroup label="Tamaño"/>
-                            <option value="Grande" selected="">Grande</option>
+                            <option value="Tamaño" selected="">Tamaño</option>
+                            <option value="Grande">Grande</option>
                             <option value="Mediano">Mediano</option>
                             <option value="Chico">Chico</option>
                         </select>
                     <div className="form-group edad-genero"><input className="form-control" type="text" placeholder="Edad" name="edad" onChange={handleCampos}/><select className="form-control" name="sexo" value={values.tamano} onChange={handleCampos} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
-                            <optgroup label="Sexo"/>
-                            <option value="Hembra" selected="">Hembra</option>
+                            <option value="Sexo" selected="">Sexo</option>
+                            <option value="Hembra">Hembra</option>
                             <option value="Macho">Macho</option>
                         </select></div><textarea className="form-control" id="text-area-add" placeholder="Historia"></textarea><button className="btn btn-primary submit-add" type="submit">Registrar</button>
                 </form>
