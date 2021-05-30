@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import Error from './Error';
 
 const HACER_SOLICITUD = gql`
