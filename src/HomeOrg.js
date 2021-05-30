@@ -288,7 +288,7 @@ function Cuerpo(props) {
                             <option value="Sexo" selected="">Sexo</option>
                             <option value="Hembra">Hembra</option>
                             <option value="Macho">Macho</option>
-                        </select></div><textarea className="form-control" id="text-area-add" placeholder="Historia"></textarea><button className="btn btn-primary submit-add" type="submit">Registrar</button>
+                        </select></div><textarea className="form-control" id="text-area-add" placeholder="Historia" name="hist" onChange={handleCampos}></textarea><button className="btn btn-primary submit-add" type="submit">Registrar</button>
                 </form>
             </div>
         </div>
