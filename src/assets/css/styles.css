@@ -1,3 +1,61 @@
+.div-input-file-a{
+  width: 235px;
+  height: 265px;
+  border-radius: 11px;
+  border: 1px solid #979797;
+}
+.div-input-file-a label{
+  cursor:pointer;
+}
+.edad-genero{
+  display: flex!important;
+  justify-content: space-between!important;
+}
+.edad-genero input, .edad-genero select{
+  width:132px!important;
+  height:30px!important;
+  border-radius:18px;
+  background:#606060!important;
+  border-style: none;
+  font-family: Lexend;
+}
+.submit-add{
+  width: 133px;
+  height: 42px;
+  color: var(--white);
+  font-family: Lexend;
+  background: #4970f1!important;
+  border-radius: 18px!important;
+}
+.input-add{
+  width: 293px!important;
+  height: 30px!important;
+  border-radius: 18px!important;
+  border-style: none!important;
+  background:#606060!important;
+  color: var(--light)!important;
+  font-family:Lexend;
+  margin-bottom: 10px;
+}
+.input-add::placeholder, .edad-genero input::placeholder,#text-area-add::placeholder{
+  color: rgba(255, 255, 255, 0.616)!important;
+}
+.div-input-file-a label svg{
+  color: rgb(151,151,151)!important;
+  font-size: 24px;
+}
+.contenido-org{
+  margin-top: 75px;
+}
+#text-area-add{
+  color: var(--white);
+  font-family: Lexend!important;
+  background: #606060!important;
+  border-radius: 18px!important;
+  border-style: none!important;
+  height: 65px;
+  margin-bottom: 10px;
+}
 .icon-menu-org{
   color: white;
 }
