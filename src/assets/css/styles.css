@@ -1,5 +1,5 @@
-.texto-menu-org{
-  color:white;
+.icon-menu-org{
+  color: white;
 }
 .eliminar-cuenta-adv div{
   padding: 23px;
@@ -367,14 +367,17 @@ h1,p{
   background: var(--red);
   margin-top: 2px;
 }
-
+.LinkError{
+  font-family: Lexend;
+  color: white;
+}
 .erro{
   margin-top: 20px;
   display:flex;
   align-items: center;
   flex-direction:column;
 }
-.erro h1{
+.erro h2,.erro h4{
   font-family: Lexend;
   color: white;
 }

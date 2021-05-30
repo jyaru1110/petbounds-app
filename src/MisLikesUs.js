@@ -10,8 +10,8 @@ import './assets/css/Navigation-with-Search.css'
 import './index.css';
 import './assets/fonts/font-awesome.min.css';
 import logo from './assets/img/petbounds_blanco.png';
-import perritoRisas from './assets/img/perrito_risa.png';
 import perritoXD from './assets/img/perritoxd.png'
+import Error from "./Error"
 import { Link} from 'react-router-dom';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import 'bootstrap';
@@ -189,18 +189,6 @@ function Cuerpo(props) {
             </div>
         );
     }
-}
-function Error(props) {
-    return (
-        <div className="erro">
-            <h1>
-                HEEEEY PILLIN
-            </h1>
-            <img src={perritoRisas} />
-            <Link to="/Registrarse"><h1>Registrate aquí x fas (;</h1></Link>
-        </div>
-    );
-
 }
 function Carnets(props) {
     const { loading, error, data } = useQuery(FEED_LIKES,{

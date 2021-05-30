@@ -10,7 +10,7 @@ import "./assets/css/Navigation-with-Search.css";
 import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
-import perritoRisas from "./assets/img/perrito_risa.png";
+import Error from "./Error"
 import perritoXD from './assets/img/perritoxd.png'
 import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
@@ -388,17 +388,6 @@ function BloqueSoli(props){
         </div>
     );
     }}
-}
-function Error(props) {
-  return (
-    <div className="erro">
-      <h1>HEEEEY PILLIN</h1>
-      <img src={perritoRisas} />
-      <Link to="/Registrarse">
-        <h1>Registrate aquí x fas (;</h1>
-      </Link>
-    </div>
-  );
 }
 
 export default MisAdopcionesUs;
