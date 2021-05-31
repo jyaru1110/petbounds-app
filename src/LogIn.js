@@ -16,9 +16,10 @@ import { gql, useMutation } from '@apollo/client';
 const INICIO_SESION = gql `
     mutation inicioSesion($inicioSesionCorreo: String!, $inicioSesionContra: String!) {
     inicioSesion(correo: $inicioSesionCorreo, contra: $inicioSesionContra) {
-      id,
-      flag,
+      id
+      flag
       cuenta
+      validacion
     }
   }
 `;
@@ -28,11 +29,11 @@ function LogIn (props){
             correo:'',
             contra:''
     });
-    const[inicioSesion,{loading}]=useMutation(INICIO_SESION,{
+    const[inicioSesion]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
                     var rutaUs = '/HomeUs/'+inicioSesion.id;
                     var rutaOrg = '/HomeOrg/'+inicioSesion.id;
-                    if(inicioSesion.flag){
+                    if(inicioSesion.flag && inicioSesion.validacion){
                         switch(inicioSesion.cuenta){
                             case 'usuario':
                                 props.history.push(rutaUs);

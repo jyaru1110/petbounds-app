@@ -356,20 +356,6 @@ function Cuerpo(props) {
       reader.readAsDataURL(fileList[0]);
   }
   const [modificar_usuario] = useMutation(UPDATE_USUARIO,{
-    update(proxy){
-      proxy.writeQuery({query:USUARIO,variables:{"usuarioId":props.idUs},data:{
-          usuario:{
-              _typename:"usuario",
-              id:props.id,
-              nombre:values.nombre,
-              apellidom:values.apellidom,
-              apellidop:values.apellidop,
-              foto:localStorage.getItem('foto'),
-              identificacion:localStorage.getItem('iden'),
-              comprobante:localStorage.getItem('compro'),
-          }
-      }})
-    },
     variables:{
       "modificacionUsuarioId":props.idUs,
       "modificacionUsuarioNombre":values.nombre,
@@ -381,8 +367,7 @@ function Cuerpo(props) {
     },
     onCompleted({modificacionUsuario}){
       if(modificacionUsuario.success){
-        const route = "/PerfilUs/"+props.idUs;
-        history.push(route)
+        window.location.reload()
       }
     },
     })
