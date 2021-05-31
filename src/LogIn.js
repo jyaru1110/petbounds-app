@@ -33,7 +33,7 @@ function LogIn (props){
             onCompleted({inicioSesion}){
                     var rutaUs = '/HomeUs/'+inicioSesion.id;
                     var rutaOrg = '/HomeOrg/'+inicioSesion.id;
-                    if(inicioSesion.flag && inicioSesion.validacion){
+                    if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
                             case 'usuario':
                                 props.history.push(rutaUs);

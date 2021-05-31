@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 const SOLICITUDES = gql`
     query ($solicitudesUsuarioId: ID!) {
     solicitudesUsuario(id: $solicitudesUsuarioId) {
+      id
       mascota {
         raza
         edad
@@ -367,7 +368,7 @@ function BloqueSoli(props){
                 <div class="row no_hay">
                     <div class="col">
                         <div class="d-flex flex-column align-items-center align-items-xl-center">
-                            <p style={{color: 'rgb(255,255,255)'},{fontFamily: 'Lexend'}}><strong>¡Vaya!, parece que aún no tienes solicitudes ._.XD</strong><br/></p><img style={{width: '40%'}} src={perritoXD}/><Link className="texto-link" to={rutaHome} style={{fontFamily: 'Lexend'}}>Da likes a mascotas aquí</Link>
+                            <p style={{color: 'rgb(255,255,255)'},{fontFamily: 'Lexend'}}><strong>¡Vaya!, parece que aún no tienes solicitudes ._.XD</strong><br/></p><img style={{width: '40%'}} src={perritoXD}/><Link className="texto-link" to={rutaHome} style={{fontFamily: 'Lexend'}}>Haz una solicitud aquí</Link>
                         </div>
                     </div>
                 </div>

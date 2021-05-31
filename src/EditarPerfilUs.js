@@ -17,7 +17,6 @@ import'filereader';
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
 import Error from "./Error"
-import { ajaxPrefilter } from "jquery";
 
 const USUARIO = gql`
   query ($usuarioId: ID!) {
