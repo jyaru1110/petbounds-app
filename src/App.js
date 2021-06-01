@@ -20,6 +20,7 @@ import AdopcionesOrg from './AdopcionesOrg';
 import MisMascotasOrg from './MisMascotasOrg';
 import EditarMascota from './EditarMascota';
 import PerfilOrg from './PerfilOrg';
+import EditarPerfilOrg from './EditarPerfilOrg';
 function App() {
   return (
     <BrowserRouter>
@@ -42,6 +43,7 @@ function App() {
       <Route exact path="/MisMascotasOrg/:idOrg" component={MisMascotasOrg}/>
       <Route exact path="/EditarMascota/:idOrg/:idMas" component={EditarMascota}/>
       <Route exact path="/PerfilOrg/:idOrg" component={PerfilOrg}/>
+      <Route exact path="/EditarPerfilOrg/:idOrg" component={EditarPerfilOrg}/>
     </BrowserRouter>
   );
 }

@@ -237,7 +237,8 @@ function Cuerpo(props) {
     nombre:'',
     apellidop:'',
     apellidom:'',
-    bandera:false
+    bandera:false,
+    banderaFoto:false
   });
   const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
     onCompleted({borrarUsuario}){
@@ -321,6 +322,7 @@ function Cuerpo(props) {
   const handleFotoPerfil=(e)=>{
       var fileList =  e.target.files;
       const reader = new FileReader();
+      setValues({banderaFoto:true})
       const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
       fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
         const formData = new FormData();
@@ -398,6 +400,9 @@ function Cuerpo(props) {
       nuevoAM = document.getElementById("apellidomUs").getAttribute("placeholder");
     }else{
       nuevoAM=values.apellidom
+    }
+    if(values.banderaFoto===false){
+      localStorage.setItem("foto",document.getElementById("foto-perfil-editar").getAttribute("src"))
     }
     setValues({nombre:nuevoNom,apellidom:nuevoAM,apellidop:nuevoAP,bandera:true})
    

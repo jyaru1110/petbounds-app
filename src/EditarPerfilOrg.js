@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -39,7 +39,15 @@ query ($organizacionId: ID!) {
   }
  `;
 
-function PerfilOrg(props) {
+const UPDATE_ORG=gql`
+mutation ($modificacionOrgId: String!, $modificacionOrgTelefono: String, $modificacionOrgPagina: String, $modificacionOrgFoto: String, $modificacionOrgDireccion: String) {
+    modificacionOrg(id: $modificacionOrgId, telefono: $modificacionOrgTelefono, pagina: $modificacionOrgPagina, foto: $modificacionOrgFoto, direccion: $modificacionOrgDireccion) {
+      success
+    }
+  }
+  `;
+
+function EditarPerfilOrg(props) {
   return (
     <div>
       <Header id={props.match.params.idOrg}></Header>
@@ -69,28 +77,28 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <Link to={rutaPerfil} className="texto-menu-sup">
-            <img className="rounded-circle" src={data.organizacion.foto} />
+            <img class="rounded-circle" src={data.organizacion.foto} />
           </Link>
           <Link to={rutaHome} className="icon-menu-org">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
               <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
           </Link>
           <Link to={rutaDonaciones} className="icon-menu-org">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" fill="currentColor" className="bi bi-cash" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
                 <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
                 <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
             </svg>
           </Link>
           <Link to={rutaAdopciones} className="icon-menu-org">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-file-text" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
             <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
           </svg>
           </Link>
           <Link to={rutaMisMascotas} className="icon-menu-org">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
           </svg>
           </Link>
@@ -106,12 +114,18 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-    let history=useHistory()
+    let history = useHistory();
     const [estado,setEstado] = useState(true)
-
     const eliminar = () => {
       setEstado(!estado)
-    }
+    };
+    const [values,setValues] = useState({
+      telefono:'',
+      pagina:'',
+      direccion:'',
+      bandera:false,
+      banderaFoto:false
+    });
     const [eliminarCuenta] = useMutation(BORRAR_ORG,{
         variables:{
             "borrarOrgId":props.id
@@ -121,9 +135,93 @@ function Cuerpo(props) {
                 history.push("/")
             }
         }
+    })
+    const handleFotoPerfil=(e)=>{
+        var fileList =  e.target.files;
+        const reader = new FileReader();
+        setValues({banderaFoto:true})
+        const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+        fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+          const formData = new FormData();
+          Object.keys(data.data.fields).forEach(key => {
+            formData.append(key, data.data.fields[key]);
+          });
+          formData.append("file", fileList[0]);
+          const xhr = new XMLHttpRequest();
+          function getUrl(){
+            return new Promise(function(resolve,reject){
+            xhr.open("POST", data.data.url, true);
+            xhr.send(formData)
+            xhr.onload = function () {
+              if (this.status === 204) {
+                resolve(
+                 'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
+                );
+              } 
+              else{
+                reject(this.responseText);
+              }
+            }
+            })
+          }
+          getUrl().then((result)=>{
+            localStorage.setItem('fotoOrg',result)
+            console.log(localStorage.getItem('fotoOrg'))
+          }).catch(e=>console.log(e))
+        })
+        reader.addEventListener('load', (event) => {
+          document.getElementById('foto-perfil-editar').setAttribute('src',event.target.result);
+        });
+        reader.readAsDataURL(fileList[0]);
     }
-
-    );
+    const [modificar_usuario] = useMutation(UPDATE_ORG,{
+      variables:{
+        "modificacionOrgId":props.id,
+        "modificacionOrgTelefono":values.telefono,
+        "modificacionOrgPagina":values.pagina,
+        "modificacionOrgDireccion":values.direccion,
+        "modificacionOrgFoto":localStorage.getItem('fotoOrg')
+      },
+      onCompleted({modificacionOrg}){
+        if(modificacionOrg.success){
+          window.location.reload()
+        }
+      },
+      })
+    const handleCampos = (e)=>{
+      setValues({...values,[e.target.name]:e.target.value})
+    }
+    useEffect(()=>{
+      if(values.bandera){
+        modificar_usuario()
+      }
+    })
+    const onSubmit=(e)=>{
+      e.preventDefault()
+      var nuevoTel="";
+      var nuevoPag="";
+      var nuevoDir="";
+      if(values.telefono===" "||values.telefono===""){
+        nuevoTel=document.getElementById("telOrg").getAttribute("placeholder");
+      }else{
+        nuevoTel=values.telefono
+      }
+      if(values.pagina===" "||values.pagina===""){
+        nuevoPag = document.getElementById("pagOrg").getAttribute("placeholder");
+      }else{
+        nuevoPag = values.pagina
+      }
+      if(values.direccion===" "||values.direccion===""){
+        nuevoDir = document.getElementById("dirOrg").getAttribute("placeholder");
+      }else{
+        nuevoDir=values.direccion
+      }
+      if(values.banderaFoto===false){
+        localStorage.setItem("fotoOrg",document.getElementById("foto-perfil-editar").getAttribute("src"))
+      }
+      setValues({telefono:nuevoTel,pagina:nuevoPag,direccion:nuevoDir,bandera:true})
+     
+    }
     const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
       "organizacionId": props.id
@@ -290,37 +388,29 @@ function Cuerpo(props) {
                 </button>
               </div>
             </div>
-            <img
-              className="rounded-circle foto-perfil-perfil"
-              src={data.organizacion.foto}
-            />
-            <h4 className="nick-name-perfil">
-              <strong>{data.organizacion.nombre}</strong>
-            </h4>
-            <div className="align-self-start">
-              <h6 className="title-nombre">Número de teléfono:</h6>
-              <h5 className="nombre-perfil-perfil">
-                <strong>
-                  {data.organizacion.telefono}
-                </strong>
-              </h5>
-            </div>
-            <div className="align-self-start">
-              <h6 className="title-nombre">Página web:</h6>
-              <h5 className="nombre-perfil-perfil">
-                <strong>{data.organizacion.pagina}</strong>
-              </h5>
-            </div>
-            <div className="align-self-start">
-              <h6 className="title-nombre">Dirección:</h6>
-              <h5 className="nombre-perfil-perfil">
-                <strong>{data.organizacion.direccion}</strong>
-              </h5>
-            </div>
+            <form onSubmit={onSubmit} className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
+                    <div className="form-group">
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={data.organizacion.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                                        <path fill-rule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
+                                        <path fill-rule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+                                        <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
+                                    </svg></span></label></div>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Teléfono:</h6><input  name="telefono" id="telOrg" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.organizacion.telefono}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Página:</h6><input  name="pagina" id="pagOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.organizacion.pagina}/>
+                    </div>
+                    <div className="form-group align-self-start" style={{width: '278px'}}>
+                        <h6 style={{fontFamily: 'Lexend'}}>Dirección:</h6><input  name="direccion" id="dirOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.organizacion.direccion}/>
+                    </div>
+                   <button className="btn btn-primary submit-editar" type="submit">Guardar cambios</button>
+                </form>
           </div>
         </div>
       </div>
     );
   }
 }
-export default PerfilOrg;
+export default EditarPerfilOrg;
