@@ -12,6 +12,7 @@ import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import perritoRisas from './assets/img/Perrito_obrero.png'
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory} from "react-router-dom";
@@ -57,6 +58,7 @@ const USUARIO = gql`
       foto
       identificacion
       comprobante
+      validacion
     }
   }
 `;
@@ -246,6 +248,8 @@ function Cuerpo(props) {
   if (loading) return null;
   if (error) return <Error></Error>;
   else {
+    console.log(data.usuario.validacion)
+    if(data.usuario.validacion){
     var rutaPerfil = "/PerfilUs/" + props.idUs;
     var rutaHome = "/HomeUs/" + props.idUs;
     var rutaServicios = "/ServiciosUs/" + props.idUs;
@@ -358,12 +362,19 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          {data.usuario.comprobante === null || data.usuario.identificacion === null ?(<Mascota idUs={props.idUs} idMas={props.idMas} docs={false}/>):(<Mascota idUs={props.idUs} idMas={props.idMas} docs={true}/>)}
-          
+            {data.usuario.comprobante === null || data.usuario.identificacion === null ?(<Mascota idUs={props.idUs} idMas={props.idMas} docs={false}/>):(<Mascota idUs={props.idUs} idMas={props.idMas} docs={true}/>)}
         </div>
       </div>
     );
   }
+  else{
+    return(<div className="erro" style={{textAlign:'center'}}>
+    <h2>GUAU GUAU );</h2>
+      <h4>[No puedes adoptar sin haber confirmado tu correo );]</h4>
+    <img style={{width:'500px'}} src={perritoRisas}/>
+  </div>);
+  }
+}
 }
 function Mascota(props) {
   const { loading, error, data } = useQuery(MASCOTA, {
@@ -454,7 +465,7 @@ function EstadoMascota(props) {
       registroSolicitudMascotaId: props.idMas,
     },
   });
-  if (props.estado == 0) {
+  if (props.estado === 0) {
     return (
       <button
         className="btn btn-primary adoptable"
