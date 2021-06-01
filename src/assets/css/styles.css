@@ -4,6 +4,70 @@
   border-radius: 11px;
   border: 1px solid #979797;
 }
+.msj-propio{
+  color: var(--white);
+  font-family: Lexend;
+  padding: 13px;
+  margin-right: 9px;
+  background: var(--blue);
+  border-radius: 15px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+.msj-otro{
+  margin-top: 5px;
+  margin-left: 9px;
+  padding: 6px;
+  color: var(--white);
+  font-family: Lexend;
+  background: var(--gray);
+  border-radius: 14px;
+}
+.div-msj{
+  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 1px;
+  width: 100%;
+}
+.bi-arrow-left{
+  color: var(--white);
+  font-size: 30px;
+  margin-left: 10px;
+}
+.foto-perfil-chat{
+  width: 40px!important;
+  height:40px!important;
+  margin: 0px!important;
+  margin-right: 15px!important;
+}
+.main-chat{
+  padding-right: 0px!important;
+  padding-left: 0px!important;
+  box-shadow: 3px 0px 20px, -3px 0px 20px black;
+  margin-top: 110px;
+  background-color: #333;
+}
+.footer-chat{
+  margin-bottom: 0px;
+  padding-bottom: 0px!important;
+  background: rgb(15, 15, 15)!important;
+  height: 58px;
+  margin-top: 1rem;
+  margin-bottom: 0px!important;
+
+}
+.footer-chat input{
+  height: 30px;
+  border-radius: 12px;
+  border-style: none;
+  width: 70%;
+  background: rgb(75,75,75);
+  padding-left: 15px;
+  color: var(--white);
+  font-family: Lexend;
+  padding-bottom: 0px;
+}
 .dropdown-menu-mascota{
   background-color: transparent!important;
 }
@@ -688,7 +752,19 @@ h2{
   color:black!important;
   text-align: center;
 }
-
+.eliminar-solicitud{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  height: 20%;
+  color:black!important;
+  text-align: center;
+}
 @media (max-width: 1210px) {
   .eliminar-cuenta-adv {
     margin-left: 250px!important;

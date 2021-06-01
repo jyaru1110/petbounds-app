@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
+import "./assets/fonts/material-icons.min.css"
 import "./assets/fonts/fontawesome5-overrides.min.css";
 import "./assets/css/styles.css";
 import "./assets/css/Article-Clean.css";
@@ -11,50 +12,61 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import Error from "./Error"
-import perritoXD from './assets/img/perritoxd.png'
-import { Link } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { Link} from "react-router-dom";
+import { gql, useQuery,useMutation } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
-import { useHistory } from "react-router-dom";
 
-const SOLICITUDES = gql`
-    query ($solicitudesUsuarioId: ID!) {
-    solicitudesUsuario(id: $solicitudesUsuarioId) {
-      id
-      mascota {
-        raza
-        edad
-        tamano
-        sexo
-        nombre
-        organizacion {
-          foto
-          nombre
-        }
-      }
-    }
-  }
-  
-`;
+
 const USUARIO = gql`
   query ($usuarioId: ID!) {
     usuario(id: $usuarioId) {
       id
-      nickname
+      nombre
       apellidop
+      apellidom
       foto
+      nickname
+      nacimiento
       identificacion
       comprobante
     }
   }
 `;
-
-function MisAdopcionesUs(props) {
+const SOLICITUD = gql`
+query ($solicitudesSeleccionadaId: ID!) {
+    solicitudesSeleccionada(id: $solicitudesSeleccionadaId) {
+      id
+      mascota {
+        id
+        organizacion {
+          nombre
+          foto
+        }
+      }
+    }
+  }
+`;
+const MENSAJES = gql`
+query ($consultaMensajesSolicitudId: ID!) {
+    consultaMensajes(solicitudId: $consultaMensajesSolicitudId) {
+      msj
+      usuarioflag
+    }
+  }
+`;
+const ELIMINAR_SOLICITUD = gql`
+mutation ($borrarSolicitudId: ID!) {
+    borrarSolicitud(id: $borrarSolicitudId) {
+      success
+    }
+  }
+`;
+function ChatUs(props) {
   return (
     <div>
       <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
+      <Cuerpo idUs={props.match.params.idUs} idSol={props.match.params.idSol}/>
     </div>
   );
 }
@@ -227,6 +239,7 @@ function Header(props) {
   }
 }
 function Cuerpo(props) {
+
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
       usuarioId: props.idUs,
@@ -347,48 +360,83 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-            <BloqueSoli idUs={props.idUs}/>   
+          <Chat idSol={props.idSol}/>
         </div>
       </div>
     );
   }
 }
-function BloqueSoli(props){
-    const {data,error,loading}=useQuery(SOLICITUDES,{
-        variables:{
-            "solicitudesUsuarioId":props.idUs
-        }
-    });
-    if(error) return null;
-    if(loading) return loading;
-    else{
-        if(data.solicitudesUsuario.length==0){
-            const rutaHome = "/HomeUs/"+props.idUs;
-            return(
-                <div class="row no_hay">
-                    <div class="col">
-                        <div class="d-flex flex-column align-items-center align-items-xl-center">
-                            <p style={{color: 'rgb(255,255,255)'},{fontFamily: 'Lexend'}}><strong>¡Vaya!, parece que aún no tienes solicitudes ._.XD</strong><br/></p><img style={{width: '40%'}} src={perritoXD}/><Link className="texto-link" to={rutaHome} style={{fontFamily: 'Lexend'}}>Haz una solicitud aquí</Link>
-                        </div>
-                    </div>
-                </div>
-            );  
+function Chat(props){
+    const goBack = () =>{
+        window.history.back();
     }
+    const [estado,setEstado] = useState(true)
+    const eliminar = () => {
+        setEstado(!estado)
+    };   
+    const[eliminarSolicitud] = useMutation(ELIMINAR_SOLICITUD,{
+        variables:{
+            "borrarSolicitudId":props.idSol
+        },
+        onCompleted({borrarSolicitud}){
+            if(borrarSolicitud.success){
+                window.history.back();
+            }
+        }
+    })
+    const {loading,error,data} = useQuery(SOLICITUD,{
+        variables:{
+            "solicitudesSeleccionadaId":props.idSol
+        }
+    })
+    if(loading) return null;
+    if(error) {return <Error></Error>;}
     else{
     return(
-        <div className="col contenedor-solicitudes">
-            {data.solicitudesUsuario.map((solicitudesUsuario)=>(
-                    <Link to={"/ChatUs/"+props.idUs+"/"+solicitudesUsuario.id} className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesUsuario.mascota.organizacion.foto}/>
-                        <div className="relleno-solicitud">
-                            <h4 id="titulo-soli">{solicitudesUsuario.mascota.organizacion.nombre}</h4>
-                            <p><em>{solicitudesUsuario.mascota.nombre} · {solicitudesUsuario.mascota.tamano} · {solicitudesUsuario.mascota.edad} · {solicitudesUsuario.mascota.raza} · {solicitudesUsuario.mascota.sexo}</em><br/></p>
-                        </div>
-                    </Link>
-            ))}
-            
+        <div className="col-md-8 col-lg-8 col-xl-8 offset-md-0 d-flex d-md-flex flex-column justify-content-between justify-content-md-center main-chat">
+            {estado === false ? (<div className="eliminar-solicitud">
+                <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu solicitud?</h3>
+                    <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarSolicitud}>Sí, eliminar</button></div>
+                </div>):(null)}
+            <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button class="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+                </svg></button>
+                <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center align-items-xl-center"><img className="rounded-circle foto-perfil-chat" src={data.solicitudesSeleccionada.mascota.organizacion.foto}/>
+                    <h2 style={{fontFamily: 'Lexend'},{fontSize: '25px'}}>{data.solicitudesSeleccionada.mascota.organizacion.nombre}</h2>
+                </div><button className="btn" onClick={eliminar} style={{background:"transparent"},{color:'white'}} type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-x" style={{fontSize: '30px'},{marginLeft: '0px'}}>
+                    <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                </svg></button>
+            </div>
+            <BodyChat id={props.idSol}></BodyChat>
+            <div className="form-group d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center footer-chat" >
+                <input type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="button"><i style={{color: 'white'}} className="material-icons">send</i></button>
+            </div>
         </div>
-    );
-    }}
+);}
 }
 
-export default MisAdopcionesUs;
+function BodyChat(props){
+    const{loading,error,data} = useQuery(MENSAJES,{
+        variables:{
+            "consultaMensajesSolicitudId":props.id
+        }
+    })
+    if(error) return null;
+    if(loading) return null;
+    else{
+        return(
+            <div className="body-chat" id="body-chat">
+                {data.consultaMensajes.map((consultaMensajes)=>(
+                    <div>
+                    {consultaMensajes.usuarioFlag === true ? 
+                    (<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{consultaMensajes.msj}</span></div>):
+                    (<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{consultaMensajes.msj}</span></div>)
+                    }
+                    </div>
+                )
+            )}
+            </div>
+        );
+    }
+}
+export default ChatUs;

@@ -148,6 +148,10 @@
 
 .header-chat {
   margin-top: 0px;
+  color: var(--white);
+  padding: 10px 0px;
+  margin: 0px 0px 0px;
+  background: rgb(15, 15, 15);
 }
 
 .anuncio-chat {
@@ -158,6 +162,8 @@
   overflow-y: scroll;
   margin: 0px 0px 0px;
   margin-top: 0px;
+  margin-bottom: 5px;
+  height: 460px;
 }
 
 @media (max-width: 767px) {
