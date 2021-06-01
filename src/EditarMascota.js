@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -26,22 +26,35 @@ query ($organizacionId: ID!) {
     }
   }
 `;
-
-const REGISTRO_MAS = gql`
-mutation ($registroMascotaId: ID!, $registroMascotaTipo: String, $registroMascotaRaza: String, $registroMascotaEdad: String, $registroMascotaHistoria: String, $registroMascotaNombre: String, $registroMascotaFoto: String, $registroMascotaTamano: String, $registroMascotaSexo: String) {
-  registroMascota(id: $registroMascotaId, tipo: $registroMascotaTipo, raza: $registroMascotaRaza, edad: $registroMascotaEdad, historia: $registroMascotaHistoria, nombre: $registroMascotaNombre, foto: $registroMascotaFoto, tamano: $registroMascotaTamano, sexo: $registroMascotaSexo) {
-    success
-    message
+const MOD_MAS=gql`
+mutation ($modificacionMascotaId: String!, $modificacionMascotaEdad: String, $modificacionMascotaHistoria: String, $modificacionMascotaNombre: String, $modificacionMascotaFoto: String, $modificacionMascotaTamano: String, $modificacionMascotaSexo: String) {
+    modificacionMascota(id: $modificacionMascotaId, edad: $modificacionMascotaEdad, historia: $modificacionMascotaHistoria, nombre: $modificacionMascotaNombre, foto: $modificacionMascotaFoto, tamano: $modificacionMascotaTamano, sexo: $modificacionMascotaSexo) {
+      success
+    }
   }
-}
+`;
+const MASCOTA_SELEC=gql`
+query ($mascotaSelecId: ID!) {
+    mascotaSelec(id: $mascotaSelecId) {
+      tipo
+      raza
+      edad
+      historia
+      nombre
+      foto
+      tamano
+      sexo
+      estado
+    }
+  }
 `;
 
 
-function HomeOrg(props) {
+function EditarMascota(props) {
   return (
     <div>
       <Header id={props.match.params.idOrg}></Header>
-      <Cuerpo id={props.match.params.idOrg}></Cuerpo>
+      <Cuerpo id={props.match.params.idOrg} idMas={props.match.params.idMas}></Cuerpo>
     </div>
   );
 }
@@ -104,83 +117,6 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-  const [values,setValues]=useState({
-    nombre:'',
-    raza:'',
-    animal:'',
-    tamano:'',
-    edad:'',
-    sexo:'',
-    hist:'',
-    bandera:false
-  });
-  const handleFotoMascota=(e)=>{
-    var fileList =  e.target.files;
-    setValues({bandera:true})
-    const reader = new FileReader();
-    const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
-    fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
-      const formData = new FormData();
-      Object.keys(data.data.fields).forEach(key => {
-        formData.append(key, data.data.fields[key]);
-      });
-      formData.append("file", fileList[0]);
-      const xhr = new XMLHttpRequest();
-      function getUrl(){
-        return new Promise(function(resolve,reject){
-        xhr.open("POST", data.data.url, true);
-        xhr.send(formData)
-        xhr.onload = function () {
-          if (this.status === 204) {
-            resolve(
-             'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
-            );
-          } 
-          else{
-            reject(this.responseText);
-          }
-        }
-        })
-      }
-      getUrl().then((result)=>{
-        localStorage.setItem('fotoMascota',result)
-        console.log(localStorage.getItem('fotoMascota'))
-      }).catch(e=>console.log(e))
-    })
-    reader.addEventListener('load', (event) => {
-      document.getElementById('foto-mascota').setAttribute('src',event.target.result);
-    });
-    reader.readAsDataURL(fileList[0]);
-}
-  const handleCampos = (e) => {
-    setValues({...values,[e.target.name]:e.target.value})
-  };
-  const [registrarMas] = useMutation(REGISTRO_MAS,{
-      variables:{
-        "registroMascotaId": props.id,
-        "registroMascotaTipo": values.animal,
-        "registroMascotaRaza": values.raza,
-        "registroMascotaEdad": values.edad,
-        "registroMascotaHistoria": values.hist,
-        "registroMascotaNombre": values.nombre,
-        "registroMascotaFoto": localStorage.getItem('fotoMascota'),
-        "registroMascotaTamano": values.tamano,
-        "registroMascotaSexo": values.sexo
-      }
-    }
-  );
-  const handleSubmit = (e) =>{
-    e.preventDefault();
-    if(values.bandera===false){
-      localStorage.setItem('fotoMascota',' ')
-    }
-    if(values.nombre!=='' && values.nombre!==' ' && values.tamano!=='' && values.tamano!=='Tamaño'&& values.sexo!=='' && values.sexo!=='Sexo'){
-      registrarMas();
-    }else{
-      alert('Llena correctamente los datos')
-    }
-    
-  };
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
       "organizacionId": props.id
@@ -269,33 +205,152 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          <div className="col d-flex justify-content-center contenido-org">
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group d-flex justify-content-center">
-                        <div className="d-flex d-md-flex justify-content-center align-items-center justify-content-md-center align-items-md-center div-img-label-add"><img class="div-input-file-a" id="foto-mascota"/><input className="form-control-file file" type="file" onChange={handleFotoMascota} id="foto-perrito" accept="image/png, image/jpeg"/><label htmlFor="foto-perrito"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-plus-square">
-                                    <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
-                                </svg></label>
-                        </div>
-                    </div><input className="form-control input-add" type="text" name="nombre" onChange={handleCampos} placeholder="Nombre mascota"/><input className="form-control input-add" name="raza" onChange={handleCampos} type="text" placeholder="Raza"/><input className="form-control input-add" type="text" name="animal" onChange={handleCampos} placeholder="Animal"/>
-                        <select className="form-control input-add" name="tamano" value={values.tamano} onChange={handleCampos} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
-                            <option value="Tamaño"> Tamaño</option>
-                            <option value="Grande">Grande</option>
-                            <option value="Mediano">Mediano</option>
-                            <option value="Chico">Chico</option>
-                        </select>
-                    <div className="form-group edad-genero"><input className="form-control" type="text" placeholder="Edad" name="edad" onChange={handleCampos}/><select className="form-control" name="sexo" value={values.sexo} onChange={handleCampos} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
-                            <option value="Sexo">Sexo</option>
-                            <option value="Hembra">Hembra</option>
-                            <option value="Macho">Macho</option>
-                        </select></div><textarea className="form-control" id="text-area-add" placeholder="Historia" name="hist" onChange={handleCampos}></textarea><button className="btn btn-primary submit-add" type="submit">Registrar</button>
-                </form>
-            </div>
+            <FormEditar idMas={props.idMas}/>
         </div>
       </div>
     );
   }
 }
 
-
-export default HomeOrg;
+function FormEditar(props){
+    const [values,setValues]=useState({
+        nombre:'',
+        tamano:'',
+        edad:'',
+        sexo:'',
+        hist:'',
+        bandera:false,
+        banderaMut:false
+      });
+      const handleFotoMascota=(e)=>{
+        var fileList =  e.target.files;
+        setValues({bandera:true})
+        const reader = new FileReader();
+        const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+        fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
+          const formData = new FormData();
+          Object.keys(data.data.fields).forEach(key => {
+            formData.append(key, data.data.fields[key]);
+          });
+          formData.append("file", fileList[0]);
+          const xhr = new XMLHttpRequest();
+          function getUrl(){
+            return new Promise(function(resolve,reject){
+            xhr.open("POST", data.data.url, true);
+            xhr.send(formData)
+            xhr.onload = function () {
+              if (this.status === 204) {
+                resolve(
+                 'https://archivospetbounds.s3-us-west-2.amazonaws.com/' + fileList[0].name
+                );
+              } 
+              else{
+                reject(this.responseText);
+              }
+            }
+            })
+          }
+          getUrl().then((result)=>{
+            localStorage.setItem('fotoMascotaMod',result)
+            console.log(localStorage.getItem('fotoMascotaMod'))
+          }).catch(e=>console.log(e))
+        })
+        reader.addEventListener('load', (event) => {
+          document.getElementById('foto-mascota').setAttribute('src',event.target.result);
+        });
+        reader.readAsDataURL(fileList[0]);
+    }
+      const handleCampos = (e) => {
+        setValues({...values,[e.target.name]:e.target.value})
+      };
+      const [editarMas] = useMutation(MOD_MAS,{
+          variables:{
+            "modificacionMascotaId": props.idMas,
+            "modificacionMascotaEdad": values.edad,
+            "modificacionMascotaHistoria": values.hist,
+            "modificacionMascotaNombre": values.nombre,
+            "modificacionMascotaFoto": localStorage.getItem('fotoMascotaMod'),
+            "modificacionMascotaTamano": values.tamano,
+            "modificacionMascotaSexo": values.sexo
+          },
+          onCompleted({modificacionMascota}){
+              if(modificacionMascota.success){
+                  window.location.reload();
+              }
+          }
+        }
+      );
+      useEffect(()=>{
+          if(values.banderaMut){
+              editarMas();
+              console.log(values)
+          }
+      })
+      const handleSubmit = (e) =>{
+        e.preventDefault();
+        var nuevoNom = '';
+        var nuevoHist = '';
+        var nuevoEdad = '';
+        var nuevoTamano = '';
+        var nuevoSexo = '';
+        if(values.tamano==='' || values.tamano===' '){
+            nuevoTamano = document.getElementById("tamanoSelec").getAttribute("placeholder")
+        } else{
+            nuevoTamano = values.tamano
+        }
+        if(values.sexo==='' || values.sexo===' '){
+            nuevoSexo= document.getElementById("sexoSelec").getAttribute("placeholder")
+        } else{
+            nuevoSexo= values.sexo
+        }
+        if(values.nombre==='' || values.nombre===' '){
+            nuevoNom = document.getElementById("nombreMas").getAttribute("placeholder")
+        } else{
+            nuevoNom = values.nombre
+        }
+        if(values.hist==='' || values.hist===' '){
+            nuevoHist = document.getElementById("text-area-add").getAttribute("placeholder")
+        } else{
+            nuevoHist = values.hist
+        }if(values.edad==='' || values.edad===' '){
+            nuevoEdad = document.getElementById("edadMas").getAttribute("placeholder")
+        } else{
+            nuevoHist = values.hist
+        }
+        setValues({nombre:nuevoNom,hist:nuevoHist,edad:nuevoEdad,sexo:nuevoSexo,tamano:nuevoTamano,banderaMut:true})
+      };
+    const {loading,error,data} = useQuery(MASCOTA_SELEC,{
+        variables:{
+            "mascotaSelecId":props.idMas
+        }
+    })
+    if(error) return null;
+    if(loading) return null;
+    else{
+        return(
+        <div className="col d-flex justify-content-center contenido-org">
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group d-flex justify-content-center">
+                        <div className="d-flex d-md-flex justify-content-center align-items-center justify-content-md-center align-items-md-center div-img-label-add"><img class="div-input-file-a" src={data.mascotaSelec.foto} id="foto-mascota"/><input className="form-control-file file" type="file" onChange={handleFotoMascota} id="foto-perrito" accept="image/png, image/jpeg"/><label htmlFor="foto-perrito"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-plus-square">
+                                    <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                                    <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                </svg></label>
+                        </div>
+                    </div><input className="form-control input-add" type="text" name="nombre" id="nombreMas" onChange={handleCampos} placeholder={data.mascotaSelec.nombre}/>
+                        <select className="form-control input-add" name="tamano" onChange={handleCampos} id="tamanoSelec" placeholder={data.mascotaSelec.tamano} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
+                            <option value={data.mascotaSelec.tamano}>{data.mascotaSelec.tamano}</option>
+                            <option value="Grande">Grande</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Chico">Chico</option>
+                        </select>
+                    <div className="form-group edad-genero"><input className="form-control" type="text" id="edadMas" placeholder={data.mascotaSelec.edad} name="edad" onChange={handleCampos}/><select className="form-control" name="sexo" id="sexoSelec" onChange={handleCampos} placeholder={data.mascotaSelec.sexo} style={{color: 'rgba(255, 255, 255, 0.616)'}}>
+                            <option value={data.mascotaSelec.sexo}>{data.mascotaSelec.sexo}</option>
+                            <option value="Hembra">Hembra</option>
+                            <option value="Macho">Macho</option>
+                        </select></div><textarea className="form-control" id="text-area-add" placeholder={data.mascotaSelec.historia} name="hist" onChange={handleCampos}></textarea><button className="btn btn-primary submit-add" type="submit">Modificar</button>
+                </form>
+            </div>
+        );
+    }
+}
+export default EditarMascota;

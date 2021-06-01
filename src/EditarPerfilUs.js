@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -237,6 +237,7 @@ function Cuerpo(props) {
     nombre:'',
     apellidop:'',
     apellidom:'',
+    bandera:false
   });
   const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
     onCompleted({borrarUsuario}){
@@ -373,9 +374,33 @@ function Cuerpo(props) {
   const handleCampos = (e)=>{
     setValues({...values,[e.target.name]:e.target.value})
   }
+  useEffect(()=>{
+    if(values.bandera){
+      modificar_usuario()
+    }
+  })
   const onSubmit=(e)=>{
     e.preventDefault()
-    modificar_usuario();
+    var nuevoNom="";
+    var nuevoAP="";
+    var nuevoAM="";
+    if(values.nombre===" "||values.nombre===""){
+      nuevoNom=document.getElementById("nombreUs").getAttribute("placeholder");
+    }else{
+      nuevoNom=values.nombre
+    }
+    if(values.apellidop===" "||values.apellidop===""){
+      nuevoAP = document.getElementById("apellidopUs").getAttribute("placeholder");
+    }else{
+      nuevoAP = values.apellidop
+    }
+    if(values.apellidom===" "||values.apellidom===""){
+      nuevoAM = document.getElementById("apellidomUs").getAttribute("placeholder");
+    }else{
+      nuevoAM=values.apellidom
+    }
+    setValues({nombre:nuevoNom,apellidom:nuevoAM,apellidop:nuevoAP,bandera:true})
+   
   }
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
@@ -511,13 +536,13 @@ function Cuerpo(props) {
                                     </svg></span></label></div>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.nombre}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" id="nombreUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.nombre}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.usuario.apellidop}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" id="apellidopUs" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.usuario.apellidop}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.apellidom}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" id="apellidomUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.apellidom}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
                         <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" htmlFor="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>

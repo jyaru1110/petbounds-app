@@ -591,6 +591,7 @@ const [eliminarMascota]=useMutation(BORRAR_MASCOTA,{
         }})
     }
 })
+const ruta = "/EditarMascota/"+props.idOrg+"/"+props.idMas;
 return (
     <div>
     {estado === false ? (<div className="eliminar-mascota">
@@ -628,7 +629,7 @@ return (
           { boxShadow: "4px 3px 20px rgb(0,0,0)" })
         }
       >
-        <Link className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+        <Link to={ruta} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"

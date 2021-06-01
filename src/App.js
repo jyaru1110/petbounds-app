@@ -18,7 +18,7 @@ import HomeOrg from './HomeOrg'
 import Validacion from './Validacion'
 import AdopcionesOrg from './AdopcionesOrg';
 import MisMascotasOrg from './MisMascotasOrg';
-
+import EditarMascota from './EditarMascota';
 function App() {
   return (
     <BrowserRouter>
@@ -39,6 +39,7 @@ function App() {
       <Route exact path="/Validacion/:id" component={Validacion}/>
       <Route exact path="/AdopcionesOrg/:idOrg" component={AdopcionesOrg}/>
       <Route exact path="/MisMascotasOrg/:idOrg" component={MisMascotasOrg}/>
+      <Route exact path="/EditarMascota/:idOrg/:idMas" component={EditarMascota}/>
     </BrowserRouter>
   );
 }
