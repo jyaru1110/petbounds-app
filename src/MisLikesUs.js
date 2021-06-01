@@ -220,8 +220,8 @@ function Carnets(props) {
                         return favoritosUsuario.mascotaFav;
                     }
                 }).map((favoritosUsuario) => (
-                    <div className="row">
-                        <div className="col d-inline-flex justify-content-center carnet" key={favoritosUsuario.id}>
+                    <div className="row" key = {favoritosUsuario.id}>
+                        <div className="col d-inline-flex justify-content-center carnet">
                             <div className="card text-left align-self-center carnet-relleno">
                                 <div className="card-body carnet-body">
                                     <h4 className="d-flex justify-content-between card-title nombre-mascota">{favoritosUsuario.mascotaFav.nombre}<EstadoBadge estado={favoritosUsuario.mascotaFav.estado} /></h4>
