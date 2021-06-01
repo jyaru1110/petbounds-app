@@ -46,10 +46,18 @@ const FEED_MASCOTAS = gql`
   }
 `;
 
+const BORRAR_MASCOTA=gql`
+mutation ($borrarMascotaId: ID!) {
+    borrarMascota(id: $borrarMascotaId) {
+      success
+      message
+    }
+  }
+  `;
 function MisMascotasOrg(props) {
   return (
     <div>
-      <Header id={props.match.params.idOrg}></Header>
+      <Header id={props.match.param}></Header>
       <Cuerpo id={props.match.params.idOrg}></Cuerpo>
     </div>
   );
@@ -452,7 +460,6 @@ function Cuerpo(props) {
 }
 
 function Carnets(props) {
-const [estado,setEstado] = useState(true)
 
   const { loading, error, data } = useQuery(FEED_MASCOTAS, {
     variables: {
@@ -518,57 +525,11 @@ const [estado,setEstado] = useState(true)
                       src={mascotasOrg.foto}
                     />
                     <div className="card-footer text-white d-inline-flex justify-content-end align-items-center align-content-center footer-carnet">
-                      <div
-                        className="dropleft d-md-flex justify-content-end  justify-content-md-center align-items-md-center" >
-                        <button
-                          className="btn btn-primary d-md-flex align-items-md-center dropdown-menu-mascota"
-                          aria-expanded="false"
-                          data-toggle="dropdown"
-                          type="button"
-                          style={{ bordeRight: ".3em none!important" }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1em"
-                            height="1em"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            className="bi bi-three-dots"
-                            style={{ fontSize: "30px!important" }}
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
-                            ></path>
-                          </svg>
-                        </button>
-                        <div
-                          className="dropdown-menu drop-left-menu"
-                          style={
-                            ({ marginRight: "0px" },
-                            { width: "193.891px" },
-                            { boxShadow: "4px 3px 20px rgb(0,0,0)" })
-                          }
-                        >
-                          <Link className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1em"
-                              height="1em"
-                              viewBox="0 0 16 16"
-                              fill="currentColor"
-                              className="bi bi-pencil-fill"
-                              style={{ marginRight: "10px" }}
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
-                              ></path>
-                            </svg>
-                            Editar mascota
-                          </Link>
-                        </div>
-                      </div>
+                      <MenuFooter
+                        idOrg={props.id}
+                        idMas={mascotasOrg.id}
+                        nombre={mascotasOrg.nombre}
+                      ></MenuFooter>
                     </div>
                   </div>
                 </div>
@@ -606,6 +567,108 @@ const [estado,setEstado] = useState(true)
       );
     }
   }
+}
+function MenuFooter(props) {
+const [estado, setEstado] = useState(true);
+const eliminar = () =>{
+    setEstado(!estado)
+}
+const [eliminarMascota]=useMutation(BORRAR_MASCOTA,{
+    variables:{
+        "borrarMascotaId":props.idMas
+    },
+    update(proxy){
+        const dato = proxy.readQuery({
+            query: FEED_MASCOTAS,
+            variables:{
+                "mascotasOrgId":props.idOrg
+            }
+        })
+        const date = dato.mascotasOrg.filter(mascotasOrg => mascotasOrg.id !== props.idMas)
+        
+        proxy.writeQuery({query:FEED_MASCOTAS,variables:{"mascotasOrgId":props.idOrg},data:{
+            mascotasOrg:{date}
+        }})
+    }
+})
+return (
+    <div>
+    {estado === false ? (<div className="eliminar-mascota">
+    <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar a {props.nombre}?</h3>
+    <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarMascota}>Sí, eliminar</button></div>
+    </div>):(null)}
+    <div className="dropleft d-md-flex justify-content-end  justify-content-md-center align-items-md-center">
+      <button
+        className="btn btn-primary d-md-flex align-items-md-center dropdown-menu-mascota"
+        aria-expanded="false"
+        data-toggle="dropdown"
+        type="button"
+        style={{ bordeRight: ".3em none!important" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="bi bi-three-dots"
+          style={{ fontSize: "30px!important" }}
+        >
+          <path
+            fill-rule="evenodd"
+            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+          ></path>
+        </svg>
+      </button>
+      <div
+        className="dropdown-menu drop-left-menu"
+        style={
+          ({ marginRight: "0px" },
+          { width: "193.891px" },
+          { boxShadow: "4px 3px 20px rgb(0,0,0)" })
+        }
+      >
+        <Link className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="bi bi-pencil-fill"
+            style={{ marginRight: "10px" }}
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
+            ></path>
+          </svg>
+          Editar mascota
+        </Link>
+        <button
+          className="dropdown-item d-md-flex align-items-md-center editar-eliminar"
+          onClick={eliminar}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="bi bi-person-x-fill"
+            style={{ marginRight: "10px" }}
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"
+            ></path>
+          </svg>
+          Eliminar Mascota
+        </button>
+      </div>
+    </div>
+    </div>
+  );
 }
 function EstadoBadge(props) {
   if (props.estado == 1) {

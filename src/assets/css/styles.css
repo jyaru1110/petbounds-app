@@ -670,25 +670,38 @@ h2{
   z-index: 1;
   background: rgba(255,255,255,0.78);
   border-radius: 15px;
-  height: 25%,
+  height: 15%;
+  text-align: center;
 }
 .eliminar-mascota{
+  margin-top:-200px;
   display: flex;
-  margin-left: -60px;
+  margin-left: -79%;
   flex-direction: column;
   align-items: center;
-  width: 30%;
-  margin-top: 10%;
-  position: fixed;
+  width: 100%;
+  position: absolute;
   z-index: 1;
-  background: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.95);
   border-radius: 15px;
-  height: 30%,
+  height: 30%;
+  color:black!important;
+  text-align: center;
 }
+
+@media (max-width: 1210px) {
+  .eliminar-cuenta-adv {
+    margin-left: 250px!important;
+    width: 50%;
+    height: 15%;
+  }
+}
+
 @media (max-width: 992px) {
   .eliminar-cuenta-adv {
     margin-left: 250px!important;
     width: 50%;
+    height: 20%;
   }
 }
 
@@ -711,6 +724,7 @@ h2{
     margin-left: 10px!important;
     width: 90%;
     margin-top: 100px;
+    height: 25%;
   }
 }
 
@@ -719,6 +733,9 @@ h2{
     margin-left: 0px!important;
     width: 90%;
     margin-top: 100px;
+  }
+  .eliminar-mascota{
+    margin-left: -74%;
   }
   .carnets{
     margin-top: 50px;

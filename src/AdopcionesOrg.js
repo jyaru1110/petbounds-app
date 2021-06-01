@@ -220,7 +220,7 @@ function BloqueSoli(props){
     if(error) return null;
     if(loading) return loading;
     else{
-        if(data.solicitudesOrg.length==0){
+        if(data.solicitudesOrg.length===0){
             const rutaHome = "/HomeUs/"+props.id;
             return(
                 <div class="row no_hay">
@@ -243,7 +243,6 @@ function BloqueSoli(props){
                         </div>
                     </Link>
             ))}
-            
         </div>
     );
     }}
