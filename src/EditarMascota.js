@@ -293,6 +293,9 @@ function FormEditar(props){
         var nuevoEdad = '';
         var nuevoTamano = '';
         var nuevoSexo = '';
+        if(values.bandera===false){
+            localStorage.setItem('fotoMascotaMod',document.getElementById("foto-mascota").getAttribute("src"))
+        }
         if(values.tamano==='' || values.tamano===' '){
             nuevoTamano = document.getElementById("tamanoSelec").getAttribute("placeholder")
         } else{
@@ -315,7 +318,7 @@ function FormEditar(props){
         }if(values.edad==='' || values.edad===' '){
             nuevoEdad = document.getElementById("edadMas").getAttribute("placeholder")
         } else{
-            nuevoHist = values.hist
+            nuevoEdad = values.edad
         }
         setValues({nombre:nuevoNom,hist:nuevoHist,edad:nuevoEdad,sexo:nuevoSexo,tamano:nuevoTamano,banderaMut:true})
       };
