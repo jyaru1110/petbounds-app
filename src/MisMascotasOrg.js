@@ -57,7 +57,7 @@ mutation ($borrarMascotaId: ID!) {
 function MisMascotasOrg(props) {
   return (
     <div>
-      <Header id={props.match.param}></Header>
+      <Header id={props.match.params.idOrg}></Header>
       <Cuerpo id={props.match.params.idOrg}></Cuerpo>
     </div>
   );
@@ -65,7 +65,7 @@ function MisMascotasOrg(props) {
 function Header(props) {
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
-      organizacionId: props.id,
+      "organizacionId": props.id,
     },
   });
   if (loading) return null;
