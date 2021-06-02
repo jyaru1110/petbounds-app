@@ -28,8 +28,16 @@ const HACER_SOLICITUD = gql`
       mascotaId: $registroSolicitudMascotaId
     ) {
       success
+      message
     }
   }
+`;
+const HACER_MENSAJE = gql`
+mutation RegistroMensajeMutation($registroMensajeSolicitudId: ID!, $registroMensajeMsj: String!, $registroMensajeUsuarioflag: Boolean!) {
+  registroMensaje(solicitudId: $registroMensajeSolicitudId, msj: $registroMensajeMsj, usuarioflag: $registroMensajeUsuarioflag) {
+    success
+  }
+}
 `;
 const MASCOTA = gql`
   query ($mascotaSelecId: ID!) {
@@ -248,7 +256,6 @@ function Cuerpo(props) {
   if (loading) return null;
   if (error) return <Error></Error>;
   else {
-    console.log(data.usuario.validacion)
     if(data.usuario.validacion){
     var rutaPerfil = "/PerfilUs/" + props.idUs;
     var rutaHome = "/HomeUs/" + props.idUs;
@@ -451,6 +458,7 @@ function EstadoMascota(props) {
       document.getElementById("errorSolicitud").innerHTML ="Sube tus documentos en editar perfil para adoptar :)";
     }
   }
+  const [hacerMensaje] = useMutation(HACER_MENSAJE)
   const [hacerSolicitud] = useMutation(HACER_SOLICITUD, {
     onCompleted({ registroSolicitud }) {
       if (registroSolicitud.success) {

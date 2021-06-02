@@ -42,6 +42,7 @@ query ($solicitudesSeleccionadaId: ID!) {
         organizacion {
           nombre
           foto
+          direccion
         }
       }
     }
@@ -52,6 +53,15 @@ query ($consultaMensajesSolicitudId: ID!) {
     consultaMensajes(solicitudId: $consultaMensajesSolicitudId) {
       msj
       usuarioflag
+      solicitudId
+    }
+  }
+`;
+const HACER_MENSAJE = gql`
+mutation ($registroMensajeSolicitudId: ID!, $registroMensajeMsj: String!, $registroMensajeUsuarioflag: Boolean!) {
+    registroMensaje(solicitudId: $registroMensajeSolicitudId, msj: $registroMensajeMsj, usuarioflag: $registroMensajeUsuarioflag) {
+      success
+      message
     }
   }
 `;
@@ -370,10 +380,17 @@ function Chat(props){
     const goBack = () =>{
         window.history.back();
     }
-    const [estado,setEstado] = useState(true)
+    const [estado,setEstado] = useState(true);
     const eliminar = () => {
         setEstado(!estado)
-    };   
+    };
+    const [mensaje,setMensaje] = useState(""); 
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        if(mensaje!=="" && mensaje!==" "){
+            enviarMensaje()
+        }
+    }
     const[eliminarSolicitud] = useMutation(ELIMINAR_SOLICITUD,{
         variables:{
             "borrarSolicitudId":props.idSol
@@ -382,6 +399,13 @@ function Chat(props){
             if(borrarSolicitud.success){
                 window.history.back();
             }
+        }
+    })
+    const[enviarMensaje] =  useMutation(HACER_MENSAJE,{
+        variables:{
+            "registroMensajeSolicitudId": props.idSol,
+            "registroMensajeMsj":mensaje,
+            "registroMensajeUsuarioflag":true
         }
     })
     const {loading,error,data} = useQuery(SOLICITUD,{
@@ -407,15 +431,18 @@ function Chat(props){
                     <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                 </svg></button>
             </div>
-            <BodyChat id={props.idSol}></BodyChat>
+            <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion}></BodyChat>
+            <form onSubmit={handleSubmit}>
             <div className="form-group d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center footer-chat" >
-                <input type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="button"><i style={{color: 'white'}} className="material-icons">send</i></button>
+                <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}} type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
             </div>
+            </form>
         </div>
 );}
 }
 
 function BodyChat(props){
+    const dir = props.dir
     const{loading,error,data} = useQuery(MENSAJES,{
         variables:{
             "consultaMensajesSolicitudId":props.id
@@ -427,8 +454,8 @@ function BodyChat(props){
         return(
             <div className="body-chat" id="body-chat">
                 {data.consultaMensajes.map((consultaMensajes)=>(
-                    <div>
-                    {consultaMensajes.usuarioFlag === true ? 
+                    <div key={consultaMensajes.solicitudId}>
+                    {consultaMensajes.usuarioflag === true ? 
                     (<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{consultaMensajes.msj}</span></div>):
                     (<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{consultaMensajes.msj}</span></div>)
                     }
