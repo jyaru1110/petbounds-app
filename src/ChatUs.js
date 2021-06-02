@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/material-icons.min.css"
@@ -33,6 +33,15 @@ const USUARIO = gql`
     }
   }
 `;
+const SUB = gql`
+subscription Subscription($mensajeEnviadoId: ID!) {
+  mensajeEnviado(id: $mensajeEnviadoId) {
+    solicitudId
+    msj
+    usuarioflag
+  }
+}
+`;
 const SOLICITUD = gql`
 query ($solicitudesSeleccionadaId: ID!) {
     solicitudesSeleccionada(id: $solicitudesSeleccionadaId) {
@@ -54,6 +63,7 @@ query ($consultaMensajesSolicitudId: ID!) {
       msj
       usuarioflag
       solicitudId
+      _id
     }
   }
 `;
@@ -406,6 +416,11 @@ function Chat(props){
             "registroMensajeSolicitudId": props.idSol,
             "registroMensajeMsj":mensaje,
             "registroMensajeUsuarioflag":true
+        },
+        onCompleted({registroMensaje}){
+          if(registroMensaje.success){
+            document.getElementById("input-msj").value=""
+          }
         }
     })
     const {loading,error,data} = useQuery(SOLICITUD,{
@@ -434,7 +449,7 @@ function Chat(props){
             <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion}></BodyChat>
             <form onSubmit={handleSubmit}>
             <div className="form-group d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center footer-chat" >
-                <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}} type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
+                <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}}  type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
             </div>
             </form>
         </div>
@@ -442,8 +457,7 @@ function Chat(props){
 }
 
 function BodyChat(props){
-    const dir = props.dir
-    const{loading,error,data} = useQuery(MENSAJES,{
+    const{subscribeToMore,loading,error,data} = useQuery(MENSAJES,{
         variables:{
             "consultaMensajesSolicitudId":props.id
         }
@@ -452,9 +466,34 @@ function BodyChat(props){
     if(loading) return null;
     else{
         return(
-            <div className="body-chat" id="body-chat">
-                {data.consultaMensajes.map((consultaMensajes)=>(
-                    <div key={consultaMensajes.solicitudId}>
+            <Mensaje data={data} 
+            subscribeNewMesssage={()=>
+              subscribeToMore({
+                document:SUB,
+                variables:{"mensajeEnviadoId":props.id},
+                updateQuery:(prev,{subscriptionData})=>{
+                  if(!subscriptionData.data)return prev;
+                  const newMessage = subscriptionData.data.mensajeEnviado;
+                  return Object.assign({},prev,{
+                    consultaMensajes:[newMessage,...prev.consultaMensajes]
+                  })
+                }
+              })
+            }
+            dir={props.dir}
+            ></Mensaje>
+        );
+    }
+}
+function Mensaje(props){
+  useEffect(()=>{
+      props.subscribeNewMesssage()
+    }
+  )
+  return(
+    <div className="body-chat" id="body-chat"  >
+                {props.data.consultaMensajes.map((consultaMensajes)=>(
+                    <div key={consultaMensajes._id}>
                     {consultaMensajes.usuarioflag === true ? 
                     (<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{consultaMensajes.msj}</span></div>):
                     (<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{consultaMensajes.msj}</span></div>)
@@ -462,8 +501,7 @@ function BodyChat(props){
                     </div>
                 )
             )}
-            </div>
-        );
-    }
+    </div>
+  )
 }
 export default ChatUs;

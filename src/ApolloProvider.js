@@ -9,7 +9,7 @@ const wsLink = new WebSocketLink({
     uri: `ws://localhost:4000/subscriptions`,
     options: {
       reconnect: true,
-    },
+    }
 });
 
 const httpLink = new HttpLink({
@@ -28,10 +28,10 @@ const splitLink = split(
     httpLink,
   );
 
-  const client = new ApolloClient({
-    link: splitLink,
-    cache: new InMemoryCache()
-  });
+const client = new ApolloClient({
+  link: splitLink,
+  cache: new InMemoryCache()
+});
   
 
 export default (
