@@ -45,7 +45,7 @@
   padding-right: 0px!important;
   padding-left: 0px!important;
   box-shadow: 3px 0px 20px, -3px 0px 20px black;
-  margin-top: 110px;
+  margin-top: 100px;
   background-color: #333;
 }
 .footer-chat{
@@ -828,5 +828,53 @@ h2{
   .mr-auto{
     display: none!important;
   }
+  .main-chat{
+    margin-top: 70px;
+  }
+}
+@media (max-height: 1367px) {
+  #body-chat{
+    height: 1000px;
+  }
+}
+@media (max-height: 1025px) {
+  #body-chat{
+    height: 700px;
+  }
 }
 
+@media (max-height: 824px) {
+  #body-chat{
+    height: 600px;
+  }
+}
+@media (max-height: 813px) {
+  #body-chat{
+    height: 590px;
+  }
+}
+@media (max-height: 737px) {
+  #body-chat{
+    height: 516px;
+  }
+}
+@media (max-height: 732px) {
+  #body-chat{
+    height: 511px;
+  }
+}
+@media (max-height: 668px) {
+  #body-chat{
+    height: 445px;
+  }
+}
+@media (max-height: 642px) {
+  #body-chat{
+    height: 420px;
+  }
+}
+@media (max-height: 569px) {
+  #body-chat{
+    height: 330px;
+  }
+}

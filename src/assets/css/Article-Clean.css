@@ -178,11 +178,7 @@
   }
 }
 
-@media (max-width: 576px) {
-  .col-md-8.col-lg-8.col-xl-8.offset-md-0 {
-    margin-top: -60px;
-  }
-}
+
 
 @media (min-width: 768px) {
   #header-menu {
