@@ -223,11 +223,11 @@ function Cuerpo(props) {
                   className="bi bi-box-arrow-left"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
                   ></path>
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
                   ></path>
                 </svg>
@@ -288,10 +288,10 @@ function Chat(props){
                 <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu solicitud?</h3>
                     <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarSolicitud}>Sí, eliminar</button></div>
                 </div>):(null)}
-            <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button class="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+            <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button className="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
+                    <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                 </svg></button>
-                <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center align-items-xl-center"><img className="rounded-circle foto-perfil-chat" src={data.solicitudesSeleccionada.usuario.foto}/>
+                <div className="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center align-items-xl-center"><img className="rounded-circle foto-perfil-chat" src={data.solicitudesSeleccionada.usuario.foto}/>
                     <h2 style={{fontFamily: 'Lexend'},{fontSize: '25px'}}>{data.solicitudesSeleccionada.usuario.nickname}</h2>
                 </div><button className="btn" onClick={eliminar} style={{background:"transparent"},{color:'white'}} type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-x" style={{fontSize: '30px'},{marginLeft: '0px'}}>
                     <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>

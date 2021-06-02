@@ -47,10 +47,10 @@ function ConfirmacionSolicitud(props) {
     var ruta = "/HomeUs/" + props.match.params.idUs;
     return (
       <section className="highlight-phone" style={{ background: "#222222" }}>
-        <div class="container" style={{ height: "440.547px" }}>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="intro">
+        <div className="container" style={{ height: "440.547px" }}>
+          <div className="row">
+            <div className="col-md-8">
+              <div className="intro">
                 <h2
                   style={
                     ({ color: "var(--white)!important" },
@@ -79,22 +79,22 @@ function ConfirmacionSolicitud(props) {
                 </p>
                 <Link
                   to={ruta}
-                  class="btn btn-primary d-inline-flex align-items-center"
+                  className="btn btn-primary d-inline-flex align-items-center"
                   role="button"
                   style={({ paddingLeft: "10px" }, { paddingRight: "-10px" })}
                 >
                   <i
-                    class="fa fa-arrow-left"
+                    className="fa fa-arrow-left"
                     style={({ fontSize: "26px" }, { marginRight: "10px" })}
                   ></i>
                   Volver al catálogo de mascotas
                 </Link>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="d-none d-md-block phone-mockup">
-                <img class="device" src={phone} />
-                <div class="screen" id="screen-con"></div>
+            <div className="col-sm-4">
+              <div className="d-none d-md-block phone-mockup">
+                <img className="device" src={phone} />
+                <div className="screen" id="screen-con"></div>
               </div>
             </div>
           </div>

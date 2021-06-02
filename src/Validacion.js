@@ -41,7 +41,7 @@ function Validacion(props){
         <div className="erro" style={{textAlign:"center"}}>
             <img style={{marginBottom:"35px"}} src={logo} width="300"/>
             <h4 style={{marginBottom:"35px"}}>Solo un paso más, confirma tu correo y únete a Petbounds!</h4>
-            <button class="btn btn-primary" style={{fontFamily:"Lexend"}} onClick={onClick} >Confirmar</button>
+            <button className="btn btn-primary" style={{fontFamily:"Lexend"}} onClick={onClick} >Confirmar</button>
         </div>
     );
 }

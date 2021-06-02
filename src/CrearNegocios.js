@@ -32,54 +32,54 @@ class CrearNegocio extends Component {
             </Link>
           </div>
         </nav>
-        <section class="register-photo">
-          <div class="form-container">
+        <section className="register-photo">
+          <div className="form-container">
             <form method="post">
-              <h2 class="text-center">
+              <h2 className="text-center">
                 <strong>Crea tu cuenta</strong>
               </h2>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="email"
                   name="email"
                   placeholder="Correo"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="text"
                   placeholder="Nombre del negocio"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="tel"
                   placeholder="Número de telefono"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="password"
                   placeholder="Contraseña"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="text"
                   placeholder="Dirección del negocio"
                 />
               </div>
-              <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
                   Crear cuenta
                 </button>
               </div>
-              <a class="already" href="login.html">
+              <a className="already" href="login.html">
                 ¿Ya tienes una cuenta? Inicia sesión aquí&nbsp;
               </a>
             </form>

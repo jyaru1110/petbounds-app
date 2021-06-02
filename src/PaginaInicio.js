@@ -33,10 +33,10 @@ class PaginaInicio extends Component{
             <div className="row">
                 <div className="col-12 col-lg-6 col-xl-5 offset-xl-1 infoPetbounds">
                     <h1>Salva. Adopta. Cuida</h1>
-                    <p>En Petbounds, organizaciones que rescatan animales en condiciones de calle ponen a disposición de los usuarios la oportunidad de adoptar una mascota</p><Link to="/Registrarse" class="btn btn-light btn-lg action-button registrateMain" type="button">Regístrate aquí</Link>
+                    <p>En Petbounds, organizaciones que rescatan animales en condiciones de calle ponen a disposición de los usuarios la oportunidad de adoptar una mascota</p><Link to="/Registrarse" className="btn btn-light btn-lg action-button registrateMain" type="button">Regístrate aquí</Link>
                 </div>
                 <div className="col-md-12 col-lg-5 offset-lg-1 offset-xl-0 phone-holder divPerrito">
-                    <div className="phone-mockup divPerrito"><img class="device" id="device-ini" src={phone}/>
+                    <div className="phone-mockup divPerrito"><img className="device" id="device-ini" src={phone}/>
                         <div className="screen"></div>
                     </div>
                 </div>
@@ -93,8 +93,8 @@ class PaginaInicio extends Component{
                     </div>
                 </div>
             </section>
-            <footer class="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(34,34,34)'}}>
-                <div class="container d-xl-flex justify-content-xl-center align-items-xl-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/></div>
+            <footer className="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(34,34,34)'}}>
+                <div className="container d-xl-flex justify-content-xl-center align-items-xl-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/></div>
             </footer>
             </div>
           );

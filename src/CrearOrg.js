@@ -150,9 +150,9 @@ function CrearOrg (props){
                   value={values.pagina}
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <input
-                  class="form-control"
+                  className="form-control"
                   type="text"
                   placeholder="Dirección"
                   name="direccion"
@@ -160,12 +160,12 @@ function CrearOrg (props){
                   value={values.direccion}
                 />
               </div>
-              <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
                   Crear cuenta
                 </button>
               </div>
-              <Link to="/IniciaSesion" class="already" >
+              <Link to="/IniciaSesion" className="already" >
                 ¿Ya tienes una cuenta? Inicia sesión aquí&nbsp;
               </Link>
             </form>
