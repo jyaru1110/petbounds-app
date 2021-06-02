@@ -259,14 +259,13 @@ function Header(props) {
   }
 }
 function Cuerpo(props) {
-
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
       usuarioId: props.idUs,
     },
   });
   if (loading) return null;
-  if (error) return <Error></Error>;
+  if (error) return <Error/>;
   else {
     var rutaPerfil = "/PerfilUs/" + props.idUs;
     var rutaHome = "/HomeUs/" + props.idUs;
@@ -399,6 +398,7 @@ function Chat(props){
         e.preventDefault();
         if(mensaje!=="" && mensaje!==" "){
             enviarMensaje()
+            document.getElementById("input-msj").value=""
         }
     }
     const[eliminarSolicitud] = useMutation(ELIMINAR_SOLICITUD,{
@@ -416,11 +416,6 @@ function Chat(props){
             "registroMensajeSolicitudId": props.idSol,
             "registroMensajeMsj":mensaje,
             "registroMensajeUsuarioflag":true
-        },
-        onCompleted({registroMensaje}){
-          if(registroMensaje.success){
-            document.getElementById("input-msj").value=""
-          }
         }
     })
     const {loading,error,data} = useQuery(SOLICITUD,{
@@ -429,7 +424,7 @@ function Chat(props){
         }
     })
     if(loading) return null;
-    if(error) {return <Error></Error>;}
+    if(error) return null
     else{
     return(
         <div className="col-md-8 col-lg-8 col-xl-8 offset-md-0 d-flex d-md-flex flex-column justify-content-between justify-content-md-center main-chat">

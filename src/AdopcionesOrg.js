@@ -115,7 +115,6 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-
     const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
       "organizacionId": props.id
@@ -236,7 +235,7 @@ function BloqueSoli(props){
     return(
         <div className="col contenedor-solicitudes">
             {data.solicitudesOrg.map((solicitudesOrg)=>(
-                    <Link to="/" className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesOrg.usuario.foto}/>
+                    <Link key={solicitudesOrg.id} to={"/ChatOrg/"+props.id+"/"+solicitudesOrg.id} className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesOrg.usuario.foto}/>
                         <div className="relleno-solicitud">
                             <h4 id="titulo-soli">{solicitudesOrg.usuario.nickname}</h4>
                             <p><em>{solicitudesOrg.mascota.nombre} · {solicitudesOrg.mascota.tamano} · {solicitudesOrg.mascota.edad} · {solicitudesOrg.mascota.raza} · {solicitudesOrg.mascota.sexo}</em><br/></p>
