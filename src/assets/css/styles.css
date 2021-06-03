@@ -244,10 +244,10 @@
   margin-bottom:20px;
   font-family: Lexend;
   height: 50px;
-  width: 500px;
+  width: 45%;
 }
 .boton-documento p{
-  width: 500px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
