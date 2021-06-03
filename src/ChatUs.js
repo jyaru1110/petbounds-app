@@ -418,6 +418,10 @@ function Chat(props){
             "registroMensajeSolicitudId": props.idSol,
             "registroMensajeMsj":mensaje,
             "registroMensajeUsuarioflag":true
+        },onCompleted({registroMensaje}){
+          if(registroMensaje.success){
+            setMensaje("")
+          }
         }
     })
     const {loading,error,data} = useQuery(SOLICITUD,{
