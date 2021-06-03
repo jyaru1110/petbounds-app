@@ -488,6 +488,8 @@ function Mensaje(props){
   const srcG = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbaR5A5CwT_QMBI9vd9_VWO_ZXRhXRw6c&q="+props.dir+"&zoom=11"
   useEffect(()=>{
       props.subscribeNewMesssage()
+      var objDiv = document.getElementById("body-chat");
+      objDiv.scrollTop = objDiv.scrollHeight;
     }
   )
   return(
