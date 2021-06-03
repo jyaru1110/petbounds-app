@@ -18,6 +18,7 @@
   border-radius: 15px;
   margin-bottom: 0px;
   margin-top: 5px;
+  max-width: 50%;
 }
 .msj-otro{
   margin-top: 5px;
@@ -27,6 +28,7 @@
   font-family: Lexend;
   background: var(--gray);
   border-radius: 14px;
+  max-width: 50%;
 }
 .div-msj{
   padding: 0px;
