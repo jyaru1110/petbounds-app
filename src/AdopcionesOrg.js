@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -12,10 +11,9 @@ import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
 import perritoXD from './assets/img/perritoxd.png'
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
-import { useHistory } from "react-router-dom";
 import Error from "./Error"
 
 

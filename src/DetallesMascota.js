@@ -33,9 +33,10 @@ const HACER_SOLICITUD = gql`
   }
 `;
 const HACER_MENSAJE = gql`
-mutation RegistroMensajeMutation($registroMensajeSolicitudId: ID!, $registroMensajeMsj: String!, $registroMensajeUsuarioflag: Boolean!) {
+mutation Mutation($registroMensajeSolicitudId: ID!, $registroMensajeMsj: String!, $registroMensajeUsuarioflag: Boolean!) {
   registroMensaje(solicitudId: $registroMensajeSolicitudId, msj: $registroMensajeMsj, usuarioflag: $registroMensajeUsuarioflag) {
     success
+    message
   }
 }
 `;
@@ -458,12 +459,24 @@ function EstadoMascota(props) {
       document.getElementById("errorSolicitud").innerHTML ="Sube tus documentos en editar perfil para adoptar :)";
     }
   }
-  const [hacerMensaje] = useMutation(HACER_MENSAJE)
+  const [hacerMensaje] = useMutation(HACER_MENSAJE,{
+    onCompleted({registroMensaje}){
+      if(registroMensaje.success){
+        var route = "/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
+        history.push(route);
+      }
+    }
+  })
   const [hacerSolicitud] = useMutation(HACER_SOLICITUD, {
     onCompleted({ registroSolicitud }) {
       if (registroSolicitud.success) {
-        var route = "/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
-        history.push(route);
+        hacerMensaje({
+          variables:{
+            "registroMensajeSolicitudId": registroSolicitud.message,
+            "registroMensajeMsj": "*ubicacion*",
+            "registroMensajeUsuarioflag": false
+          }
+        })
       } else {
         document.getElementById("errorSolicitud").innerHTML ="Lo lamentamos pero ya hiciste esta solicitud :/";
       }

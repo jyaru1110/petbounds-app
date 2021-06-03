@@ -166,6 +166,7 @@
   height: 460px;
 }
 
+
 @media (max-width: 767px) {
   #menu-lateral {
     display: none!important;

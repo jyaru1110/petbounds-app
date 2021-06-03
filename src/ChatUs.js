@@ -48,6 +48,8 @@ query ($solicitudesSeleccionadaId: ID!) {
       id
       mascota {
         id
+        foto
+        nombre
         organizacion {
           nombre
           foto
@@ -441,7 +443,7 @@ function Chat(props){
                     <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                 </svg></button>
             </div>
-            <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion}></BodyChat>
+            <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion} fotoMas={data.solicitudesSeleccionada.mascota.foto} desc={data.solicitudesSeleccionada.mascota.nombre}></BodyChat>
             <form onSubmit={handleSubmit}>
             <div className="form-group d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center footer-chat" >
                 <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}}  type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
@@ -476,27 +478,57 @@ function BodyChat(props){
               })
             }
             dir={props.dir}
+            fotoMas={props.fotoMas}
+            desc={props.desc}
             ></Mensaje>
         );
     }
 }
 function Mensaje(props){
+  const srcG = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbaR5A5CwT_QMBI9vd9_VWO_ZXRhXRw6c&q="+props.dir+"&zoom=11"
   useEffect(()=>{
       props.subscribeNewMesssage()
     }
   )
   return(
-    <div className="body-chat" id="body-chat"  >
-                {props.data.consultaMensajes.map((consultaMensajes)=>(
-                    <div key={consultaMensajes._id}>
-                    {consultaMensajes.usuarioflag === true ? 
-                    (<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{consultaMensajes.msj}</span></div>):
-                    (<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{consultaMensajes.msj}</span></div>)
-                    }
-                    </div>
-                )
-            )}
+    <div className="body-chat" id="body-chat">
+      <div className="d-inline-flex d-xl-flex flex-column align-items-center align-items-sm-center align-items-md-center align-items-lg-center justify-content-xl-center align-items-xl-center" style={{width:'100%'}}>
+        <img src={props.fotoMas} style={{marginTop:'15px'}} className="rounded-circle imagen-perfil-menu"/>
+        <h4>{props.desc}</h4>
+      </div>
+      {props.data.consultaMensajes.map((consultaMensajes)=>(
+        <div key={consultaMensajes._id}>
+          {consultaMensajes.usuarioflag === true ? 
+            (<Propio msj={consultaMensajes.msj}></Propio>):
+            (<Otro msj={consultaMensajes.msj} src={srcG}></Otro>)
+          }
+        </div>
+      ))}
     </div>
   )
+}
+function Propio(props){
+  if(props.msj==="*iden*"){
+    return(
+      <div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("iden")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("iden")}</a></div>
+    )
+  }else if(props.msj==="*compro*"){
+    return(<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("compro")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("compro")}</a></div>)
+  }else{
+    return(
+      <div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{props.msj}</span></div>
+    );
+  }
+}
+function Otro(props){
+  if(props.msj!=="*ubicacion*"){
+    return(
+      <div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{props.msj}</span></div>
+    );
+  }else{
+    return(
+      <div className="d-flex d-sm-flex d-md-flex d-lg-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start"><span className="d-xl-flex justify-content-xl-start msj-otro" ><iframe className="d-flex d-xl-flex justify-content-sm-start" allowFullScreen="" frameBorder="0" loading="lazy" src={props.src} width="100%" height="400"></iframe></span></div>
+    )
+  }
 }
 export default ChatUs;
