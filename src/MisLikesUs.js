@@ -64,12 +64,21 @@ query ($favoritosUsuarioId: ID!) {
   }
 `;
 function MisLikesUs(props) {
-    return (
-        <div>
-            <Header idUs={props.match.params.idUs} />
-            <Cuerpo idUs={props.match.params.idUs} />
-        </div>
-    );
+    const { loading, error, data } = useQuery(USUARIO, {
+        variables: {
+            "usuarioId": props.match.params.idUs
+        },
+    });
+    if (loading) return null;
+    if (error) return <Error></Error>;
+    else {
+        return (
+            <div>
+                <Header data={data} />
+                <Cuerpo data={data} />
+            </div>
+        );
+    }
 }
 function Header(props) {
     const [estado, setEstado] = useState(false);
@@ -77,33 +86,25 @@ function Header(props) {
         var estadoN =! estado;
         setEstado(estadoN)
     }
-    const { loading, error, data } = useQuery(USUARIO, {
-        variables: {
-            "usuarioId": props.idUs
-        },
-    });
-    if (loading) return null;
-    if (error) return <Error></Error>;
-    else {
-        var rutaPerfil= "/PerfilUs/" + props.idUs;
-        var rutaHome = "/HomeUs/" + props.idUs;
-        var rutaServicios = "/ServiciosUs/" + props.idUs;
-        var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-        var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+        var rutaPerfil= "/PerfilUs/" + props.data.usuario.id;
+        var rutaHome = "/HomeUs/" + props.data.usuario.id;
+        var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+        var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+        var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
         //Aquí link al soporte xfas jeje
         var rutaAyuda = "";
         return (
             <div>
-                <div className="d-inline-flex justify-content-between align-items-center" id="header-menu" style={{ color: 'var(--white)' }}><a className='texto-menu-sup' onClick={handleClick}><img className="rounded-circle" src={data.usuario.foto} /></a><Link to={rutaHome} className='texto-menu-sup'>Adopciones</Link><Link to={rutaServicios} className='texto-menu-sup'>Servicios</Link><Link to={rutaDonaciones} className='texto-menu-sup'>Donaciones</Link></div>
+                <div className="d-inline-flex justify-content-between align-items-center" id="header-menu" style={{ color: 'var(--white)' }}><a className='texto-menu-sup' onClick={handleClick}><img className="rounded-circle" src={props.data.usuario.foto} /></a><Link to={rutaHome} className='texto-menu-sup'>Adopciones</Link><Link to={rutaServicios} className='texto-menu-sup'>Servicios</Link><Link to={rutaDonaciones} className='texto-menu-sup'>Donaciones</Link></div>
                 <div>
                     <Link to={rutaHome}><img className="logo-petbounds" src={logo} /></Link>
                 </div>
                 {estado === false ? (null) : (
                     <div className="text-left d-flex flex-column justify-content-start align-self-end ml-auto justify-content-sm-start" id="menu"><button className="btn toggle-menu-left" onClick={handleClick}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                  </svg></button><img className="rounded-circle imagen-perfil-menu" onClick={handleClick} src={data.usuario.foto} />
-                        <h6 className="text-white hola-menu">Hola, {data.usuario.nickname}</h6><Link to={rutaPerfil} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person">
+                  </svg></button><img className="rounded-circle imagen-perfil-menu" onClick={handleClick} src={props.data.usuario.foto} />
+                        <h6 className="text-white hola-menu">Hola, {props.data.usuario.nickname}</h6><Link to={rutaPerfil} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person">
                             <path fillRule="evenodd" d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
                         </svg>Ver perfil</Link><Link to={rutaMisAdopciones} className="d-flex justify-content-start align-items-center perfil-menu-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-text" style={{ marginRight: '5px' }, { fontSize: '31px' }}>
                             <path fillRule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"></path>
@@ -118,7 +119,6 @@ function Header(props) {
                 )}
             </div>
         );
-    }
 }
 function Cuerpo(props) {
     const [nombre, setNombre] = useState("");
@@ -128,27 +128,19 @@ function Cuerpo(props) {
     const handleClick = (event) => {
         setNombre(event.target.value);
     }
-    const { loading, error, data } = useQuery(USUARIO, {
-        variables: {
-            "usuarioId": props.idUs
-        },
-    });
-    if (loading) return null;
-    if (error) return <Error></Error>;
-    else {
-        var rutaPerfil= "/PerfilUs/" + props.idUs;
-        var rutaHome = "/HomeUs/" + props.idUs;
-        var rutaServicios = "/ServiciosUs/" + props.idUs;
-        var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-        var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+        var rutaPerfil= "/PerfilUs/" + props.data.usuario.id;
+        var rutaHome = "/HomeUs/" + props.data.usuario.id;
+        var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+        var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+        var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+        var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
         //Aquí link al soporte xfas jeje
         var rutaAyuda = "";
         return (
             <div className="container contenedor-main">
                 <div className="row">
                     <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
-                    <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><Link to={rutaPerfil} className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={data.usuario.foto} /><strong>{data.usuario.nickname}</strong></span></Link><Link to={rutaHome} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></Link><Link to={rutaServicios} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></Link><Link to={rutaDonaciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></Link><Link to={rutaMisAdopciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
+                    <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column" id="menu-lateral"><Link to={rutaPerfil} className="link-perfil"><span className="text-left texto-menu-lateral-con-foto"><img className="rounded-circle foto-perfil-menu-lateral" src={props.data.usuario.foto} /><strong>{props.data.usuario.nickname}</strong></span></Link><Link to={rutaHome} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-paw"></i><strong>Adopciones</strong></span></Link><Link to={rutaServicios} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-shopping-cart" ></i><strong>Servicios</strong></span></Link><Link to={rutaDonaciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><i className="fa fa-money"></i><strong>Donaciones</strong></span></Link><Link to={rutaMisAdopciones} className="link-menu-lateral"><span className="text-left texto-menu-lateral"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-file-earmark-text">
                         <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"></path>
                         <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z"></path>
                         <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"></path>
@@ -182,13 +174,12 @@ function Cuerpo(props) {
                             </div>
                             <div className="col-md-1 col-lg-1 col-xl-2"></div>
                         </div>
-                        <Carnets idUs={props.idUs} filtro={nombre}></Carnets>
+                        <Carnets idUs={props.data.usuario.id} filtro={nombre}></Carnets>
                     </div>
                     <div className="col-12 col-lg-2 col-xl-3"></div>
                 </div>
             </div>
         );
-    }
 }
 function Carnets(props) {
     const { loading, error, data } = useQuery(FEED_LIKES,{

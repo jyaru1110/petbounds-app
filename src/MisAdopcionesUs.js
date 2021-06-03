@@ -51,12 +51,21 @@ const USUARIO = gql`
 `;
 
 function MisAdopcionesUs(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs} idMas={props.match.params.idMas} />
-    </div>
-  );
+  const { loading, error, data } = useQuery(USUARIO, {
+    variables: {
+      usuarioId: props.match.params.idUs,
+    },
+  });
+  if (loading) return null;
+  if (error) return <Error></Error>;
+  else {
+    return (
+      <div>
+        <Header data={data} />
+        <Cuerpo data={data} idMas={props.match.params.idMas} />
+      </div>
+    );
+  }
 }
 function Header(props) {
   const [estado, setEstado] = useState(false);
@@ -64,20 +73,13 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.id,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.id;
-    var rutaHome = "/HomeUs/" + props.id;
-    var rutaServicios = "/ServiciosUs/" + props.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.id;
+  
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -88,7 +90,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={data.usuario.foto} />
+            <img className="rounded-circle" src={props.data.usuario.foto} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -128,10 +130,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={data.usuario.foto}
+              src={props.data.usuario.foto}
             />
             <h6 className="text-white hola-menu">
-              Hola, {data.usuario.nickname}
+              Hola, {props.data.usuario.nickname}
             </h6>
             <Link
               to={rutaPerfil}
@@ -224,23 +226,14 @@ function Header(props) {
         )}
       </div>
     );
-  }
 }
 function Cuerpo(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.idUs;
-    var rutaHome = "/HomeUs/" + props.idUs;
-    var rutaServicios = "/ServiciosUs/" + props.idUs;
-    var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-    var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -255,9 +248,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.usuario.foto}
+                  src={props.data.usuario.foto}
                 />
-                <strong>{data.usuario.nickname}</strong>
+                <strong>{props.data.usuario.nickname}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -347,11 +340,10 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-            <BloqueSoli idUs={props.idUs}/>   
+            <BloqueSoli idUs={props.data.usuario.id}/>   
         </div>
       </div>
     );
-  }
 }
 function BloqueSoli(props){
     const {data,error,loading}=useQuery(SOLICITUDES,{

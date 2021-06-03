@@ -51,12 +51,21 @@ const UPDATE_USUARIO=gql`
 `;
 
 function EditarPerfilUs(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs}/>
-    </div>
-  );
+  const { loading, error, data } = useQuery(USUARIO, {
+    variables: {
+      usuarioId: props.match.params.idUs,
+    },
+  });
+  if (loading) return null;
+  if (error) return null;
+  else {
+    return (
+      <div>
+        <Header data={data} />
+        <Cuerpo data={data}/>
+      </div>
+    );
+  }
 }
 function Header(props) {
   
@@ -65,20 +74,13 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.id,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.id;
-    var rutaHome = "/HomeUs/" + props.id;
-    var rutaServicios = "/ServiciosUs/" + props.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.id;
+  
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -89,7 +91,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={data.usuario.foto} />
+            <img className="rounded-circle" src={props.data.usuario.foto} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -129,10 +131,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={data.usuario.foto}
+              src={props.data.usuario.foto}
             />
             <h6 className="text-white hola-menu">
-              Hola, {data.usuario.nickname}
+              Hola, {props.data.usuario.nickname}
             </h6>
             <Link
               to={rutaPerfil}
@@ -225,7 +227,6 @@ function Header(props) {
         )}
       </div>
     );
-  }
 }
 function Cuerpo(props) {
   let history = useHistory();
@@ -248,7 +249,7 @@ function Cuerpo(props) {
       }
     },
     variables:{
-      "borrarUsuarioId":props.idUs
+      "borrarUsuarioId":props.data.usuario.id
     }
   })
   const handleIdentifacion=(e)=>{
@@ -359,7 +360,7 @@ function Cuerpo(props) {
   }
   const [modificar_usuario] = useMutation(UPDATE_USUARIO,{
     variables:{
-      "modificacionUsuarioId":props.idUs,
+      "modificacionUsuarioId":props.data.usuario.id,
       "modificacionUsuarioNombre":values.nombre,
       "modificacionUsuarioApellidop":values.apellidop,
       "modificacionUsuarioApellidom":values.apellidom,
@@ -407,20 +408,12 @@ function Cuerpo(props) {
     setValues({nombre:nuevoNom,apellidom:nuevoAM,apellidop:nuevoAP,bandera:true})
    
   }
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      "usuarioId": props.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    const rutaPerfil = "/PerfilUs/" + props.idUs;
-    const rutaHome = "/HomeUs/" + props.idUs;
-    const rutaServicios = "/ServiciosUs/" + props.idUs;
-    const rutaDonaciones = "/DonacionesUs/" + props.idUs;
-    const rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-    const rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    const rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    const rutaHome = "/HomeUs/" + props.data.usuario.id;
+    const rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    const rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    const rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    const rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -439,9 +432,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.usuario.foto}
+                  src={props.data.usuario.foto}
                 />
-                <strong>{data.usuario.nickname}</strong>
+                <strong>{props.data.usuario.nickname}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -534,20 +527,20 @@ function Cuerpo(props) {
           <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-editar">
                 <form onSubmit={onSubmit} className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
                     <div className="form-group">
-                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={data.usuario.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={props.data.usuario.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
                                         <path fillRule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
                                         <path fillRule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
                                         <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
                                     </svg></span></label></div>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" id="nombreUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.nombre}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" id="nombreUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.usuario.nombre}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" id="apellidopUs" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.usuario.apellidop}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" id="apellidopUs" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={props.data.usuario.apellidop}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" id="apellidomUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.apellidom}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" id="apellidomUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.usuario.apellidom}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
                         <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" htmlFor="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
@@ -621,7 +614,6 @@ function Cuerpo(props) {
         </div>
       </div>
     );
-  }
 }
 
 export default EditarPerfilUs;

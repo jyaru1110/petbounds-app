@@ -22,6 +22,7 @@ import Error from "./Error"
 const ORGANIZACION = gql`
 query ($organizacionId: ID!) {
     organizacion(id: $organizacionId) {
+      id
       nombre
       foto
       telefono
@@ -40,27 +41,28 @@ query ($organizacionId: ID!) {
  `;
 
 function PerfilOrg(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idOrg}></Header>
-      <Cuerpo id={props.match.params.idOrg}></Cuerpo>
-    </div>
-  );
-}
-function Header(props) {
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
-      "organizacionId": props.id
+      "organizacionId": props.match.params.idOrg
     },
   });
   if (loading) return null;
   if (error) return null;
   else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    return (
+      <div>
+        <Header data={data}></Header>
+        <Cuerpo data={data}></Cuerpo>
+      </div>
+    );
+  }
+}
+function Header(props) {
+    var rutaPerfil = "/PerfilOrg/" + props.data.usuario.id;
+    var rutaHome = "/HomeOrg/" + props.data.usuario.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.usuario.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.usuario.id;
     return (
       <div>
         <div
@@ -69,7 +71,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <Link to={rutaPerfil} className="texto-menu-sup">
-            <img className="rounded-circle" src={data.organizacion.foto} />
+            <img className="rounded-circle" src={props.data.organizacion.foto} />
           </Link>
           <Link to={rutaHome} className="icon-menu-org">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -102,7 +104,6 @@ function Header(props) {
         </div>
       </div>
     );
-  }
 }
 
 function Cuerpo(props) {
@@ -114,7 +115,7 @@ function Cuerpo(props) {
     }
     const [eliminarCuenta] = useMutation(BORRAR_ORG,{
         variables:{
-            "borrarOrgId":props.id
+            "borrarOrgId":props.data.usuario.id
         },
         onCompleted({borrarOrg}){
             if(borrarOrg.success){
@@ -122,22 +123,13 @@ function Cuerpo(props) {
             }
         }
     }
-
     );
-    const { loading, error, data } = useQuery(ORGANIZACION, {
-    variables: {
-      "organizacionId": props.id
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
-    var rutaEditarPerfil = "/EditarPerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    var rutaPerfil = "/PerfilOrg/" + props.data.usuario.id;
+    var rutaEditarPerfil = "/EditarPerfilOrg/" + props.data.usuario.id;
+    var rutaHome = "/HomeOrg/" + props.data.usuario.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.usuario.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.usuario.id;
     return (
       <div className="container contenedor-main">
           {estado === false ? (<div className="eliminar-cuenta-adv">
@@ -154,9 +146,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.organizacion.foto}
+                  src={props.data.organizacion.foto}
                 />
-                <strong>{data.organizacion.nombre}</strong>
+                <strong>{props.data.organizacion.nombre}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -292,35 +284,34 @@ function Cuerpo(props) {
             </div>
             <img
               className="rounded-circle foto-perfil-perfil"
-              src={data.organizacion.foto}
+              src={props.data.organizacion.foto}
             />
             <h4 className="nick-name-perfil">
-              <strong>{data.organizacion.nombre}</strong>
+              <strong>{props.data.organizacion.nombre}</strong>
             </h4>
             <div className="align-self-start">
               <h6 className="title-nombre">Número de teléfono:</h6>
               <h5 className="nombre-perfil-perfil">
                 <strong>
-                  {data.organizacion.telefono}
+                  {props.data.organizacion.telefono}
                 </strong>
               </h5>
             </div>
             <div className="align-self-start">
               <h6 className="title-nombre">Página web:</h6>
               <h5 className="nombre-perfil-perfil">
-                <strong>{data.organizacion.pagina}</strong>
+                <strong>{props.data.organizacion.pagina}</strong>
               </h5>
             </div>
             <div className="align-self-start">
               <h6 className="title-nombre">Dirección:</h6>
               <h5 className="nombre-perfil-perfil">
-                <strong>{data.organizacion.direccion}</strong>
+                <strong>{props.data.organizacion.direccion}</strong>
               </h5>
             </div>
           </div>
         </div>
       </div>
     );
-  }
 }
 export default PerfilOrg;

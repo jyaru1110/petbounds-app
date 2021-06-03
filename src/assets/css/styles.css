@@ -243,6 +243,14 @@
   background:#606060!important;
   margin-bottom:20px;
   font-family: Lexend;
+  height: 50px;
+  width: 500px;
+}
+.boton-documento p{
+  width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .principal-perfil{
   margin-top: 100px;

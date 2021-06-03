@@ -21,6 +21,7 @@ import Error from "./Error"
 const ORGANIZACION = gql`
 query ($organizacionId: ID!) {
     organizacion(id: $organizacionId) {
+      id
       nombre
       foto
     }
@@ -38,27 +39,29 @@ mutation ($registroMascotaId: ID!, $registroMascotaTipo: String, $registroMascot
 
 
 function HomeOrg(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idOrg}></Header>
-      <Cuerpo id={props.match.params.idOrg}></Cuerpo>
-    </div>
-  );
-}
-function Header(props) {
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
-      "organizacionId": props.id
+      "organizacionId": props.match.params.idOrg
     },
   });
   if (loading) return null;
-  if (error) return null;
+  if (error) return <Error/>;
   else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    return (
+      <div>
+        <Header data={data}></Header>
+        <Cuerpo data={data}></Cuerpo>
+      </div>
+    );
+  }
+}
+function Header(props) {
+
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div>
         <div
@@ -67,7 +70,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <Link to={rutaPerfil} className="texto-menu-sup">
-            <img className="rounded-circle" src={data.organizacion.foto} />
+            <img className="rounded-circle" src={props.data.organizacion.foto} />
           </Link>
           <Link to={rutaHome} className="icon-menu-org">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -100,7 +103,6 @@ function Header(props) {
         </div>
       </div>
     );
-  }
 }
 
 function Cuerpo(props) {
@@ -157,7 +159,7 @@ function Cuerpo(props) {
   };
   const [registrarMas] = useMutation(REGISTRO_MAS,{
       variables:{
-        "registroMascotaId": props.id,
+        "registroMascotaId": props.data.organizacion.id,
         "registroMascotaTipo": values.animal,
         "registroMascotaRaza": values.raza,
         "registroMascotaEdad": values.edad,
@@ -166,6 +168,11 @@ function Cuerpo(props) {
         "registroMascotaFoto": localStorage.getItem('fotoMascota'),
         "registroMascotaTamano": values.tamano,
         "registroMascotaSexo": values.sexo
+      },
+      onCompleted({registroMascota}){
+        if(registroMascota.success){
+            window.location.reload()
+        }
       }
     }
   );
@@ -174,26 +181,18 @@ function Cuerpo(props) {
     if(values.bandera===false){
       localStorage.setItem('fotoMascota',' ')
     }
-    if(values.nombre!=='' && values.nombre!==' ' && values.tamano!=='' && values.tamano!=='Tamaño'&& values.sexo!=='' && values.sexo!=='Sexo'){
+    if(values.nombre!=='' && values.nombre!==' ' && values.tamano!=='' && values.tamano!=='Tamaño' && values.sexo!=='' && values.sexo!=='Sexo'){
       registrarMas();
     }else{
       alert('Llena correctamente los datos')
     }
     
   };
-  const { loading, error, data } = useQuery(ORGANIZACION, {
-    variables: {
-      "organizacionId": props.id
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div className="container contenedor-main">
         <div className="row">
@@ -206,9 +205,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.organizacion.foto}
+                  src={props.data.organizacion.foto}
                 />
-                <strong>{data.organizacion.nombre}</strong>
+                <strong>{props.data.organizacion.nombre}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -294,7 +293,6 @@ function Cuerpo(props) {
         </div>
       </div>
     );
-  }
 }
 
 

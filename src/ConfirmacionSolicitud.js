@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -18,6 +18,7 @@ import "bootstrap/dist/js/bootstrap.js";
 const MASCOTA = gql`
   query ($mascotaSelecId: ID!) {
     mascotaSelec(id: $mascotaSelecId) {
+      id
       raza
       edad
       historia
@@ -35,6 +36,12 @@ const MASCOTA = gql`
 `;
 
 function ConfirmacionSolicitud(props) {
+  const handleOnLoad=()=>{
+    if(localStorage.getItem('confirmacionReload')==='false'){
+      localStorage.setItem('confirmacionReload','true')
+      window.location.reload()
+    }
+  }
   const { loading, error, data } = useQuery(MASCOTA, {
     variables: {
       mascotaSelecId: props.match.params.idMas,
@@ -46,7 +53,7 @@ function ConfirmacionSolicitud(props) {
   } else {
     var ruta = "/HomeUs/" + props.match.params.idUs;
     return (
-      <section className="highlight-phone" style={{ background: "#222222" }}>
+      <section className="highlight-phone" style={{ background: "#222222" }} onLoad={handleOnLoad}>
         <div className="container" style={{ height: "440.547px" }}>
           <div className="row">
             <div className="col-md-8">

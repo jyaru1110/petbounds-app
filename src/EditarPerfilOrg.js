@@ -22,6 +22,7 @@ import Error from "./Error"
 const ORGANIZACION = gql`
 query ($organizacionId: ID!) {
     organizacion(id: $organizacionId) {
+      id
       nombre
       foto
       telefono
@@ -48,27 +49,28 @@ mutation ($modificacionOrgId: String!, $modificacionOrgTelefono: String, $modifi
   `;
 
 function EditarPerfilOrg(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idOrg}></Header>
-      <Cuerpo id={props.match.params.idOrg}></Cuerpo>
-    </div>
-  );
-}
-function Header(props) {
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {
-      "organizacionId": props.id
+      "organizacionId": props.match.params.idOrg
     },
   });
   if (loading) return null;
-  if (error) return null;
+  if (error) return <Error/>;
   else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    return (
+      <div>
+        <Header data={data}></Header>
+        <Cuerpo data={data}></Cuerpo>
+      </div>
+    );
+  }  
+}
+function Header(props) {
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div>
         <div
@@ -77,7 +79,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <Link to={rutaPerfil} className="texto-menu-sup">
-            <img className="rounded-circle" src={data.organizacion.foto} />
+            <img className="rounded-circle" src={props.data.organizacion.foto} />
           </Link>
           <Link to={rutaHome} className="icon-menu-org">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -110,7 +112,6 @@ function Header(props) {
         </div>
       </div>
     );
-  }
 }
 
 function Cuerpo(props) {
@@ -128,7 +129,7 @@ function Cuerpo(props) {
     });
     const [eliminarCuenta] = useMutation(BORRAR_ORG,{
         variables:{
-            "borrarOrgId":props.id
+            "borrarOrgId":props.data.organizacion.id
         },
         onCompleted({borrarOrg}){
             if(borrarOrg.success){
@@ -176,7 +177,7 @@ function Cuerpo(props) {
     }
     const [modificar_usuario] = useMutation(UPDATE_ORG,{
       variables:{
-        "modificacionOrgId":props.id,
+        "modificacionOrgId":props.data.organizacion.id,
         "modificacionOrgTelefono":values.telefono,
         "modificacionOrgPagina":values.pagina,
         "modificacionOrgDireccion":values.direccion,
@@ -222,20 +223,13 @@ function Cuerpo(props) {
       setValues({telefono:nuevoTel,pagina:nuevoPag,direccion:nuevoDir,bandera:true})
      
     }
-    const { loading, error, data } = useQuery(ORGANIZACION, {
-    variables: {
-      "organizacionId": props.id
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    var rutaPerfil = "/PerfilOrg/" + props.id;
+
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
     var rutaEditarPerfil = "/EditarPerfilOrg/" + props.id;
-    var rutaHome = "/HomeOrg/" + props.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div className="container contenedor-main">
           {estado === false ? (<div className="eliminar-cuenta-adv">
@@ -252,9 +246,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.organizacion.foto}
+                  src={props.data.organizacion.foto}
                 />
-                <strong>{data.organizacion.nombre}</strong>
+                <strong>{props.data.organizacion.nombre}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -390,20 +384,20 @@ function Cuerpo(props) {
             </div>
             <form onSubmit={onSubmit} className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
                     <div className="form-group">
-                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={data.organizacion.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={props.data.organizacion.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
                                         <path fillRule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
                                         <path fillRule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
                                         <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
                                     </svg></span></label></div>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Teléfono:</h6><input  name="telefono" id="telOrg" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.organizacion.telefono}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Teléfono:</h6><input  name="telefono" id="telOrg" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={props.data.organizacion.telefono}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Página:</h6><input  name="pagina" id="pagOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.organizacion.pagina}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Página:</h6><input  name="pagina" id="pagOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.organizacion.pagina}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Dirección:</h6><input  name="direccion" id="dirOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.organizacion.direccion}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Dirección:</h6><input  name="direccion" id="dirOrg" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.organizacion.direccion}/>
                     </div>
                    <button className="btn btn-primary submit-editar" type="submit">Guardar cambios</button>
                 </form>
@@ -411,6 +405,5 @@ function Cuerpo(props) {
         </div>
       </div>
     );
-  }
 }
 export default EditarPerfilOrg;

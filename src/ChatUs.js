@@ -42,6 +42,25 @@ subscription Subscription($mensajeEnviadoId: ID!) {
   }
 }
 `;
+const SOLICITUDES = gql`
+    query ($solicitudesUsuarioId: ID!) {
+    solicitudesUsuario(id: $solicitudesUsuarioId) {
+      id
+      mascota {
+        raza
+        edad
+        tamano
+        sexo
+        nombre
+        organizacion {
+          foto
+          nombre
+        }
+      }
+    }
+  }
+  
+`;
 const SOLICITUD = gql`
 query ($solicitudesSeleccionadaId: ID!) {
     solicitudesSeleccionada(id: $solicitudesSeleccionadaId) {
@@ -85,12 +104,21 @@ mutation ($borrarSolicitudId: ID!) {
   }
 `;
 function ChatUs(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs} idSol={props.match.params.idSol}/>
-    </div>
-  );
+  const { loading, error, data } = useQuery(USUARIO, {
+    variables: {
+      usuarioId: props.match.params.idUs,
+    },
+  });
+  if (loading) return null;
+  if (error) return null;
+  else {
+    return (
+      <div>
+        <Header data={data} />
+        <Cuerpo data={data} idSol={props.match.params.idSol}/>
+      </div>
+    );
+  }
 }
 function Header(props) {
   const [estado, setEstado] = useState(false);
@@ -98,20 +126,12 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.id,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.id;
-    var rutaHome = "/HomeUs/" + props.id;
-    var rutaServicios = "/ServiciosUs/" + props.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.id;
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -122,7 +142,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={data.usuario.foto} />
+            <img className="rounded-circle" src={props.data.usuario.foto} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -162,10 +182,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={data.usuario.foto}
+              src={props.data.usuario.foto}
             />
             <h6 className="text-white hola-menu">
-              Hola, {data.usuario.nickname}
+              Hola, {props.data.usuario.nickname}
             </h6>
             <Link
               to={rutaPerfil}
@@ -258,23 +278,14 @@ function Header(props) {
         )}
       </div>
     );
-  }
 }
 function Cuerpo(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error/>;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.idUs;
-    var rutaHome = "/HomeUs/" + props.idUs;
-    var rutaServicios = "/ServiciosUs/" + props.idUs;
-    var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-    var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -289,9 +300,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.usuario.foto}
+                  src={props.data.usuario.foto}
                 />
-                <strong>{data.usuario.nickname}</strong>
+                <strong>{props.data.usuario.nickname}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -381,11 +392,10 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          <Chat idSol={props.idSol}/>
+          <Chat idSol={props.idSol} idUs={props.data.usuario.id}/>
         </div>
       </div>
     );
-  }
 }
 function Chat(props){
     const goBack = () =>{
@@ -407,10 +417,20 @@ function Chat(props){
         variables:{
             "borrarSolicitudId":props.idSol
         },
-        onCompleted({borrarSolicitud}){
-            if(borrarSolicitud.success){
-                window.history.back();
+        update(proxy){
+          const dato = proxy.readQuery({
+            query: SOLICITUDES,
+            variables:{
+                "solicitudesUsuarioId":props.idUs
             }
+        })
+        if(dato!=null){
+            const date = dato.solicitudesUsuario.filter(solicitudesUsuario => solicitudesUsuario.id !== props.idSol)
+            proxy.writeQuery({query:SOLICITUDES,variables:{"solicitudesUsuarioId":props.idUs},data:{
+                solicitudesUsuario:{date}
+            }})
+            window.history.back()
+        }
         }
     })
     const[enviarMensaje] =  useMutation(HACER_MENSAJE,{
@@ -438,10 +458,10 @@ function Chat(props){
                 <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu solicitud?</h3>
                     <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarSolicitud}>Sí, eliminar</button></div>
                 </div>):(null)}
-            <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button class="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
+            <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button className="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
                     <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                 </svg></button>
-                <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center align-items-xl-center"><img className="rounded-circle foto-perfil-chat" src={data.solicitudesSeleccionada.mascota.organizacion.foto}/>
+                <div className="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center align-items-xl-center"><img className="rounded-circle foto-perfil-chat" src={data.solicitudesSeleccionada.mascota.organizacion.foto}/>
                     <h2 style={{fontFamily: 'Lexend'},{fontSize: '25px'}}>{data.solicitudesSeleccionada.mascota.organizacion.nombre}</h2>
                 </div><button className="btn" onClick={eliminar} style={{background:"transparent"},{color:'white'}} type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-x" style={{fontSize: '30px'},{marginLeft: '0px'}}>
                     <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>

@@ -40,12 +40,21 @@ const ELIMINAR_USUARIO=gql`
 }
 `;
 function PerfilUs(props) {
-  return (
-    <div>
-      <Header id={props.match.params.idUs} />
-      <Cuerpo idUs={props.match.params.idUs}/>
-    </div>
-  );
+  const { loading, error, data } = useQuery(USUARIO, {
+    variables: {
+      usuarioId: props.match.params.idUs,
+    },
+  });
+  if (loading) return null;
+  if (error) return null;
+  else {
+    return (
+      <div>
+        <Header data={data} />
+        <Cuerpo data={data}/>
+      </div>
+    );
+  }
 }
 function Header(props) {
   const [estado, setEstado] = useState(false);
@@ -53,20 +62,12 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.id,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.id;
-    var rutaHome = "/HomeUs/" + props.id;
-    var rutaServicios = "/ServiciosUs/" + props.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.id;
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -77,7 +78,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={data.usuario.foto} />
+            <img className="rounded-circle" src={props.data.usuario.foto} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -117,10 +118,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={data.usuario.foto}
+              src={props.data.usuario.foto}
             />
             <h6 className="text-white hola-menu">
-              Hola, {data.usuario.nickname}
+              Hola, {props.data.usuario.nickname}
             </h6>
             <Link
               to={rutaPerfil}
@@ -213,7 +214,6 @@ function Header(props) {
         )}
       </div>
     );
-  }
 }
 function Cuerpo(props) {
   let history=useHistory()
@@ -228,24 +228,16 @@ function Cuerpo(props) {
       }
     },
     variables:{
-      "borrarUsuarioId":props.idUs
+      "borrarUsuarioId":props.data.usuario.id
     }
   })
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    var rutaPerfil = "/PerfilUs/" + props.idUs;
-    var rutaEditarPerfil  = "/EditarPerfilUs/" + props.idUs;
-    var rutaHome = "/HomeUs/" + props.idUs;
-    var rutaServicios = "/ServiciosUs/" + props.idUs;
-    var rutaDonaciones = "/DonacionesUs/" + props.idUs;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.idUs;
-    var rutaMisLikes = "/MisLikesUs/" + props.idUs;
+    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
+    var rutaEditarPerfil  = "/EditarPerfilUs/" + props.data.usuario.id;
+    var rutaHome = "/HomeUs/" + props.data.usuario.id;
+    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
+    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
+    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
+    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -264,9 +256,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={data.usuario.foto}
+                  src={props.data.usuario.foto}
                 />
-                <strong>{data.usuario.nickname}</strong>
+                <strong>{props.data.usuario.nickname}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -431,30 +423,29 @@ function Cuerpo(props) {
             </div>
             <img
               className="rounded-circle foto-perfil-perfil"
-              src={data.usuario.foto}
+              src={props.data.usuario.foto}
             />
             <h4 className="nick-name-perfil">
-              <strong>{data.usuario.nickname}</strong>
+              <strong>{props.data.usuario.nickname}</strong>
             </h4>
             <div className="align-self-start">
               <h6 className="title-nombre">Nombre completo:</h6>
               <h5 className="nombre-perfil-perfil">
                 <strong>
-                  {data.usuario.nombre} {data.usuario.apellidop}{" "}
-                  {data.usuario.apellidom}
+                  {props.data.usuario.nombre} {props.data.usuario.apellidop} {props.data.usuario.apellidom}
                 </strong>
               </h5>
             </div>
             <div className="align-self-start">
               <h6 className="title-nombre">Fecha de nacimiento:</h6>
               <h5 className="nombre-perfil-perfil">
-                <strong>{data.usuario.nacimiento}</strong>
+                <strong>{props.data.usuario.nacimiento}</strong>
               </h5>
             </div>
             <div className="d-inline-flex flex-column align-self-start">
               <h6 className="title-nombre">Documentos:</h6>
               <a
-                href={data.usuario.identificacion}
+                href={props.data.usuario.identificacion}
                 target="blank"
                 className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
                 role="button"
@@ -477,12 +468,12 @@ function Cuerpo(props) {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                Identificación
+                <p>{props.data.usuario.identificacion}</p>
               </a>
               <a
-                href={data.usuario.comprobante}
+                href={props.data.usuario.comprobante}
                 target="blank"
-                className="btn btn-primary"
+                className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
                 type="button"
                 style={
                   ({ marginTop: "10px" },
@@ -508,14 +499,12 @@ function Cuerpo(props) {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                Comprobante
+                <p>{props.data.usuario.comprobante}</p>
               </a>
             </div>
           </div>
         </div>
       </div>
     );
-  }
 }
-
 export default PerfilUs;

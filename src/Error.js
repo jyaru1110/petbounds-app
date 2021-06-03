@@ -7,7 +7,7 @@ function Error(props) {
         <h2>GUAU GUAU</h2>
           <h4>[Vaya, parece que hubo un error, nada que un par de patitas no puedan arreglar]</h4>
         <img style={{width:'500px'}} src={perritoRisas}/>
-        <Link to="/Registrarse" class="LinkError"><h4>Registrate aquí (;</h4></Link>
+        <Link to="/Registrarse" className="LinkError"><h4>Registrate aquí (;</h4></Link>
       </div>
     );
   }
