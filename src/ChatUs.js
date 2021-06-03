@@ -450,7 +450,7 @@ function Chat(props){
             <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion} fotoMas={data.solicitudesSeleccionada.mascota.foto} desc={data.solicitudesSeleccionada.mascota.nombre}></BodyChat>
             <form onSubmit={handleSubmit}>
             <div className="form-group d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center footer-chat" >
-                <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}}  type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
+                <input id="input-msj" onChange={(e)=>{setMensaje(e.target.value)}} placeholder="Escribe un mensaje..."  type="text"/><button style={{background: 'transparent!important'}} className="btn d-flex d-sm-flex d-md-flex d-xl-flex align-items-center align-items-sm-center align-items-md-center align-items-xl-center" type="submit"><i style={{color: 'white'}} className="material-icons">send</i></button>
             </div>
             </form>
         </div>
