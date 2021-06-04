@@ -23,6 +23,7 @@ import PerfilOrg from './PerfilOrg';
 import EditarPerfilOrg from './EditarPerfilOrg';
 import ChatUs from './ChatUs';
 import ChatOrg from './ChatOrg';
+import DonacionesOrg from './DonacionesOrg'
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +47,7 @@ function App() {
       <Route exact path="/EditarMascota/:idOrg/:idMas" component={EditarMascota}/>
       <Route exact path="/PerfilOrg/:idOrg" component={PerfilOrg}/>
       <Route exact path="/EditarPerfilOrg/:idOrg" component={EditarPerfilOrg}/>
+      <Route exact path="/DonacionesOrg/:idOrg" component={DonacionesOrg}/>
       <Route exact path="/ChatUs/:idUs/:idSol" component={ChatUs}/>
       <Route exact path="/ChatOrg/:idOrg/:idSol" component={ChatOrg}/>
     </BrowserRouter>

@@ -1,13 +1,12 @@
 //import './assets/bootstrap/css/bootstrap.min.css';
 import logo from './assets/img/petbounds_blanco.png';
 import React, {Component} from 'react';
-import perritonegro from './assets/img/perritonegro.png';
 import jyarufoto from './assets/img/31DEBA24-3DE2-4BF7-B669-795C667AF9A1_1_201_a.jpeg'
 import leconafoto from './assets/img/clipboard-image-1.png';
 import yaosaifoto from './assets/img/clipboard-image-2.png';
 import amselfoto from './assets/img/clipboard-image-4.png';
 import gaelfoto from './assets/img/clipboard-image-3.png';
-import phone from './assets/img/phone.svg'
+import boy from './assets/img/guy-walking-with-dog-in-the-park-2127165-2127165.svg'
 import EarthBoundlogo from './assets/img/earthlogoblanco.png';
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
@@ -36,8 +35,7 @@ class PaginaInicio extends Component{
                     <p>En Petbounds, organizaciones que rescatan animales en condiciones de calle ponen a disposición de los usuarios la oportunidad de adoptar una mascota</p><Link to="/Registrarse" className="btn btn-light btn-lg action-button registrateMain" type="button">Regístrate aquí</Link>
                 </div>
                 <div className="col-md-12 col-lg-5 offset-lg-1 offset-xl-0 phone-holder divPerrito">
-                    <div className="phone-mockup divPerrito"><img className="device" id="device-ini" src={phone}/>
-                        <div className="screen"></div>
+                    <div className="phone-mockup divPerrito"><img className="device" id="device-ini" src={boy}/>
                     </div>
                 </div>
             </div>
@@ -93,7 +91,7 @@ class PaginaInicio extends Component{
                     </div>
                 </div>
             </section>
-            <footer className="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(34,34,34)'}}>
+            <footer className="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(50,50,50)'}}>
                 <div className="container d-xl-flex justify-content-xl-center align-items-xl-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/></div>
             </footer>
             </div>

@@ -2,6 +2,25 @@
 #titulo-soli{
   margin-bottom: 0px!important;
 }
+.donaciones-main{
+  padding-right:0px;
+  padding-left: 0px;
+}
+.card-donaciones{
+  border-radius:17px!important;
+  background:#4E4C4C!important;
+  width: 400px;
+  margin-left:-1px;
+  margin-bottom: 15px;
+  margin-right: 0px;
+}
+.card-donaciones .carnet-body{
+  border-style: solid;
+  border-color: rgb(78,76,76);
+  border-radius: 14px;
+  padding: 4px;
+  padding-top: 0px;
+}
 .div-input-file-a{
   width: 235px;
   height: 265px;
@@ -405,16 +424,17 @@
   background-color: #292929;
   color:white;
 }
-.header-blue{
-  background: linear-gradient(var(--dark), var(--gray) 67%)!important;
-}
 .infoPetbounds{
   display:inline-flex;
   flex-direction: column;
   justify-content: center;
+  margin-top:15px;
 }
 .infoPetbounds h1, .infoPetbounds p{
   margin-bottom: 30px;
+}
+.infoPetbounds h1{
+  color:#FFAC1C;
 }
 .infoPetbounds button{
   align-self: center;
@@ -454,14 +474,15 @@ h1,p{
 .registrateMain{
   font-family: Lexend, sans-serif;
   width: 200px;
-  color: white!important;
+  color: #FFAC1C!important;
   background-color: transparent!important;
   border-radius: 50px!important;
+  border-color: #FFAC1C!important;
 }
 #device-ini{
   align-self: center;
-  background: url(/src/assets/img/perritonegro.png) left / contain no-repeat;
   height: 500px;
+  margin-top: 15px;
 }
 #screen-con{
   background: url(/src/assets/img/fondo-patita.png) center / contain no-repeat;

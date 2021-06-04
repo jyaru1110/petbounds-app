@@ -6,6 +6,7 @@
   box-shadow: none;
   border: none;
   margin-bottom: 0;
+  background-color: rgb(50,50,50);
 }
 
 @media (min-width:768px) {
@@ -67,7 +68,7 @@
 }
 
 .navigation-clean-search .action-button, .navigation-clean-button .action-button:active {
-  background: #56c6c6;
+  background: #FFAC1C;
   border-radius: 20px;
   font-size: inherit;
   color: #fff !important;
