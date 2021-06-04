@@ -2,6 +2,10 @@
 #titulo-soli{
   margin-bottom: 0px!important;
 }
+.div-error-stripe{
+  text-align: center;
+  margin-top:100px;
+}
 .main-don-us{
   margin-top: 100px;
 }
@@ -756,7 +760,7 @@ h1,p{
   position: fixed;
   z-index: 1;
 }
-h2{
+h2,.error-stripe{
   color:white;
   font-family: 'Lexend';
 }

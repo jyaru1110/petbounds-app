@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -22,6 +22,7 @@ const ORGANIZACION = gql`
       id
       nombre
       foto
+      stripeid
     }
   }
 `;
@@ -33,6 +34,7 @@ const CONSULTA_DON = gql`
         id
         foto
         nombre
+        stripeid
       }
       titulo
       descripcion
@@ -164,21 +166,21 @@ function Cuerpo(props) {
   };
   const [crearDon] = useMutation(REGISTRO_DON, {
     variables: {
-      "registroDonacionOrganizacionId": props.data.organizacion.id,
-      "registroDonacionTitulo": campos.titulo,
-      "registroDonacionDescripcion": campos.desc,
-      "registroDonacionMeta": parseInt(campos.meta)
+      registroDonacionOrganizacionId: props.data.organizacion.id,
+      registroDonacionTitulo: campos.titulo,
+      registroDonacionDescripcion: campos.desc,
+      registroDonacionMeta: parseInt(campos.meta),
     },
-    onCompleted({registroDonacion}){
-      if(registroDonacion.success){
-        window.location.reload()
-      }else{
-        alert("Algo salio mal")
+    onCompleted({ registroDonacion }) {
+      if (registroDonacion.success) {
+        window.location.reload();
+      } else {
+        alert("Algo salio mal");
       }
-    }
+    },
   });
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (
       campos.titulo !== "" &&
       campos.titulo !== " " &&
@@ -301,39 +303,56 @@ function Cuerpo(props) {
         </div>
         <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
           <div className="row justify-content-center">
-            <div className="row registro-donacion">
-              <div className="col">
-                <form onSubmit={handleSubmit}>
-                  <input
-                    className="form-control input-don"
-                    type="text"
-                    name="titulo"
-                    placeholder="Motivo"
-                    onChange={handleCampos}
-                  />
-                  <textarea
-                    name="desc"
-                    className="form-control"
-                    placeholder="Descripción"
-                    onChange={handleCampos}
-                  ></textarea>
-                  <div className="d-inline-flex doble-campo d-md-flex justify-content-between">
-                    <input
-                      className="form-control input-don"
-                      type="number"
-                      name="meta"
-                      onChange={handleCampos}
-                      style={{ width: "30%" }}
-                      placeholder="Meta"
-                    />
-                    <button className="btn btn-primary" type="submit">
-                      Crear donación
-                    </button>
+            {props.data.organizacion.stripeid !== null ? (
+              <div>
+                <div className="row registro-donacion">
+                  <div className="col">
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        className="form-control input-don"
+                        type="text"
+                        name="titulo"
+                        placeholder="Motivo"
+                        onChange={handleCampos}
+                      />
+                      <textarea
+                        name="desc"
+                        className="form-control"
+                        placeholder="Descripción"
+                        onChange={handleCampos}
+                      ></textarea>
+                      <div className="d-inline-flex doble-campo d-md-flex justify-content-between">
+                        <input
+                          className="form-control input-don"
+                          type="number"
+                          name="meta"
+                          onChange={handleCampos}
+                          style={{ width: "30%" }}
+                          placeholder="Meta"
+                        />
+                        <button className="btn btn-primary" type="submit">
+                          Crear donación
+                        </button>
+                      </div>
+                    </form>
                   </div>
-                </form>
+                </div>
+                <Donacion id={props.data.organizacion.id}></Donacion>
               </div>
-            </div>
-            <Donacion id={props.data.organizacion.id}></Donacion>
+            ) : (
+              <div className="div-error-stripe">
+                <h3 className="error-stripe">
+                  No puedes recibir donaciones hasta haber configurado tus pagos
+                </h3>
+                <Link
+                  className="error-stripe"
+                  to={"/PerfilOrg/" + props.data.organizacion.id}
+                >
+                  Configura tus pagos aquí
+                </Link>
+              </div>
+            )}
+
             <div className="col-12 col-lg-2 col-xl-3"></div>
           </div>
         </div>
@@ -344,7 +363,7 @@ function Cuerpo(props) {
 function Donacion(props) {
   const { loading, error, data } = useQuery(CONSULTA_DON, {
     variables: {
-      "consultaDonacionOrgId": props.id,
+      consultaDonacionOrgId: props.id,
     },
   });
   if (error) return <Error></Error>;
@@ -361,14 +380,21 @@ function Donacion(props) {
                     {consultaDonacionOrg.titulo}
                   </h4>
                   <p className="card-text">
-                    <img className="rounded-circle" src={consultaDonacionOrg.organizacion.foto} />
+                    <img
+                      className="rounded-circle"
+                      src={consultaDonacionOrg.organizacion.foto}
+                    />
                     {consultaDonacionOrg.organizacion.nombre}
                   </p>
                   <p className="card-text">
                     {consultaDonacionOrg.descripcion}
                     <br />
                   </p>
-                  <p className="card-text" id="meta" value={consultaDonacionOrg.meta}>
+                  <p
+                    className="card-text"
+                    id="meta"
+                    value={consultaDonacionOrg.meta}
+                  >
                     Meta: ${consultaDonacionOrg.meta}
                     <br />
                   </p>
@@ -376,9 +402,16 @@ function Donacion(props) {
                 <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
                   <div className="progress">
                     <div
-                    style={{width:(consultaDonacionOrg.total/consultaDonacionOrg.meta)*100+"%"}}
-                    value={consultaDonacionOrg.total}
-                      className="progress-bar bg-success progress-bar-animated" id="progreso"
+                      style={{
+                        width:
+                          (consultaDonacionOrg.total /
+                            consultaDonacionOrg.meta) *
+                            100 +
+                          "%",
+                      }}
+                      value={consultaDonacionOrg.total}
+                      className="progress-bar bg-success progress-bar-animated"
+                      id="progreso"
                     >
                       ${consultaDonacionOrg.total}
                     </div>
