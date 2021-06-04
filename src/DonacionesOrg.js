@@ -267,6 +267,13 @@ function Cuerpo(props) {
           </div>
           <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
             <div className="row justify-content-center">
+            <div class="row">
+                    <div class="col" style="margin-bottom: 25px;">
+                        <form><input class="form-control" type="text" placeholder="Motivo" style="margin-bottom: 10px;border-radius: 20px;background: #606060;border-style: none;font-family: Lexend, sans-serif;"/><textarea class="form-control" placeholder="Descripción" style="margin-bottom: 10px;border-radius: 14px;background: rgb(96,96,96);border-style: none;font-family: Lexend, sans-serif;"></textarea>
+                            <div class="d-inline-flex d-md-flex justify-content-between"><input class="form-control" type="number" style="width: 30%;border-radius: 20px;background: #606060;border-style: none;font-family: Lexend, sans-serif;" placeholder="Meta"/><button class="btn btn-primary" type="button" style="background: #4970f1;border-radius: 12px;">Crear donación</button></div>
+                        </form>
+                    </div>
+            </div>
               <Donacion></Donacion>
               <div className="col-12 col-lg-2 col-xl-3"></div>
             </div>

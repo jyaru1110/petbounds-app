@@ -520,6 +520,10 @@ h1,p{
   border-radius: 50px!important;
   border-color: #FFAC1C!important;
 }
+.registrateMain:hover{
+  background-color: #FFAC1C!important;
+  color: white!important;
+}
 #device-ini{
   align-self: center;
   height: 500px;

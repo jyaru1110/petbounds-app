@@ -125,8 +125,8 @@ class PaginaInicio extends Component{
                     </div>
                 </div>
             </section>
-            <footer className="d-xl-flex justify-content-xl-center align-items-xl-center" style={{background: 'rgb(50,50,50)'}}>
-                <div className="container d-xl-flex justify-content-xl-center align-items-xl-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/><h5>Contact us soporte@petbounds.tech</h5></div>
+            <footer className="d-xl-flex justify-content-center align-items-center" style={{background: 'rgb(50,50,50)'}}>
+                <div className="container d-xl-flex justify-content-center align-items-center container-footer"><img className="img-fluid" width="50" src={EarthBoundlogo}/><h5>Contact us soporte@petbounds.tech</h5></div>
             </footer>
             </div>
           );
