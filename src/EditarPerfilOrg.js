@@ -346,22 +346,11 @@ function Cuerpo(props) {
                   { boxShadow: "4px 3px 20px rgb(0,0,0)" })
                 }
               >
-                <Link to={rutaEditarPerfil} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="bi bi-pencil-fill"
-                    style={{ marginRight: "10px" }}
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
-                    ></path>
-                  </svg>
-                  Editar perfil
+                <Link to={rutaPerfil} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-person" style={{marginRight: '10px'}}>
+                                <path fillRule="evenodd" d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+                </svg>
+                  Ver perfil
                 </Link>
                 <button className="dropdown-item d-md-flex align-items-md-center editar-eliminar" onClick={eliminar}>
                   <svg

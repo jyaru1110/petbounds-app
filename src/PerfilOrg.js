@@ -58,11 +58,11 @@ function PerfilOrg(props) {
   }
 }
 function Header(props) {
-    var rutaPerfil = "/PerfilOrg/" + props.data.usuario.id;
-    var rutaHome = "/HomeOrg/" + props.data.usuario.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.data.usuario.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.usuario.id;
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div>
         <div
@@ -115,7 +115,7 @@ function Cuerpo(props) {
     }
     const [eliminarCuenta] = useMutation(BORRAR_ORG,{
         variables:{
-            "borrarOrgId":props.data.usuario.id
+            "borrarOrgId":props.data.organizacion.id
         },
         onCompleted({borrarOrg}){
             if(borrarOrg.success){
@@ -124,12 +124,12 @@ function Cuerpo(props) {
         }
     }
     );
-    var rutaPerfil = "/PerfilOrg/" + props.data.usuario.id;
-    var rutaEditarPerfil = "/EditarPerfilOrg/" + props.data.usuario.id;
-    var rutaHome = "/HomeOrg/" + props.data.usuario.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.data.usuario.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.usuario.id;
+    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
+    var rutaEditarPerfil = "/EditarPerfilOrg/" + props.data.organizacion.id;
+    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
+    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
+    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
+    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div className="container contenedor-main">
           {estado === false ? (<div className="eliminar-cuenta-adv">
