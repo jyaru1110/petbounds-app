@@ -8,6 +8,7 @@ import amselfoto from './assets/img/clipboard-image-4.png';
 import gaelfoto from './assets/img/clipboard-image-3.png';
 import boy from './assets/img/guy-walking-with-dog-in-the-park-2127165-2127165.svg'
 import EarthBoundlogo from './assets/img/earthlogoblanco.png';
+import './assets/css/Features-Clean.css'
 import './assets/css/Login-Form-Dark-1.css';
 import './assets/css/Login-Form-Dark.css';
 import './assets/css/Registration-Form-with-Photo.css';
@@ -41,17 +42,50 @@ class PaginaInicio extends Component{
             </div>
         </div>
     </header>
+    <section className="features-clean main-features">
+                <div className="container">
+                    <div className="intro">
+                        <h2 className="text-center">¿Qué puedo hacer en Petbounds?</h2>
+                    </div>
+                    <div className="row features">
+                        <div className="col-sm-6 col-lg-4 item"><i className="fa fa-tags icon"></i>
+                            <h3 className="name">Ve mascotas</h3>
+                            <p className="description">Está a tu disposición un amplio y selectivo catálogo de mascotas donde podrás filtrar según tus intereses y guardar las que más te gusten.</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-4 item"><i className="fa fa-comment-o icon"></i>
+                            <h3 className="name">Chatea</h3>
+                            <p className="description">Una vez hecha tu solicitud de adopción se abrirá un chat para que te comuniques con la organización que tiene a la mascota que te interesa.</p>
+                        </div>
+                        <div className="col-sm-6 col-lg-4 item"><i className="fa fa-credit-card icon"></i>
+                            <h3 className="name">Dona</h3>
+                            <p className="description">Apoya las metas de las organizaciones donando de una forma confiable y segura.</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-4 item"><i className="fa fa-tablet icon"></i>
+                            <h3 class="name">Ingresa desde cualquier dispositivo</h3>
+                            <p class="description" >Petbounds es una aplicación con un diseño full responsive, por lo que podrás ingresar desde cualquier dispositivo.</p>
+                        </div>
+                        <div className="col-sm-6 col-lg-4 item"><i className="fa fa-cut icon"></i>
+                            <h3 className="name">Shortcuts</h3>
+                            <p className="description">El chat tiene shortcuts para enviar tu información como tu comprobante y tu identificación, solo teclea *iden* o *compro*.</p>
+                        </div>
+                        <div className="col-sm-6 col-lg-4 item"><i class="fa fa-clock-o icon"></i>
+                            <h3 className="name">No importa la hora</h3>
+                            <p className="description">Podrás ingresar, ver mascotas, donar, adoptar y todo lo que quieras sin importar donde estes ni que hora sea</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section className="team-boxed">
                 <div className="container">
                     <div className="intro">
                         <h2 className="text-center">EarthBound Tech</h2>
-                        <p className="text-center">Estudiantes de programación del IPN amantes de lo animales que buscan usar sus conocimientos para aporta a la sociedad (;</p>
+                        <p className="text-center">Estudiantes de programación del IPN amantes de lo animales que buscan usar sus conocimientos para aportar a la sociedad (;</p>
                     </div>
                     <div className="row people">
                         <div className="col-md-6 col-lg-4 item">
                             <div className="box"><img className="rounded-circle" src={jyarufoto}/>
                                 <h3 className="name">Jyarü Hernández</h3>
-                                <p className="title">WEB DEVELOPER</p>
+                                <p className="title">front end DEVELOPER</p>
                                 <p className="description">Fan de star wars, la programación y las mamás solteras que de preferencia no tengan hijos</p>
                                 <div className="social"><a href="https://www.facebook.com/jochitoquisde"><i className="fa fa-facebook-official"></i></a><a href="https://twitter.com/JyaruH"><i className="fa fa-twitter"></i></a><a href="https://www.instagram.com/jyaru__hernandez/"><i className="fa fa-instagram"></i></a></div>
                             </div>
@@ -59,7 +93,7 @@ class PaginaInicio extends Component{
                         <div className="col-md-6 col-lg-4 item">
                             <div className="box"><img className="rounded-circle" src={leconafoto}/>
                                 <h3 className="name">Carlos Lecona</h3>
-                                <p className="title"><strong>backend developer</strong></p>
+                                <p className="title"><strong>back end developer</strong></p>
                                 <p className="description">Síndrome del crujito<br/>Síntomas:<br/>-Crujito</p>
                                 <div className="social"><a href="https://www.facebook.com/carlos.lecval"><i className="fa fa-facebook-official"></i></a><a href="https://twitter.com/carloslecval"><i className="fa fa-twitter"></i></a><a href="https://www.instagram.com/carlos_lecona0/"><i className="fa fa-instagram"></i></a></div>
                             </div>
