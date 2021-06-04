@@ -267,185 +267,10 @@ function Cuerpo(props) {
           </div>
           <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
             <div className="row justify-content-center">
-              <div className="col-md-4 col-lg-4 col-xl-3 sust-filtros"></div>
-              <div className="col-12 col-md-8 col-lg-7 col-xl-7 d-inline-flex justify-content-center flex-wrap"></div>
-              <div
-                className="col-12 col-md-8 col-lg-7 col-xl-7 d-inline-flex justify-content-center flex-wrap"
-                id="col-filtros"
-                style={({ paddingRight: "0px" }, { paddingLeft: "0px" })}
-              >
-                <div className="dropdown">
-                  <button
-                    className="btn btn-primary dropdown-toggle"
-                    aria-expanded="false"
-                    data-toggle="dropdown"
-                    type="button"
-                  >
-                    Tamaño
-                  </button>
-                  <div className="dropdown-menu">
-                    <input
-                      type="button"
-                      value="Todos"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      className="dropdown-item"
-                      value="Grande"
-                      type="button"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      className="dropdown-item"
-                      type="button"
-                      value="Mediano"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      type="button"
-                      value="Chico"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                  </div>
-                </div>
-                <div className="dropdown">
-                  <button
-                    className="btn btn-primary dropdown-toggle"
-                    aria-expanded="false"
-                    data-toggle="dropdown"
-                    type="button"
-                    style={
-                      ({ fontFamily: "Lexend" },
-                      { borderStyle: "none" },
-                      { background: "#606060" },
-                      { fontSize: "13px" },
-                      { marginRight: "10px" })
-                    }
-                  >
-                    Sexo&nbsp;
-                  </button>
-                  <div className="dropdown-menu">
-                    <input
-                      type="button"
-                      value="Todos"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      type="button"
-                      value="Hembra"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      type="button"
-                      value="Macho"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                  </div>
-                </div>
-                <div className="dropdown">
-                  <button
-                    className="btn btn-primary dropdown-toggle"
-                    aria-expanded="false"
-                    data-toggle="dropdown"
-                    type="button"
-                    style={
-                      ({ fontFamily: "Lexend" },
-                      { background: "#606060" },
-                      { borderStyle: "none" },
-                      { fontSize: "13px" },
-                      { margiTop: "0px" },
-                      { marginRight: "10px" })
-                    }
-                  >
-                    Animal
-                  </button>
-                  <div className="dropdown-menu">
-                    <input
-                      type="button"
-                      value="Todos"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      type="button"
-                      value="Perro"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                    <input
-                      type="button"
-                      value="Gato"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    ></input>
-                  </div>
-                </div>
-                <div className="dropdown">
-                  <button
-                    className="btn btn-primary dropdown-toggle"
-                    aria-expanded="false"
-                    data-toggle="dropdown"
-                    type="button"
-                    style={
-                      ({ fontFamily: "Lexend" },
-                      { background: "#606060" },
-                      { borderStyle: "none" },
-                      { fontSize: "13px" },
-                      { marginRight: "10px" })
-                    }
-                  >
-                    Estado
-                  </button>
-                  <div className="dropdown-menu">
-                    <button
-                      value="Todos"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    >
-                      Todos
-                    </button>
-                    <button
-                      value="1"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    >
-                      Adoptado
-                    </button>
-                    <button
-                      value="0"
-                      className="dropdown-item"
-                      onClick={handleClick}
-                    >
-                      Disponible
-                    </button>
-                  </div>
-                </div>
-                <span>
-                  <i
-                    className="fa fa-search"
-                    id="buscar-icon"
-                    style={
-                      ({ marginRight: "5px" }, { fontSize: "medium!important" })
-                    }
-                  ></i>
-                  <input
-                    type="search"
-                    id="buscar"
-                    onChange={handleChange}
-                    placeholder="Buscar"
-                  />
-                </span>
-              </div>
-              <div className="col-md-1 col-lg-1 col-xl-2"></div>
+              <Donacion></Donacion>
+              <div className="col-12 col-lg-2 col-xl-3"></div>
             </div>
-            <Donacion></Donacion>
           </div>
-          <div className="col-12 col-lg-2 col-xl-3"></div>
         </div>
       </div>
     );
@@ -456,14 +281,17 @@ function Donacion(props){
             <div className="col-lg-12 col-xl-12 d-flex justify-content-center donaciones-main">
                 <div className="card text-left align-self-center card-donaciones">
                     <div className="card-body">
-                        <h4 className="d-flex justify-content-between card-title" style={{marginBottom: '1px'},{fontFamily: 'Lexend'}, {color: 'rgb(255,255,255)'}}>Donación para comida</h4>
-                        <p className="card-text" style={{marginBottom: '4px'},{fontFamily: 'Lexend'},{color: 'rgb(255,255,255)'},{paddingBottom: '5px'},{borderBottom: '1px solid rgb(116,116,116)'}}><img className="rounded-circle" style={{marginRight: '10px'},{width: '25px'},{height: '25px'}} src="./assets/img/perfil_org.png"/>Salva perritos, CDMX</p>
-                        <p className="card-text" style={{marginBottom: '1px'},{fontFamily: 'Lexend'},{color: 'rgb(255,255,255)'},{marginTop: '5px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br/></p>
+                        <h4 className="d-flex justify-content-between card-title">Donación para comida</h4>
+                        <p className="card-text"><img className="rounded-circle" src={perritoXD}/>Salva perritos, CDMX</p>
+                        <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br/></p>
                     </div>
-                    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center" style={{height: '40px'},{paddingLeft: '10px'},{background: 'rgba(0,0,0,0)'},{borderStyle: 'none'},{paddingRight: '10px'}}>
-                            <div className="progress-bar bg-success progress-bar-animated" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: '70%'}}>70%</div>
-                    </div><button className="btn btn-primary" data-bss-hover-animate="pulse" type="button" style={{margin: '0px 0px 0px'},{marginTop: '2px'},{fontFamily: 'Lexend'}, {fontSize: '15px'},{background: '#026AD9'},{borderStyle: 'none'},{color: 'rgb(255, 255, 255)'},{height: '30px'},{width: '77.5625px'},{marginBottom: '4px'},{borderRadius: '21px'},{paddingTop: '0px'},{paddingBottom: '0px'},{paddingRight: '0px'},{paddingLeft: '0px'}}>Donar</button>
-                </div>
+                    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
+                        <div class="progress" >
+                            <div class="progress-bar bg-success progress-bar-animated" style={{width: '70%'}}>70%</div>
+                        </div>
+                      <button className="btn btn-primary button-donar" data-bss-hover-animate="pulse" type="button">Donar</button>
+                        </div>
+                    </div>
             </div>
         </div>
     )
