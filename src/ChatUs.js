@@ -65,6 +65,11 @@ const SOLICITUD = gql`
 query ($solicitudesSeleccionadaId: ID!) {
     solicitudesSeleccionada(id: $solicitudesSeleccionadaId) {
       id
+      usuario{
+        id
+        identificacion
+        comprobante
+      }
       mascota {
         id
         foto
@@ -452,6 +457,8 @@ function Chat(props){
     if(loading) return null;
     if(error) return null
     else{
+      localStorage.setItem('idenUs',data.solicitudesSeleccionada.usuario.identificacion)
+      localStorage.setItem('comproUs',data.solicitudesSeleccionada.usuario.comprobante)
     return(
         <div className="col-md-8 col-lg-8 col-xl-8 offset-md-0 d-flex d-md-flex flex-column justify-content-between justify-content-md-center main-chat">
             {estado === false ? (<div className="eliminar-solicitud">
@@ -536,10 +543,10 @@ function Mensaje(props){
 function Propio(props){
   if(props.msj==="*iden*"){
     return(
-      <div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("iden")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("iden")}</a></div>
+      <div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("idenUs")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("idenUs")}</a></div>
     )
   }else if(props.msj==="*compro*"){
-    return(<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("compro")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("compro")}</a></div>)
+    return(<div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><a href={localStorage.getItem("comproUs")} className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{localStorage.getItem("comproUs")}</a></div>)
   }else{
     return(
       <div className="d-inline-flex d-xl-flex flex-column flex-grow-0 align-items-end align-items-sm-end align-items-md-end align-items-lg-end justify-content-xl-center align-items-xl-end div-msj"><span className="d-md-flex d-xl-flex flex-column align-items-md-start align-items-lg-start align-items-xl-start msj-propio">{props.msj}</span></div>

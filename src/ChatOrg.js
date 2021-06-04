@@ -51,6 +51,8 @@ query ($solicitudesSeleccionadaId: ID!) {
       usuario {
         nickname
         foto
+        identificacion
+        comprobante
       }
       mascota {
         id
@@ -326,6 +328,8 @@ function Chat(props){
     if(error) {return <Error></Error>;}
     else{
       localStorage.setItem('mascotaCompletada',data.solicitudesSeleccionada.mascota.id)
+      localStorage.setItem('idenUs',data.solicitudesSeleccionada.usuario.identificacion)
+      localStorage.setItem('comproUs',data.solicitudesSeleccionada.usuario.comprobante)
     return(
         <div className="col-md-8 col-lg-8 col-xl-8 offset-md-0 d-flex d-md-flex flex-column justify-content-between justify-content-md-center main-chat">
             {estados.estadoEliminar !== false ? (<div className="eliminar-solicitud">
@@ -428,9 +432,9 @@ function Propio(props){
 }
 function Otro(props){
     if(props.msj==="*iden*"){
-        return(<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><a href={localStorage.getItem("iden")} className="msj-otro">{localStorage.getItem("iden")}</a></div>);
+        return(<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><a href={localStorage.getItem("idenUs")} className="msj-otro">{localStorage.getItem("idenUs")}</a></div>);
     }else if(props.msj==="*compro*"){
-        return(<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><a href={localStorage.getItem("compro")} className="msj-otro">{localStorage.getItem("compro")}</a></div>);
+        return(<div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><a href={localStorage.getItem("comproUs")} className="msj-otro">{localStorage.getItem("comproUs")}</a></div>);
     }else{
         return(
             <div className="d-flex d-sm-flex d-md-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-xl-start"><span className="msj-otro">{props.msj}</span></div>
