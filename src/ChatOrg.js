@@ -16,7 +16,21 @@ import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import Error from "./Error"
 
-
+const MOD_MAS = gql`
+mutation Mutation($modificacionMascotaId: String!, $modificacionMascotaEstado: Int) {
+  modificacionMascota(id: $modificacionMascotaId, estado: $modificacionMascotaEstado) {
+    success
+    message
+  }
+}
+`;
+const MOD_SOL =  gql`
+mutation Mutation($modificacionSolicitudId: ID!, $modificacionSolicitudFlag: Boolean!) {
+  modificacionSolicitud(id: $modificacionSolicitudId, flag: $modificacionSolicitudFlag) {
+    success
+    message
+  }
+}`;
 const ORGANIZACION = gql`
 query ($organizacionId: ID!) {
     organizacion(id: $organizacionId) {
@@ -33,11 +47,13 @@ const SOLICITUD = gql`
 query ($solicitudesSeleccionadaId: ID!) {
     solicitudesSeleccionada(id: $solicitudesSeleccionadaId) {
       id
+      flag
       usuario {
         nickname
         foto
       }
       mascota {
+        id
         foto
         nombre
         organizacion {
@@ -240,10 +256,38 @@ function Chat(props){
     const goBack = () =>{
         window.history.back();
     }
-    const [estado,setEstado] = useState(true);
+    const [estados,setEstados] = useState({
+      estadoEliminar:false,
+      estadoCompletado:false,
+    }
+    );
     const eliminar = () => {
-        setEstado(!estado)
+        setEstados({estadoEliminar:!estados.estadoEliminar,estadoCompletado:false})
     };
+  const completar = () => {
+      setEstados({estadoCompletado:!estados.estadoCompletado,estadoEliminar:false})
+  };
+  const [modMas] =  useMutation(MOD_MAS,{
+    variables:{
+      "modificacionMascotaId":localStorage.getItem('mascotaCompletada'),
+      "modificacionMascotaEstado":1
+    }
+  })
+  const [modSol] =  useMutation(MOD_SOL,{
+    variables:{
+      "modificacionSolicitudId":props.idSol,
+      "modificacionSolicitudFlag":true
+    },
+    onCompleted({modificacionSolicitud}){
+      if(modificacionSolicitud.success){
+        window.location.reload()
+      }
+    }
+  })
+  const handleCompletar = () =>{
+    modMas()
+    modSol()
+  }
     const [mensaje,setMensaje] = useState(""); 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -281,12 +325,17 @@ function Chat(props){
     if(loading) return null;
     if(error) {return <Error></Error>;}
     else{
+      localStorage.setItem('mascotaCompletada',data.solicitudesSeleccionada.mascota.id)
     return(
         <div className="col-md-8 col-lg-8 col-xl-8 offset-md-0 d-flex d-md-flex flex-column justify-content-between justify-content-md-center main-chat">
-            {estado === false ? (<div className="eliminar-solicitud">
-                <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu solicitud?</h3>
+            {estados.estadoEliminar !== false ? (<div className="eliminar-solicitud">
+                <h4 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu solicitud?</h4>
                     <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarSolicitud}>Sí, eliminar</button></div>
                 </div>):(null)}
+            {estados.estadoCompletado !== false ? (<div className="eliminar-solicitud">
+                <h5 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Deseas marcar como completada esta adopción?</h5>
+                    <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={completar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={handleCompletar}>Sí, ya se completó</button></div>
+            </div>):(null)}
             <div className="d-flex d-xl-flex justify-content-around align-items-center align-items-sm-center align-items-xl-center header-chat"><button className="btn" onClick={goBack} style={{background:"transparent"}}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-arrow-left">
                     <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                 </svg></button>
@@ -295,6 +344,10 @@ function Chat(props){
                 </div><button className="btn" onClick={eliminar} style={{background:"transparent"},{color:'white'}} type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-x" style={{fontSize: '30px'},{marginLeft: '0px'}}>
                     <path fillRule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                 </svg></button>
+                {data.solicitudesSeleccionada.flag !== true?( <button className="btn" onClick={completar} style={{background:"transparent"},{color:'white'}} type="button"><svg xmlns="http://www.w3.org/2000/svg" width="0.8em" height="0.9em" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg></button>):(null)}
+               
             </div>
             <BodyChat id={props.idSol} dir={data.solicitudesSeleccionada.mascota.organizacion.direccion} fotoMas={data.solicitudesSeleccionada.mascota.foto} desc={data.solicitudesSeleccionada.mascota.nombre}></BodyChat>
             <form onSubmit={handleSubmit}>

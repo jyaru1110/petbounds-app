@@ -30,6 +30,7 @@ const SOLICITUDES = gql`
 query($solicitudesOrgId: ID!) {
     solicitudesOrg(id: $solicitudesOrgId) {
       id
+      flag
       usuario {
         nickname
         foto
@@ -227,7 +228,7 @@ function BloqueSoli(props){
             {data.solicitudesOrg.map((solicitudesOrg)=>(
                     <Link key={solicitudesOrg.id} to={"/ChatOrg/"+props.id+"/"+solicitudesOrg.id} className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesOrg.usuario.foto}/>
                         <div className="relleno-solicitud">
-                            <h4 id="titulo-soli">{solicitudesOrg.usuario.nickname}</h4>
+                            <h4 id="titulo-soli">{solicitudesOrg.usuario.nickname}</h4>{solicitudesOrg.flag===true?(<span class="badge badge-primary">Completado</span>):(null)}
                             <p><em>{solicitudesOrg.mascota.nombre} · {solicitudesOrg.mascota.tamano} · {solicitudesOrg.mascota.edad} · {solicitudesOrg.mascota.raza} · {solicitudesOrg.mascota.sexo}</em><br/></p>
                         </div>
                     </Link>

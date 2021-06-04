@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 const SOLICITUDES = gql`
     query ($solicitudesUsuarioId: ID!) {
     solicitudesUsuario(id: $solicitudesUsuarioId) {
+      flag
       id
       mascota {
         raza
@@ -372,7 +373,7 @@ function BloqueSoli(props){
             {data.solicitudesUsuario.map((solicitudesUsuario)=>(
                     <Link key={solicitudesUsuario.id} to={"/ChatUs/"+props.idUs+"/"+solicitudesUsuario.id} className="d-flex contenedor-solicitud"><img className="rounded-circle foto-perfil-org-solicitud" src={solicitudesUsuario.mascota.organizacion.foto}/>
                         <div className="relleno-solicitud">
-                            <h4 id="titulo-soli">{solicitudesUsuario.mascota.organizacion.nombre}</h4>
+                            <h4 id="titulo-soli">{solicitudesUsuario.mascota.organizacion.nombre}</h4>{solicitudesUsuario.flag===true?(<span class="badge badge-primary">Completado</span>):(null)}
                             <p><em>{solicitudesUsuario.mascota.nombre} · {solicitudesUsuario.mascota.tamano} · {solicitudesUsuario.mascota.edad} · {solicitudesUsuario.mascota.raza} · {solicitudesUsuario.mascota.sexo}</em><br/></p>
                         </div>
                     </Link>
