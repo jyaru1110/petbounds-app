@@ -400,7 +400,7 @@ function Donacion(props) {
                   </p>
                 </div>
                 <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
-                  <div className="progress">
+                  <div className="progress progress-org">
                     <div
                       style={{
                         width:
