@@ -379,7 +379,7 @@ function Donacion(props) {
                           (donacionFeed.total / donacionFeed.meta) * 100 + "%",
                       }}
                       value={donacionFeed.total}
-                      className="progress-bar bg-success progress-bar-animated"
+                      className="progress-bar bg-primary progress-bar-animated"
                       id="progreso"
                     >
                       ${donacionFeed.total}

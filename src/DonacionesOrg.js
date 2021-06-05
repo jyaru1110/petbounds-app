@@ -400,7 +400,7 @@ function Donacion(props) {
                   </p>
                 </div>
                 <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
-                  <div className="progress progress-org">
+                  <div className="progress">
                     <div
                       style={{
                         width:
@@ -410,12 +410,19 @@ function Donacion(props) {
                           "%",
                       }}
                       value={consultaDonacionOrg.total}
-                      className="progress-bar bg-success progress-bar-animated"
+                      className="progress-bar bg-primary progress-bar-animated"
                       id="progreso"
                     >
                       ${consultaDonacionOrg.total}
                     </div>
                   </div>
+                  <button
+                    className="btn btn-primary button-donar"
+                    data-bss-hover-animate="pulse"
+                    type="button"
+                  >
+                    ver
+                  </button>
                 </div>
               </div>
             </div>
