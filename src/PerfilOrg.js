@@ -328,7 +328,9 @@ function Cuerpo(props) {
             <h4 className="nick-name-perfil">
               <strong>{props.data.organizacion.nombre}</strong>
             </h4>
-            <button className="btn btn-primary configura" onClick={configurar}>Configura tus pagos</button>
+            {props.data.organizacion.stripeid===null?(<button className="btn btn-primary configura" onClick={configurar}>Configura tus pagos</button>)
+            :
+            (null)}
             <div className="align-self-start">
               <h6 className="title-nombre">Número de teléfono:</h6>
               <h5 className="nombre-perfil-perfil">
