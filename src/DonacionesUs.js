@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -15,7 +15,27 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import Error from "./Error";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { ValuesOfCorrectTypeRule } from "graphql";
+import { ajaxPrefilter } from "jquery";
 
+const stripePromise = loadStripe(
+  "pk_test_51Iy9ReDYTftGTyoTbG28byXI8Su9qIQ9HHP1Jx7J223cpXKtLU43Jnkc7xoB7G9fQyBi2MEwGIMsP57ieT9v5lNA007L4GFs0M"
+);
+const ALTA_DON = gql`
+mutation ($altaDonacionUsuarioDonacionId: ID!, $altaDonacionUsuarioUsuarioId: ID!, $altaDonacionUsuarioMonto: Int!) {
+  altaDonacionUsuario(donacionId: $altaDonacionUsuarioDonacionId, usuarioId: $altaDonacionUsuarioUsuarioId, monto: $altaDonacionUsuarioMonto) {
+    success
+    message
+  }
+}
+`;
 const USUARIO = gql`
   query ($usuarioId: ID!) {
     usuario(id: $usuarioId) {
@@ -340,6 +360,7 @@ function Cuerpo(props) {
     </div>
   );
 }
+
 function Donacion(props) {
   const { loading, error, data } = useQuery(CONSULTA_DON);
   if (error) return <Error></Error>;
@@ -348,7 +369,7 @@ function Donacion(props) {
     return (
       <div className="main-don-us">
         {data.donacionFeed.map((donacionFeed) => (
-          <div className="row" key={donacionFeed}>
+          <div className="row" key={donacionFeed.id}>
             <div className="col-lg-12 col-xl-12 d-flex justify-content-center donaciones-main">
               <div className="card text-left align-self-center card-donaciones">
                 <div className="card-body">
@@ -371,28 +392,13 @@ function Donacion(props) {
                     <br />
                   </p>
                 </div>
-                <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
-                  <div className="progress">
-                    <div
-                      style={{
-                        width:
-                          (donacionFeed.total / donacionFeed.meta) * 100 + "%",
-                      }}
-                      value={donacionFeed.total}
-                      className="progress-bar bg-primary progress-bar-animated"
-                      id="progreso"
-                    >
-                      ${donacionFeed.total}
-                    </div>
-                  </div>
-                  <button
-                    className="btn btn-primary button-donar"
-                    data-bss-hover-animate="pulse"
-                    type="button"
-                  >
-                    Donar
-                  </button>
-                </div>
+                <FooterDonar
+                  total={donacionFeed.total}
+                  meta={donacionFeed.meta}
+                  stripeid={donacionFeed.organizacion.stripeid}
+                  idDon = {donacionFeed.id}
+                  idUs = {props.id}
+                />
               </div>
             </div>
           </div>
@@ -400,5 +406,120 @@ function Donacion(props) {
       </div>
     );
   }
+}
+function FooterDonar(props) {
+  const [abierto, setAbierto] = useState(false);
+  const CheckoutForm = () => {
+    const stripe = useStripe(); 
+    const elements = useElements();
+    const [loading, setLoading] = useState(false);
+    const [cantidad,setCantidad] = useState(0);
+    const [altaDon] = useMutation(ALTA_DON,{
+      variables:{
+        "altaDonacionUsuarioDonacionId": props.idDon,
+        "altaDonacionUsuarioUsuarioId": props.idUs,
+        "altaDonacionUsuarioMonto": parseInt(cantidad*0.9)
+      },
+      onCompleted({altaDonacionUsuario}){
+        if(altaDonacionUsuario.success){
+          setAbierto(false)
+        }
+      },
+      update(proxy){
+        proxy.writeQuery({query:CONSULTA_DON,data:{
+          donacionFeed:{
+              "__ref":"infoDonacion:"+props.idDon+"",
+              total:(parseInt(cantidad*0.9))+"",
+              _typename:"infoDonacion",
+          }
+      }})
+      }
+    })
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if(parseInt(cantidad)<=(parseInt(props.meta-props.total))){
+        console.log(props.stripeid)
+        fetch('http://localhost:4000/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
+          return response.json();
+        }).then(function(responseJson) {
+          var clientSecret = responseJson.client_secret;
+          stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+              card: elements.getElement(CardElement)
+            }
+          },
+          setLoading(true)
+          ).then(function(result) {
+            if (result.error) {
+              console.log(result.error.message);
+              setLoading(false)
+            } else {
+              setLoading(false)
+              if (result.paymentIntent.status === 'succeeded') {
+                altaDon()
+              }
+            }
+          });
+        });   
+      }else{
+        alert('No puedes donar esa cantidad :/')
+      }
+    };
+  
+    console.log(!stripe || loading);
+  
+    return (
+      <div className="confirmar-pago">
+      <form onSubmit={handleSubmit}>
+          <h3 style={{marginBottom:'20px'}}>Rellena tus datos</h3>
+            <CardElement/>
+            <input
+              className="form-control"
+              type="number"
+              name="cantidad"
+              placeholder="Cantidad a donar(minimo 10 pesos)"
+              onChange={(e)=>{setCantidad(e.target.value)}}
+            />
+          <button className="btn" id="cancelar" onClick={()=>{setAbierto(false)}}type="button">Cancelar</button>
+          <button disabled={!stripe} type="submit" className="btn btn-success" style={{fontFamily:"Lexend"}}>
+            {loading ? (
+              <div className="spinner-border text-light" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            ) : (
+              "Confirmar pago"
+            )}
+          </button>
+        </form>
+      </div>
+    );
+  }
+  return(
+  <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
+    {abierto === false?(null):
+    (<Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>)}
+    <div className="progress">
+      <div
+        style={{
+          width: (props.total / props.meta) * 100 + "%",
+        }}
+        value={props.total}
+        className="progress-bar bg-primary progress-bar-animated"
+        id="progreso"
+      >
+        ${props.total}
+      </div>
+    </div>
+    <button
+      className="btn btn-primary button-donar"
+      data-bss-hover-animate="pulse"
+      type="button"
+      onClick={() => setAbierto(!abierto)}
+    >
+      Donar
+    </button>
+  </div>);
 }
 export default DonacionesUs;
