@@ -2,6 +2,10 @@
 #titulo-soli{
   margin-bottom: 0px!important;
 }
+.configura{
+  font-family: Lexend;
+  border-radius: 15px!important;
+}
 .div-error-stripe{
   text-align: center;
   margin-top:100px;
@@ -90,7 +94,7 @@
   padding-right: 10px;
 }
 .card-footer .progress{
-  width: 70%;
+  width: 95%;
   border-radius: 10px;
   height: 16px;
 }

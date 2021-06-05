@@ -11,7 +11,6 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
-import perritoXD from './assets/img/perritoxd.png'
 import { gql, useMutation, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
@@ -31,6 +30,14 @@ query ($organizacionId: ID!) {
     }
   }
 `;
+const MOD_ORG = gql`
+mutation ($modificacionOrgId: String!, $modificacionOrgStripeid: String) {
+  modificacionOrg(id: $modificacionOrgId, stripeid: $modificacionOrgStripeid) {
+    success
+    message
+  }
+}
+`;
  const BORRAR_ORG = gql`
  mutation ($borrarOrgId: ID!) {
     borrarOrg(id: $borrarOrgId) {
@@ -47,7 +54,7 @@ function PerfilOrg(props) {
     },
   });
   if (loading) return null;
-  if (error) return null;
+  if (error) <Error></Error>;
   else {
     return (
       <div>
@@ -109,7 +116,39 @@ function Header(props) {
 function Cuerpo(props) {
     let history=useHistory()
     const [estado,setEstado] = useState(true)
-
+    const link=(id)=>{
+      fetch("http://localhost:4000/api/pago?id="+id,{ method: 'GET'}).then(res=>res.json()).then(data=>{
+        console.log(data.enlace.url)
+        window.location.href=data.enlace.url
+      }).catch(e => {
+        console.log(e);
+        return e;
+      });
+    }
+    const [modOrg] = useMutation(MOD_ORG,{
+      variables:{
+        "modificacionOrgId":props.data.organizacion.id,
+        "modificacionOrgStripeid":localStorage.getItem("idConfigurarPagoLink")
+      },
+      onCompleted({modificacionOrg}){
+        if(modificacionOrg.success){
+          link(localStorage.getItem("idConfigurarPagoLink"))
+        }else{
+          console.log("XD")
+        }
+      }
+    })
+    const configurar = () =>{
+      fetch("http://localhost:4000/api/pago",{ method: 'POST'}).then(res=>res.json()).then(data=>{
+        console.log(data.id)
+        localStorage.setItem('idConfigurarPagoLink',data.id)
+        modOrg()
+        
+      }).catch(e => {
+        console.log(e);
+        return e;
+      });
+    }
     const eliminar = () => {
       setEstado(!estado)
     }
@@ -289,6 +328,7 @@ function Cuerpo(props) {
             <h4 className="nick-name-perfil">
               <strong>{props.data.organizacion.nombre}</strong>
             </h4>
+            <button className="btn btn-primary configura" onClick={configurar}>Configura tus pagos</button>
             <div className="align-self-start">
               <h6 className="title-nombre">Número de teléfono:</h6>
               <h5 className="nombre-perfil-perfil">

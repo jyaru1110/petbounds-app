@@ -416,13 +416,6 @@ function Donacion(props) {
                       ${consultaDonacionOrg.total}
                     </div>
                   </div>
-                  <button
-                    className="btn btn-primary button-donar"
-                    data-bss-hover-animate="pulse"
-                    type="button"
-                  >
-                    Donar
-                  </button>
                 </div>
               </div>
             </div>
