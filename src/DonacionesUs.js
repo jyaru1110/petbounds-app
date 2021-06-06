@@ -414,7 +414,6 @@ function FooterDonar(props) {
     const handleSubmit = async (e) => {
       e.preventDefault();
       if(parseInt(cantidad)<=(parseInt(props.meta-props.total))){
-        console.log(props.stripeid)
         fetch('https://petlimits.xyz/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
           return response.json();
         }).then(function(responseJson) {
@@ -427,7 +426,6 @@ function FooterDonar(props) {
           setLoading(true)
           ).then(function(result) {
             if (result.error) {
-              console.log(result.error.message);
               setLoading(false)
             } else {
               setLoading(false)
@@ -441,8 +439,6 @@ function FooterDonar(props) {
         alert('No puedes donar esa cantidad :/')
       }
     };
-  
-    console.log(!stripe || loading);
   
     return (
       <div className="confirmar-pago">

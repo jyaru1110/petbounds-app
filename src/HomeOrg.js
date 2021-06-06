@@ -146,7 +146,6 @@ function Cuerpo(props) {
       }
       getUrl().then((result)=>{
         localStorage.setItem('fotoMascota',result)
-        console.log(localStorage.getItem('fotoMascota'))
       }).catch(e=>console.log(e))
     })
     reader.addEventListener('load', (event) => {

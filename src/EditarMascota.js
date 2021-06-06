@@ -244,7 +244,6 @@ function FormEditar(props){
           }
           getUrl().then((result)=>{
             localStorage.setItem('fotoMascotaMod',result)
-            console.log(localStorage.getItem('fotoMascotaMod'))
           }).catch(e=>console.log(e))
         })
         reader.addEventListener('load', (event) => {
@@ -275,7 +274,6 @@ function FormEditar(props){
       useEffect(()=>{
           if(values.banderaMut){
               editarMas();
-              console.log(values)
           }
       })
       const handleSubmit = (e) =>{

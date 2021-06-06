@@ -245,7 +245,6 @@ function Cuerpo(props) {
     onCompleted({borrarUsuario}){
       if(borrarUsuario.success){
         history.push("/")
-        console.log(localStorage.getItem('foto'));
       }
     },
     variables:{
@@ -281,7 +280,6 @@ function Cuerpo(props) {
       }
       getUrl().then((result)=>{
         localStorage.setItem('iden',result)
-        console.log(localStorage.getItem('iden'))
       }).catch(e=>console.log(e))
     })
     document.getElementById('identificacion-label').innerHTML=texto_poner
@@ -315,7 +313,6 @@ function Cuerpo(props) {
         }
         getUrl().then((result)=>{
           localStorage.setItem('compro',result)
-          console.log(localStorage.getItem('compro'))
         }).catch(e=>console.log(e))
       })
     document.getElementById('comprobante-label').innerHTML=texto_poner
@@ -350,7 +347,6 @@ function Cuerpo(props) {
         }
         getUrl().then((result)=>{
           localStorage.setItem('foto',result)
-          console.log(localStorage.getItem('foto'))
         }).catch(e=>console.log(e))
       })
       reader.addEventListener('load', (event) => {

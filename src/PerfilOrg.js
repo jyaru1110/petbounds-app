@@ -118,7 +118,6 @@ function Cuerpo(props) {
     const [estado,setEstado] = useState(true)
     const link=(id)=>{
       fetch("http://localhost:4000/api/pago?id="+id,{ method: 'GET'}).then(res=>res.json()).then(data=>{
-        console.log(data.enlace.url)
         window.location.href=data.enlace.url
       }).catch(e => {
         console.log(e);
@@ -134,13 +133,11 @@ function Cuerpo(props) {
         if(modificacionOrg.success){
           link(localStorage.getItem("idConfigurarPagoLink"))
         }else{
-          console.log("XD")
         }
       }
     })
     const configurar = () =>{
       fetch("http://localhost:4000/api/pago",{ method: 'POST'}).then(res=>res.json()).then(data=>{
-        console.log(data.id)
         localStorage.setItem('idConfigurarPagoLink',data.id)
         modOrg()
         

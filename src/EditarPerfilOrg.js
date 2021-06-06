@@ -167,7 +167,6 @@ function Cuerpo(props) {
           }
           getUrl().then((result)=>{
             localStorage.setItem('fotoOrg',result)
-            console.log(localStorage.getItem('fotoOrg'))
           }).catch(e=>console.log(e))
         })
         reader.addEventListener('load', (event) => {
