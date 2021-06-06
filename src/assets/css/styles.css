@@ -1,6 +1,24 @@
-
+.col-porcentaje{
+  padding-right: 0px;
+  padding-left: -1px;
+}
+.main-dashboard{
+  margin-top: 100px;
+}
+.col-progress{
+  width: 80%;
+  margin-left: 10px;
+  border-radius: 20px;
+  height: 13px;
+}
 #titulo-soli{
   margin-bottom: 0px!important;
+}
+.card-dashboard{
+  box-shadow: 140px 97px;
+  background: rgba(255,255,255,0.5)!important;
+  border-style: none;
+  padding:5px 15px
 }
 .configura{
   font-family: Lexend;
@@ -268,7 +286,7 @@
   margin-top: 100px;
   
 }
-.relleno-solicitud{
+.relleno-solicitud,.header-dashboard{
   color: var(--white);
   font-family: Lexend, sans-serif;
 }

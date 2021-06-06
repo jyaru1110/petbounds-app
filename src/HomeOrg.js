@@ -130,7 +130,7 @@ function Cuerpo(props) {
     var fileList =  e.target.files;
     setValues({bandera:true})
     const reader = new FileReader();
-    const enlaceFoto = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    const enlaceFoto = 'https://petbounds.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
     fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
       const formData = new FormData();
       Object.keys(data.data.fields).forEach(key => {

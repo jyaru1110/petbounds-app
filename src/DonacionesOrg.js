@@ -16,16 +16,7 @@ import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import Error from "./Error";
 
-const ORGANIZACION = gql`
-  query ($organizacionId: ID!) {
-    organizacion(id: $organizacionId) {
-      id
-      nombre
-      foto
-      stripeid
-    }
-  }
-`;
+
 const CONSULTA_DON = gql`
   query ($consultaDonacionOrgId: ID!) {
     consultaDonacionOrg(id: $consultaDonacionOrgId) {
@@ -415,13 +406,14 @@ function Donacion(props) {
                       ${consultaDonacionOrg.total}
                     </div>
                   </div>
-                  <button
+                  <Link
+                    to = {"/DashboardDonacion/"+consultaDonacionOrg.id}
                     className="btn btn-primary button-donar"
                     data-bss-hover-animate="pulse"
                     type="button"
                   >
                     Stats
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

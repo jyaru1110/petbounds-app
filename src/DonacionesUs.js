@@ -414,7 +414,7 @@ function FooterDonar(props) {
     const handleSubmit = async (e) => {
       e.preventDefault();
       if(parseInt(cantidad)<=(parseInt(props.meta-props.total))){
-        fetch('https://petlimits.xyz/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
+        fetch('https://petbounds.xyz/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
           return response.json();
         }).then(function(responseJson) {
           var clientSecret = responseJson.client_secret;

@@ -23,8 +23,9 @@ import PerfilOrg from './PerfilOrg';
 import EditarPerfilOrg from './EditarPerfilOrg';
 import ChatUs from './ChatUs';
 import ChatOrg from './ChatOrg';
-import DonacionesOrg from './DonacionesOrg'
-import DonacionesUs from './DonacionesUs'
+import DonacionesOrg from './DonacionesOrg';
+import DonacionesUs from './DonacionesUs';
+import DashboardDonacion from './DashboardDonacion';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
       <Route exact path="/DonacionesUs" component={DonacionesUs}/>
       <Route exact path="/ChatUs/:idSol" component={ChatUs}/>
       <Route exact path="/ChatOrg/:idSol" component={ChatOrg}/>
+      <Route exact path="/DashboardDonacion/:idDon" component={DashboardDonacion}/>
     </BrowserRouter>
   );
 }

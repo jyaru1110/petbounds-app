@@ -254,7 +254,7 @@ function Cuerpo(props) {
   const handleIdentifacion=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    const enlaceIden = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    const enlaceIden = 'https://petbounds.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
     fetch(enlaceIden,{ method: 'GET'}).then(response=>response.json()).then(data=>{
       const formData = new FormData();
       Object.keys(data.data.fields).forEach(key => {
@@ -287,7 +287,7 @@ function Cuerpo(props) {
   const handleComprobante=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    const enlaceCompro = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    const enlaceCompro = 'https://petbounds.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
       fetch(enlaceCompro,{ method: 'GET'}).then(response=>response.json()).then(data=>{
         const formData = new FormData();
         Object.keys(data.data.fields).forEach(key => {
@@ -321,7 +321,7 @@ function Cuerpo(props) {
       var fileList =  e.target.files;
       const reader = new FileReader();
       setValues({banderaFoto:true})
-      const enlaceFoto = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+      const enlaceFoto = 'https://petbounds.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
       fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
         const formData = new FormData();
         Object.keys(data.data.fields).forEach(key => {
