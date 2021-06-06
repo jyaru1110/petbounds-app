@@ -2,6 +2,10 @@
   padding-right: 0px;
   padding-left: -1px;
 }
+.tituloRegDash,.tabla-dash tr{
+  color:white;
+  font-family: Lexend;
+}
 .main-dashboard{
   margin-top: 100px;
 }

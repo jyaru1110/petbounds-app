@@ -22,6 +22,7 @@ const DON = gql`
   query ($consultaDonacionIndividualId: ID!) {
     consultaDonacionIndividual(id: $consultaDonacionIndividualId) {
       donacionusuarios {
+        id
         fechasubida
         monto
         usuario {
@@ -356,7 +357,7 @@ function Dashboard(props) {
                                 "%",
                             }}
                           >
-                            <span class="sr-only">50%</span>
+                            <span className="sr-only">50%</span>
                           </div>
                         </div>
                       </div>
@@ -413,32 +414,36 @@ function Dashboard(props) {
             </div>
           </div>
         </div>
-        {/*
-                <h3 style="color: var(--white);font-family: Lexend, sans-serif;">Registro</h3>
-                <div class="row">
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr style="color: var(--white);font-family: Lexend, sans-serif;">
-                                        <th>Nombre Completo</th>
-                                        <th>Correo</th>
-                                        <th>Monto</th>
-                                        <th>Fecha</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="color: var(--white);font-family: Lexend, sans-serif;">
-                                        <td>Cell 1</td>
-                                        <td>Cell 1</td>
-                                        <td>Cell 1</td>
-                                        <td>Cell 2</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>*/}
+        <h3 className = "tituloRegDash">
+          Registro
+        </h3>
+        <div className="row">
+          <div className="col">
+            <div className="table-responsive">
+              <table className="table table-sm tabla-dash">
+                <thead>
+                  <tr >
+                    <th>Nombre Completo</th>
+                    <th>Correo</th>
+                    <th>Monto</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {data.consultaDonacionIndividual.donacionusuarios.map((donacionusuarios)=>(
+                <tr key={donacionusuarios.id}>
+                    <td>{donacionusuarios.usuario.nombre} {donacionusuarios.usuario.apellidop} {donacionusuarios.usuario.apellidom}</td>
+                    <td>{donacionusuarios.usuario.correo}</td>
+                    <td>{donacionusuarios.monto}</td>
+                    <td>{donacionusuarios.fechasubida}</td>
+                  </tr>
+                ))}
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -526,8 +531,8 @@ function Dona(props) {
       sumaM = sumaM + 1;
     }
   }
-  var porH = Math.round((sumaH/datos.length)*100)
-  var porM = Math.round((sumaM/datos.length)*100)
+  var porH = Math.round((sumaH / datos.length) * 100);
+  var porM = Math.round((sumaM / datos.length) * 100);
 
   const state = {
     labels: ["Hombre", "Mujer"],
