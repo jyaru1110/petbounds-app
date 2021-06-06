@@ -260,6 +260,7 @@ function Header() {
               localStorage.setItem("flagUsuario", "false");
               localStorage.setItem("nombreUsuario", "");
               localStorage.setItem("fotoUsuario", "");
+              localStorage.setItem("idUsuario", "");
               history.push("/");
             }}
             className="d-flex justify-content-start align-items-center perfil-menu-text"

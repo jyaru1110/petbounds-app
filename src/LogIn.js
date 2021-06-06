@@ -31,16 +31,20 @@ function LogIn (props){
     const[inicioSesion]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
                     var rutaUs = '/HomeUs';
-                    var rutaOrg = '/HomeOrg/'+inicioSesion.id;
-                    localStorage.setItem('flagUsuario','true')
-                    localStorage.setItem('idUsuario',inicioSesion.id)
+                    var rutaOrg = '/HomeOrg';
+                    
                     if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
                             case 'usuario':
                                 props.history.push(rutaUs);
+                                localStorage.setItem('idUsuario',inicioSesion.id)
+                                localStorage.setItem('flagUsuario','true')
                                 break; 
                             case 'org':
                                 props.history.push(rutaOrg);
+                                localStorage.setItem('idOrg',inicioSesion.id)
+                                localStorage.setItem('flagOrg','true')
+                                break
                         }
                     }
                     else{

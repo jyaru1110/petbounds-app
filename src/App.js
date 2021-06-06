@@ -42,17 +42,17 @@ function App() {
       <Route exact path="/MisLikesUs" component={MisLikesUs}/>
       <Route exact path="/EditarPerfilUs" component={EditarPerfilUs}/>
       <Route exact path="/MisAdopcionesUs" component={MisAdopcionesUs}/>
-      <Route exact path="/HomeOrg/:idOrg" component={HomeOrg}/>
+      <Route exact path="/HomeOrg" component={HomeOrg}/>
       <Route exact path="/Validacion/:id" component={Validacion}/>
-      <Route exact path="/AdopcionesOrg/:idOrg" component={AdopcionesOrg}/>
-      <Route exact path="/MisMascotasOrg/:idOrg" component={MisMascotasOrg}/>
-      <Route exact path="/EditarMascota/:idOrg/:idMas" component={EditarMascota}/>
-      <Route exact path="/PerfilOrg/:idOrg" component={PerfilOrg}/>
-      <Route exact path="/EditarPerfilOrg/:idOrg" component={EditarPerfilOrg}/>
-      <Route exact path="/DonacionesOrg/:idOrg" component={DonacionesOrg}/>
+      <Route exact path="/AdopcionesOrg" component={AdopcionesOrg}/>
+      <Route exact path="/MisMascotasOrg" component={MisMascotasOrg}/>
+      <Route exact path="/EditarMascota/:idMas" component={EditarMascota}/>
+      <Route exact path="/PerfilOrg" component={PerfilOrg}/>
+      <Route exact path="/EditarPerfilOrg" component={EditarPerfilOrg}/>
+      <Route exact path="/DonacionesOrg" component={DonacionesOrg}/>
       <Route exact path="/DonacionesUs" component={DonacionesUs}/>
       <Route exact path="/ChatUs/:idSol" component={ChatUs}/>
-      <Route exact path="/ChatOrg/:idOrg/:idSol" component={ChatOrg}/>
+      <Route exact path="/ChatOrg/:idSol" component={ChatOrg}/>
     </BrowserRouter>
   );
 }

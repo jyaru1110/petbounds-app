@@ -50,30 +50,25 @@ query ($mascotaSelecId: ID!) {
   }
 `;
 
-
+var rutaPerfil = "/PerfilOrg";
+ var rutaHome = "/HomeOrg";
+ var rutaAdopciones = "/AdopcionesOrg";
+ var rutaDonaciones = "/DonacionesOrg";
+ var rutaMisMascotas = "/MisMascotasOrg";
+ var rutaEditarPerfil = "/EditarPerfilOrg";
 function EditarMascota(props) {
-  const { loading, error, data } = useQuery(ORGANIZACION, {
-    variables: {
-      "organizacionId": props.match.params.idOrg
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
+  if(localStorage.getItem('flagOrg')==='true'){
   return (
       <div>
-        <Header data={data}></Header>
-        <Cuerpo data={data} idMas={props.match.params.idMas}></Cuerpo>
+        <Header ></Header>
+        <Cuerpo idMas={props.match.params.idMas}></Cuerpo>
       </div>
     );
+  }else{
+    return(<Error></Error>)
   }
 }
 function Header(props) {
-    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
-    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div>
         <div
@@ -82,7 +77,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <Link to={rutaPerfil} className="texto-menu-sup">
-            <img className="rounded-circle" src={props.data.organizacion.foto} />
+            <img className="rounded-circle" src={localStorage.getItem('fotoOrga')} />
           </Link>
           <Link to={rutaHome} className="icon-menu-org">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -118,11 +113,6 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-    var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
-    var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
-    var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
-    var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
-    var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
     return (
       <div className="container contenedor-main">
         <div className="row">
@@ -135,9 +125,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={props.data.organizacion.foto}
+                  src={localStorage.getItem('fotoOrga')}
                 />
-                <strong>{props.data.organizacion.nombre}</strong>
+                <strong>{localStorage.getItem('nombreOrg')}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -175,28 +165,36 @@ function Cuerpo(props) {
                 <strong>Mis mascotas</strong>
               </span>
             </Link>
-            <Link to="/" className="link-menu-lateral">
-              <span className="text-left texto-menu-lateral">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="bi bi-box-arrow-left"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                  ></path>
-                  <path
-                    fillRule="evenodd"
-                    d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                  ></path>
-                </svg>
-                <strong>Salir</strong>
-              </span>
-            </Link>
+            <a
+            onClick={() => {
+              localStorage.setItem("flagOrg", "false");
+              localStorage.setItem("nombreOrg", "");
+              localStorage.setItem("fotoOrga", "");
+              localStorage.setItem("idOrg", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
           </div>
             <FormEditar idMas={props.idMas}/>
         </div>
@@ -218,7 +216,7 @@ function FormEditar(props){
         var fileList =  e.target.files;
         setValues({bandera:true})
         const reader = new FileReader();
-        const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+        const enlaceFoto = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
         fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
           const formData = new FormData();
           Object.keys(data.data.fields).forEach(key => {

@@ -11,7 +11,7 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link } from "react-router-dom";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation, rewriteURIForGET } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import Error from "./Error";
@@ -61,29 +61,24 @@ const REGISTRO_DON = gql`
     }
   }
 `;
+var rutaPerfil = "/PerfilOrg";
+  var rutaHome = "/HomeOrg";
+  var rutaAdopciones = "/AdopcionesOrg";
+  var rutaDonaciones = "/DonacionesOrg";
+  var rutaMisMascotas = "/MisMascotasOrg";
 function DonacionesOrg(props) {
-  const { loading, error, data } = useQuery(ORGANIZACION, {
-    variables: {
-      organizacionId: props.match.params.idOrg,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
+  if(localStorage.getItem('flagUsuario')==='true'){
     return (
       <div>
-        <Header data={data}></Header>
-        <Cuerpo data={data}></Cuerpo>
+        <Header></Header>
+        <Cuerpo></Cuerpo>
       </div>
     );
+  }else{
+    return(<Error></Error>)
   }
 }
 function Header(props) {
-  var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
-  var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
-  var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
-  var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
-  var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
   return (
     <div>
       <div
@@ -92,7 +87,7 @@ function Header(props) {
         style={{ color: "var(--white)" }}
       >
         <Link to={rutaPerfil} className="texto-menu-sup">
-          <img className="rounded-circle" src={props.data.organizacion.foto} />
+          <img className="rounded-circle" src={localStorage.getItem('fotoOrga')} />
         </Link>
         <Link to={rutaHome} className="icon-menu-org">
           <svg
@@ -166,7 +161,7 @@ function Cuerpo(props) {
   };
   const [crearDon] = useMutation(REGISTRO_DON, {
     variables: {
-      registroDonacionOrganizacionId: props.data.organizacion.id,
+      registroDonacionOrganizacionId: localStorage.getItem('idOrg'),
       registroDonacionTitulo: campos.titulo,
       registroDonacionDescripcion: campos.desc,
       registroDonacionMeta: parseInt(campos.meta),
@@ -193,11 +188,6 @@ function Cuerpo(props) {
       alert("No pueden estar vacios los campos");
     }
   };
-  var rutaPerfil = "/PerfilOrg/" + props.data.organizacion.id;
-  var rutaHome = "/HomeOrg/" + props.data.organizacion.id;
-  var rutaAdopciones = "/AdopcionesOrg/" + props.data.organizacion.id;
-  var rutaDonaciones = "/DonacionesOrg/" + props.data.organizacion.id;
-  var rutaMisMascotas = "/MisMascotasOrg/" + props.data.organizacion.id;
   return (
     <div className="container contenedor-main">
       <div className="row">
@@ -210,9 +200,9 @@ function Cuerpo(props) {
             <span className="text-left texto-menu-lateral-con-foto">
               <img
                 className="rounded-circle foto-perfil-menu-lateral"
-                src={props.data.organizacion.foto}
+                src={localStorage.getItem('fotoOrga')}
               />
-              <strong>{props.data.organizacion.nombre}</strong>
+              <strong>{localStorage.getItem('nombreOrg')}</strong>
             </span>
           </Link>
           <Link to={rutaHome} className="link-menu-lateral">
@@ -278,32 +268,40 @@ function Cuerpo(props) {
               <strong>Mis mascotas</strong>
             </span>
           </Link>
-          <Link to="/" className="link-menu-lateral">
-            <span className="text-left texto-menu-lateral">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-box-arrow-left"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                ></path>
-                <path
-                  fillRule="evenodd"
-                  d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                ></path>
-              </svg>
-              <strong>Salir</strong>
-            </span>
-          </Link>
+          <a
+            onClick={() => {
+              localStorage.setItem("flagOrg", "false");
+              localStorage.setItem("nombreOrg", "");
+              localStorage.setItem("fotoOrga", "");
+              localStorage.setItem("idOrg", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
         </div>
         <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
           <div className="row justify-content-center">
-            {props.data.organizacion.stripeid !== null ? (
+            {localStorage.getItem('stripeidOrg') !== 'null' ? (
               <div>
                 <div className="row registro-donacion">
                   <div className="col">
@@ -337,7 +335,7 @@ function Cuerpo(props) {
                     </form>
                   </div>
                 </div>
-                <Donacion id={props.data.organizacion.id}></Donacion>
+                <Donacion id={localStorage.getItem('idOrg')}></Donacion>
               </div>
             ) : (
               <div className="div-error-stripe">
@@ -346,7 +344,7 @@ function Cuerpo(props) {
                 </h3>
                 <Link
                   className="error-stripe"
-                  to={"/PerfilOrg/" + props.data.organizacion.id}
+                  to={"/PerfilOrg"}
                 >
                   Configura tus pagos aquí
                 </Link>
