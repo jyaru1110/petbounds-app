@@ -89,6 +89,7 @@ function HomeOrg(props) {
   }
 }
 function Header(props) {
+  let history = useHistory;
   return (
     <div>
       <div
@@ -164,7 +165,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-  let history = useHistory;
+  let history = useHistory();
   const [values, setValues] = useState({
     nombre: "",
     raza: "",
