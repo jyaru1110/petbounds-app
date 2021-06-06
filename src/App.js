@@ -51,7 +51,7 @@ function App() {
       <Route exact path="/EditarPerfilOrg/:idOrg" component={EditarPerfilOrg}/>
       <Route exact path="/DonacionesOrg/:idOrg" component={DonacionesOrg}/>
       <Route exact path="/DonacionesUs" component={DonacionesUs}/>
-      <Route exact path="/ChatUs/:idUs/:idSol" component={ChatUs}/>
+      <Route exact path="/ChatUs/:idSol" component={ChatUs}/>
       <Route exact path="/ChatOrg/:idOrg/:idSol" component={ChatOrg}/>
     </BrowserRouter>
   );

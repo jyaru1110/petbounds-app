@@ -108,21 +108,23 @@ mutation ($borrarSolicitudId: ID!) {
     }
   }
 `;
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+const rutaAyuda = "";
 function ChatUs(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.match.params.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
+  if(localStorage.getItem('flagUsuario')==='true'){
     return (
       <div>
-        <Header data={data} />
-        <Cuerpo data={data} idSol={props.match.params.idSol}/>
+        <Header />
+        <Cuerpo idSol={props.match.params.idSol}/>
       </div>
     );
+  }else{
+    return (<Error></Error>)
   }
 }
 function Header(props) {
@@ -131,14 +133,6 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
     return (
       <div>
         <div
@@ -147,7 +141,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={props.data.usuario.foto} />
+            <img className="rounded-circle" src={localStorage.getItem('fotoUsuario')} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -187,10 +181,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={props.data.usuario.foto}
+              src={localStorage.getItem('fotoUsuario')}
             />
             <h6 className="text-white hola-menu">
-              Hola, {props.data.usuario.nickname}
+              Hola, {localStorage.getItem('nombreUsuario')}
             </h6>
             <Link
               to={rutaPerfil}
@@ -285,14 +279,6 @@ function Header(props) {
     );
 }
 function Cuerpo(props) {
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
     return (
       <div className="container contenedor-main">
         <div className="row">
@@ -305,9 +291,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={props.data.usuario.foto}
+                  src={localStorage.getItem('fotoUsuario')}
                 />
-                <strong>{props.data.usuario.nickname}</strong>
+                <strong>{localStorage.getItem('nombreUsuario')}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -397,7 +383,7 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-          <Chat idSol={props.idSol} idUs={props.data.usuario.id}/>
+          <Chat idSol={props.idSol} idUs={localStorage.getItem('idUsuario')}/>
         </div>
       </div>
     );

@@ -366,6 +366,7 @@ function Cuerpo(props) {
     },
     onCompleted({modificacionUsuario}){
       if(modificacionUsuario.success){
+        localStorage.setItem('fotoUsuario',localStorage.getItem('foto'))
         window.location.reload()
       }
     },
