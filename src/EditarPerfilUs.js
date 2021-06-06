@@ -49,40 +49,35 @@ const UPDATE_USUARIO=gql`
 }
 
 `;
-
-function EditarPerfilUs(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.match.params.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
-    return (
-      <div>
-        <Header data={data} />
-        <Cuerpo data={data}/>
-      </div>
-    );
-  }
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+//Aquí link al soporte xfas jeje
+const rutaAyuda = "";
+function EditarPerfilUs() {
+if(localStorage.getItem('flagUsuario')==="true"){
+  return (
+    <div>
+      <Header/>
+      <Cuerpo/>
+    </div>
+  );
+}else{
+  return <Error></Error>
+}
+    
 }
 function Header(props) {
-  
+  let history=useHistory;
   const [estado, setEstado] = useState(false);
   const handleClick = () => {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
+
     return (
       <div>
         <div
@@ -91,7 +86,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={props.data.usuario.foto} />
+            <img className="rounded-circle" src={localStorage.getItem('fotoUsuario')} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -131,10 +126,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={props.data.usuario.foto}
+              src={localStorage.getItem('fotoUsuario')}
             />
             <h6 className="text-white hola-menu">
-              Hola, {props.data.usuario.nickname}
+              Hola, {localStorage.getItem('nombreUsuario')}
             </h6>
             <Link
               to={rutaPerfil}
@@ -199,30 +194,35 @@ function Header(props) {
               </svg>
               Mis Likes
             </Link>
-            <Link
-              to="/"
-              className="d-flex justify-content-start align-items-center perfil-menu-text"
+            <a
+            onClick={() => {
+              localStorage.setItem("flagUsuario", "false");
+              localStorage.setItem("nombreUsuario", "");
+              localStorage.setItem("fotoUsuario", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-box-arrow-left"
-                style={({ marginRight: "5px" }, { fontSize: "19px" })}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                ></path>
-                <path
-                  fillRule="evenodd"
-                  d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                ></path>
-              </svg>
-              Salir
-            </Link>
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
           </div>
         )}
       </div>
@@ -249,13 +249,13 @@ function Cuerpo(props) {
       }
     },
     variables:{
-      "borrarUsuarioId":props.data.usuario.id
+      "borrarUsuarioId":localStorage.getItem('idUsuario')
     }
   })
   const handleIdentifacion=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    const enlaceIden = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    const enlaceIden = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
     fetch(enlaceIden,{ method: 'GET'}).then(response=>response.json()).then(data=>{
       const formData = new FormData();
       Object.keys(data.data.fields).forEach(key => {
@@ -289,7 +289,7 @@ function Cuerpo(props) {
   const handleComprobante=(e)=>{
     var fileList = e.target.files;
     var texto_poner = fileList[0].name
-    const enlaceCompro = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+    const enlaceCompro = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
       fetch(enlaceCompro,{ method: 'GET'}).then(response=>response.json()).then(data=>{
         const formData = new FormData();
         Object.keys(data.data.fields).forEach(key => {
@@ -324,7 +324,7 @@ function Cuerpo(props) {
       var fileList =  e.target.files;
       const reader = new FileReader();
       setValues({banderaFoto:true})
-      const enlaceFoto = 'http://localhost:4000/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
+      const enlaceFoto = 'https://petlimits.xyz/api/foto?nom=' + fileList[0].name + '&cont=' + fileList[0].type;
       fetch(enlaceFoto,{ method: 'GET'}).then(response=>response.json()).then(data=>{
         const formData = new FormData();
         Object.keys(data.data.fields).forEach(key => {
@@ -360,7 +360,7 @@ function Cuerpo(props) {
   }
   const [modificar_usuario] = useMutation(UPDATE_USUARIO,{
     variables:{
-      "modificacionUsuarioId":props.data.usuario.id,
+      "modificacionUsuarioId":localStorage.getItem('idUsuario'),
       "modificacionUsuarioNombre":values.nombre,
       "modificacionUsuarioApellidop":values.apellidop,
       "modificacionUsuarioApellidom":values.apellidom,
@@ -408,14 +408,14 @@ function Cuerpo(props) {
     setValues({nombre:nuevoNom,apellidom:nuevoAM,apellidop:nuevoAP,bandera:true})
    
   }
-    const rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    const rutaHome = "/HomeUs/" + props.data.usuario.id;
-    const rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    const rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    const rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    const rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
+  const {loading,error,data} = useQuery(USUARIO,{
+    variables:{
+      "usuarioId":localStorage.getItem('idUsuario')
+    }
+  })
+  if(error) return <Error></Error>;
+  if(loading) return null;
+  else{
     return (
       <div className="container contenedor-main">
         {estado === false ? (<div className="eliminar-cuenta-adv">
@@ -432,9 +432,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={props.data.usuario.foto}
+                  src={localStorage.getItem('fotoUsuario')}
                 />
-                <strong>{props.data.usuario.nickname}</strong>
+                <strong>{localStorage.getItem('nombreUsuario')}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -501,46 +501,53 @@ function Cuerpo(props) {
                 <br />
               </span>
             </Link>
-            <Link to="/" className="link-menu-lateral">
-              <span className="text-left texto-menu-lateral">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="bi bi-box-arrow-left"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                  ></path>
-                  <path
-                    fillRule="evenodd"
-                    d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                  ></path>
-                </svg>
-                <strong>Salir</strong>
-              </span>
-            </Link>
+            <a
+            onClick={() => {
+              localStorage.setItem("flagUsuario", "false");
+              localStorage.setItem("nombreUsuario", "");
+              localStorage.setItem("fotoUsuario", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
           </div>
           <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-editar">
                 <form onSubmit={onSubmit} className="d-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-xl-center align-items-xl-center">
                     <div className="form-group">
-                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={props.data.usuario.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
+                        <div className="d-flex align-items-end" style={{marginRight: '31px!important'}}><img className="rounded-circle foto-editar" id="foto-perfil-editar" src={data.usuario.foto}/><input className="form-control-file file" type="file" id="foto_perfil_file" onChange={handleFotoPerfil} accept="image/png, image/jpeg"/><label htmlFor="foto_perfil_file" style={{marginBottom: '35px'},{marginLeft: '-37px'}}><span className="d-flex justify-content-center align-items-center foto_icon"><svg xmlns="http://www.w3.org/2000/svg" id="foto-icon-editar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-camera" style={{color: 'rgb(255,255,255)'}}>
                                         <path fillRule="evenodd" d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
                                         <path fillRule="evenodd" d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
                                         <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
                                     </svg></span></label></div>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" id="nombreUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.usuario.nombre}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Nombre:</h6><input name="nombre" id="nombreUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.nombre}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" id="apellidopUs" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={props.data.usuario.apellidop}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido paterno:</h6><input  name="apellidop" id="apellidopUs" onChange={handleCampos}className="form-control form-editar" type="text" placeholder={data.usuario.apellidop}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
-                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" id="apellidomUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={props.data.usuario.apellidom}/>
+                        <h6 style={{fontFamily: 'Lexend'}}>Apellido materno:</h6><input  name="apellidom" id="apellidomUs" onChange={handleCampos} className="form-control form-editar" type="text" placeholder={data.usuario.apellidom}/>
                     </div>
                     <div className="form-group align-self-start" style={{width: '278px'}}>
                         <h6 style={{fontFamily: 'Lexend'}}>Documentos:</h6><label className="d-flex justify-content-start align-items-start label_input_file" htmlFor="ine_editar"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style={{marginRight: '5px'},{fontSize: '22px'}}>
@@ -614,6 +621,7 @@ function Cuerpo(props) {
         </div>
       </div>
     );
+  }
 }
 
 export default EditarPerfilUs;

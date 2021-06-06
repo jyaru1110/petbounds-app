@@ -35,13 +35,13 @@ function App() {
       <Route exact path="/CrearUsuario" component={CrearUsuario}/>
       <Route exact path="/CrearNegocio" component={CrearNegocio}/>
       <Route exact path="/CrearOrg" component={CrearOrg}/>
-      <Route exact path="/HomeUs/:id" component={HomeUs}/>
-      <Route exact path="/PerfilUs/:idUs" component={PerfilUs}/>
+      <Route exact path="/HomeUs" component={HomeUs}/>
+      <Route exact path="/PerfilUs" component={PerfilUs}/>
       <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota}/>
       <Route exact path="/ConfirmacionSolicitud/:idUs/:idMas" component={ConfirmacionSolicitud}/>
-      <Route exact path="/MisLikesUs/:idUs" component={MisLikesUs}/>
-      <Route exact path="/EditarPerfilUs/:idUs" component={EditarPerfilUs}/>
-      <Route exact path="/MisAdopcionesUs/:idUs" component={MisAdopcionesUs}/>
+      <Route exact path="/MisLikesUs" component={MisLikesUs}/>
+      <Route exact path="/EditarPerfilUs" component={EditarPerfilUs}/>
+      <Route exact path="/MisAdopcionesUs" component={MisAdopcionesUs}/>
       <Route exact path="/HomeOrg/:idOrg" component={HomeOrg}/>
       <Route exact path="/Validacion/:id" component={Validacion}/>
       <Route exact path="/AdopcionesOrg/:idOrg" component={AdopcionesOrg}/>
@@ -50,7 +50,7 @@ function App() {
       <Route exact path="/PerfilOrg/:idOrg" component={PerfilOrg}/>
       <Route exact path="/EditarPerfilOrg/:idOrg" component={EditarPerfilOrg}/>
       <Route exact path="/DonacionesOrg/:idOrg" component={DonacionesOrg}/>
-      <Route exact path="/DonacionesUs/:idUs" component={DonacionesUs}/>
+      <Route exact path="/DonacionesUs" component={DonacionesUs}/>
       <Route exact path="/ChatUs/:idUs/:idSol" component={ChatUs}/>
       <Route exact path="/ChatOrg/:idOrg/:idSol" component={ChatOrg}/>
     </BrowserRouter>

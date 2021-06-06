@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
-import { useHistory } from "react-router-dom";
 
 const SOLICITUDES = gql`
     query ($solicitudesUsuarioId: ID!) {
@@ -38,51 +37,34 @@ const SOLICITUDES = gql`
   }
   
 `;
-const USUARIO = gql`
-  query ($usuarioId: ID!) {
-    usuario(id: $usuarioId) {
-      id
-      nickname
-      apellidop
-      foto
-      identificacion
-      comprobante
-    }
-  }
-`;
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+const rutaAyuda = "";
 
-function MisAdopcionesUs(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.match.params.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    return (
-      <div>
-        <Header data={data} />
-        <Cuerpo data={data} idMas={props.match.params.idMas} />
-      </div>
-    );
-  }
+function MisAdopcionesUs() {
+if(localStorage.getItem('flagUsuario')==='true'){
+  return (
+    <div>
+      <Header />
+      <Cuerpo />
+    </div>
+  );
+}else{
+  return <Error></Error>
 }
-function Header(props) {
+    
+}
+function Header() {
   const [estado, setEstado] = useState(false);
   const handleClick = () => {
     var estadoN = !estado;
     setEstado(estadoN);
   };
   
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
     return (
       <div>
         <div
@@ -91,7 +73,7 @@ function Header(props) {
           style={{ color: "var(--white)" }}
         >
           <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={props.data.usuario.foto} />
+            <img className="rounded-circle" src={localStorage.getItem('fotoUsuario')} />
           </a>
           <Link to={rutaHome} className="texto-menu-sup">
             Adopciones
@@ -131,10 +113,10 @@ function Header(props) {
             <img
               className="rounded-circle imagen-perfil-menu"
               onClick={handleClick}
-              src={props.data.usuario.foto}
+              src={localStorage.getItem('fotoUsuario')}
             />
             <h6 className="text-white hola-menu">
-              Hola, {props.data.usuario.nickname}
+              Hola, {localStorage.getItem('nombreUsuario')}
             </h6>
             <Link
               to={rutaPerfil}
@@ -229,14 +211,6 @@ function Header(props) {
     );
 }
 function Cuerpo(props) {
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
     return (
       <div className="container contenedor-main">
         <div className="row">
@@ -249,9 +223,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={props.data.usuario.foto}
+                  src={localStorage.getItem('fotoUsuario')}
                 />
-                <strong>{props.data.usuario.nickname}</strong>
+                <strong>{localStorage.getItem('nombreUsuario')}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -341,7 +315,7 @@ function Cuerpo(props) {
               </span>
             </Link>
           </div>
-            <BloqueSoli idUs={props.data.usuario.id}/>   
+            <BloqueSoli idUs={localStorage.getItem('idUsuario')}/>   
         </div>
       </div>
     );
@@ -356,7 +330,6 @@ function BloqueSoli(props){
     if(loading) return loading;
     else{
         if(data.solicitudesUsuario.length==0){
-            const rutaHome = "/HomeUs/"+props.idUs;
             return(
                 <div className="row no_hay">
                     <div className="col">

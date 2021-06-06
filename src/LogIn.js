@@ -23,7 +23,6 @@ const INICIO_SESION = gql `
     }
   }
 `;
-
 function LogIn (props){
     const[values,setValues]=useState({
             correo:'',
@@ -31,8 +30,10 @@ function LogIn (props){
     });
     const[inicioSesion]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
-                    var rutaUs = '/HomeUs/'+inicioSesion.id;
+                    var rutaUs = '/HomeUs';
                     var rutaOrg = '/HomeOrg/'+inicioSesion.id;
+                    localStorage.setItem('flagUsuario','true')
+                    localStorage.setItem('idUsuario',inicioSesion.id)
                     if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
                             case 'usuario':

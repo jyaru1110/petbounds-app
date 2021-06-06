@@ -10,9 +10,9 @@ import "./assets/css/Navigation-with-Search.css";
 import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
-import Error from "./Error"
-import { Link} from "react-router-dom";
-import { gql, useQuery,useMutation } from "@apollo/client";
+import Error from "./Error";
+import { Link } from "react-router-dom";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import { useHistory } from "react-router-dom";
@@ -32,220 +32,240 @@ const USUARIO = gql`
     }
   }
 `;
-const ELIMINAR_USUARIO=gql`
+const ELIMINAR_USUARIO = gql`
   mutation ($borrarUsuarioId: ID!) {
     borrarUsuario(id: $borrarUsuarioId) {
       success
+    }
   }
-}
 `;
-function PerfilUs(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.match.params.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return null;
-  else {
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+const rutaEditarPerfil = "/EditarPerfilUs";
+const rutaAyuda = "";
+function PerfilUs() {
+  if (localStorage.getItem("flagUsuario") === "true") {
     return (
       <div>
-        <Header data={data} />
-        <Cuerpo data={data}/>
+        <Header />
+        <Cuerpo />
       </div>
+    );
+  } else {
+    return (
+      <Error></Error>
     );
   }
 }
-function Header(props) {
+function Header() {
+  let history = useHistory();
   const [estado, setEstado] = useState(false);
   const handleClick = () => {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
-    return (
-      <div>
-        <div
-          className="d-inline-flex justify-content-between align-items-center"
-          id="header-menu"
-          style={{ color: "var(--white)" }}
-        >
-          <a className="texto-menu-sup" onClick={handleClick}>
-            <img className="rounded-circle" src={props.data.usuario.foto} />
-          </a>
-          <Link to={rutaHome} className="texto-menu-sup">
-            Adopciones
-          </Link>
-          <Link to={rutaServicios} className="texto-menu-sup">
-            Servicios
-          </Link>
-          <Link to={rutaDonaciones} className="texto-menu-sup">
-            Donaciones
-          </Link>
-        </div>
-        <div>
-          <Link to={rutaHome}>
-            <img className="logo-petbounds" src={logo} />
-          </Link>
-        </div>
-        {estado === false ? null : (
-          <div
-            className="text-left d-flex flex-column justify-content-start align-self-end ml-auto justify-content-sm-start"
-            id="menu"
-          >
-            <button className="btn toggle-menu-left" onClick={handleClick}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                fill="currentColor"
-                className="bi bi-list"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
-                />
-              </svg>
-            </button>
-            <img
-              className="rounded-circle imagen-perfil-menu"
-              onClick={handleClick}
-              src={props.data.usuario.foto}
-            />
-            <h6 className="text-white hola-menu">
-              Hola, {props.data.usuario.nickname}
-            </h6>
-            <Link
-              to={rutaPerfil}
-              className="d-flex justify-content-start align-items-center perfil-menu-text"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-person"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
-                ></path>
-              </svg>
-              Ver perfil
-            </Link>
-            <Link
-              to={rutaMisAdopciones}
-              className="d-flex justify-content-start align-items-center perfil-menu-text"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-file-text"
-                style={({ marginRight: "5px" }, { fontSize: "31px" })}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"
-                ></path>
-                <path
-                  fillRule="evenodd"
-                  d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
-                ></path>
-              </svg>
-              Mis solicitudes
-            </Link>
-            <Link
-              to={rutaMisLikes}
-              className="d-flex justify-content-start align-items-center perfil-menu-text"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-heart"
-                style={({ marginRight: "5px" }, { fontSize: "19px" })}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
-                ></path>
-              </svg>
-              Mis Likes
-            </Link>
-            <Link
-              to="/"
-              className="d-flex justify-content-start align-items-center perfil-menu-text"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="bi bi-box-arrow-left"
-                style={({ marginRight: "5px" }, { fontSize: "19px" })}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                ></path>
-                <path
-                  fillRule="evenodd"
-                  d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                ></path>
-              </svg>
-              Salir
-            </Link>
-          </div>
-        )}
+  return (
+    <div>
+      <div
+        className="d-inline-flex justify-content-between align-items-center"
+        id="header-menu"
+        style={{ color: "var(--white)" }}
+      >
+        <a className="texto-menu-sup" onClick={handleClick}>
+          <img
+            className="rounded-circle"
+            src={localStorage.getItem("fotoUsuario")}
+          />
+        </a>
+        <Link to={rutaHome} className="texto-menu-sup">
+          Adopciones
+        </Link>
+        <Link to={rutaServicios} className="texto-menu-sup">
+          Servicios
+        </Link>
+        <Link to={rutaDonaciones} className="texto-menu-sup">
+          Donaciones
+        </Link>
       </div>
-    );
+      <div>
+        <Link to={rutaHome}>
+          <img className="logo-petbounds" src={logo} />
+        </Link>
+      </div>
+      {estado === false ? null : (
+        <div
+          className="text-left d-flex flex-column justify-content-start align-self-end ml-auto justify-content-sm-start"
+          id="menu"
+        >
+          <button className="btn toggle-menu-left" onClick={handleClick}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              fill="currentColor"
+              className="bi bi-list"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+              />
+            </svg>
+          </button>
+          <img
+            className="rounded-circle imagen-perfil-menu"
+            onClick={handleClick}
+            src={localStorage.getItem("fotoUsuario")}
+          />
+          <h6 className="text-white hola-menu">
+            Hola, {localStorage.getItem("nombreUsuario")}
+          </h6>
+          <Link
+            to={rutaPerfil}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-person"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+              ></path>
+            </svg>
+            Ver perfil
+          </Link>
+          <Link
+            to={rutaMisAdopciones}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-file-text"
+              style={({ marginRight: "5px" }, { fontSize: "31px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
+              ></path>
+            </svg>
+            Mis solicitudes
+          </Link>
+          <Link
+            to={rutaMisLikes}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-heart"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+              ></path>
+            </svg>
+            Mis Likes
+          </Link>
+          <a
+            onClick={() => {
+              localStorage.setItem("flagUsuario", "false");
+              localStorage.setItem("nombreUsuario", "");
+              localStorage.setItem("fotoUsuario", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
+        </div>
+      )}
+    </div>
+  );
 }
-function Cuerpo(props) {
-  let history=useHistory()
-  const [estado,setEstado] = useState(true)
+function Cuerpo() {
+  let history = useHistory();
+  const [estado, setEstado] = useState(true);
   const eliminar = () => {
-    setEstado(!estado)
-  }
-  const[eliminarCuenta]=useMutation(ELIMINAR_USUARIO,{
-    onCompleted({borrarUsuario}){
-      if(borrarUsuario.success){
-        history.push("/")
+    setEstado(!estado);
+  };
+  const [eliminarCuenta] = useMutation(ELIMINAR_USUARIO, {
+    onCompleted({ borrarUsuario }) {
+      if (borrarUsuario.success) {
+        history.push("/");
       }
     },
-    variables:{
-      "borrarUsuarioId":props.data.usuario.id
-    }
-  })
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaEditarPerfil  = "/EditarPerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
+    variables: {
+      borrarUsuarioId: localStorage.getItem("idUsuario"),
+    },
+  });
+  const { loading, error, data } = useQuery(USUARIO, {
+    variables: {
+      usuarioId: localStorage.getItem("idUsuario"),
+    },
+  });
+  if (error) return <Error></Error>;
+  if (loading) return null;
+  else {
     return (
       <div className="container contenedor-main">
-        {estado === false ? (<div className="eliminar-cuenta-adv">
-        <h3 className="d-xl-flex" style={{fontFamily:'Lexend'}}>¿Estás seguro de eliminar tu cuenta?</h3>
-        <div className="d-xl-flex justify-content-xl-center" role="group"><button className="btn boton-cancelar" onClick={eliminar}>No, continuar</button><button className="btn btn-primary boton-eliminar" type="button" onClick={eliminarCuenta}>Sí, eliminar</button></div>
-    </div>):(null)}
+        {estado === false ? (
+          <div className="eliminar-cuenta-adv">
+            <h3 className="d-xl-flex" style={{ fontFamily: "Lexend" }}>
+              ¿Estás seguro de eliminar tu cuenta?
+            </h3>
+            <div className="d-xl-flex justify-content-xl-center" role="group">
+              <button className="btn boton-cancelar" onClick={eliminar}>
+                No, continuar
+              </button>
+              <button
+                className="btn btn-primary boton-eliminar"
+                type="button"
+                onClick={eliminarCuenta}
+              >
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        ) : null}
         <div className="row">
           <div className="col-12 col-md-4 col-lg-4 col-xl-4 d-flex flex-column"></div>
           <div
@@ -256,9 +276,9 @@ function Cuerpo(props) {
               <span className="text-left texto-menu-lateral-con-foto">
                 <img
                   className="rounded-circle foto-perfil-menu-lateral"
-                  src={props.data.usuario.foto}
+                  src={data.usuario.foto}
                 />
-                <strong>{props.data.usuario.nickname}</strong>
+                <strong>{data.usuario.nickname}</strong>
               </span>
             </Link>
             <Link to={rutaHome} className="link-menu-lateral">
@@ -325,28 +345,35 @@ function Cuerpo(props) {
                 <br />
               </span>
             </Link>
-            <Link to="/" className="link-menu-lateral">
-              <span className="text-left texto-menu-lateral">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="bi bi-box-arrow-left"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                  ></path>
-                  <path
-                    fillRule="evenodd"
-                    d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
-                  ></path>
-                </svg>
-                <strong>Salir</strong>
-              </span>
-            </Link>
+            <a
+            onClick={() => {
+              localStorage.setItem("flagUsuario", "false");
+              localStorage.setItem("nombreUsuario", "");
+              localStorage.setItem("fotoUsuario", "");
+              history.push("/");
+            }}
+            className="d-flex justify-content-start align-items-center perfil-menu-text"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="bi bi-box-arrow-left"
+              style={({ marginRight: "5px" }, { fontSize: "19px" })}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+              ></path>
+            </svg>
+            Salir
+          </a>
           </div>
           <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-perfil">
             <div
@@ -358,9 +385,7 @@ function Cuerpo(props) {
                 aria-expanded="false"
                 data-toggle="dropdown"
                 type="button"
-                style={
-                  {bordeRight: '.3em none!important'}
-                }
+                style={{ bordeRight: ".3em none!important" }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -385,7 +410,10 @@ function Cuerpo(props) {
                   { boxShadow: "4px 3px 20px rgb(0,0,0)" })
                 }
               >
-                <Link to={rutaEditarPerfil} className="dropdown-item d-md-flex align-items-md-center editar-eliminar">
+                <Link
+                  to={rutaEditarPerfil}
+                  className="dropdown-item d-md-flex align-items-md-center editar-eliminar"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
@@ -402,7 +430,10 @@ function Cuerpo(props) {
                   </svg>
                   Editar perfil
                 </Link>
-                <button className="dropdown-item d-md-flex align-items-md-center editar-eliminar" onClick={eliminar}>
+                <button
+                  className="dropdown-item d-md-flex align-items-md-center editar-eliminar"
+                  onClick={eliminar}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
@@ -423,29 +454,30 @@ function Cuerpo(props) {
             </div>
             <img
               className="rounded-circle foto-perfil-perfil"
-              src={props.data.usuario.foto}
+              src={data.usuario.foto}
             />
             <h4 className="nick-name-perfil">
-              <strong>{props.data.usuario.nickname}</strong>
+              <strong>{data.usuario.nickname}</strong>
             </h4>
             <div className="align-self-start">
               <h6 className="title-nombre">Nombre completo:</h6>
               <h5 className="nombre-perfil-perfil">
                 <strong>
-                  {props.data.usuario.nombre} {props.data.usuario.apellidop} {props.data.usuario.apellidom}
+                  {data.usuario.nombre} {data.usuario.apellidop}{" "}
+                  {data.usuario.apellidom}
                 </strong>
               </h5>
             </div>
             <div className="align-self-start">
               <h6 className="title-nombre">Fecha de nacimiento:</h6>
               <h5 className="nombre-perfil-perfil">
-                <strong>{props.data.usuario.nacimiento}</strong>
+                <strong>{data.usuario.nacimiento}</strong>
               </h5>
             </div>
             <div className="d-inline-flex flex-column align-self-start">
               <h6 className="title-nombre">Documentos:</h6>
               <a
-                href={props.data.usuario.identificacion}
+                href={data.usuario.identificacion}
                 target="blank"
                 className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
                 role="button"
@@ -468,10 +500,10 @@ function Cuerpo(props) {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                <p>{props.data.usuario.identificacion}</p>
+                <p>{data.usuario.identificacion}</p>
               </a>
               <a
-                href={props.data.usuario.comprobante}
+                href={data.usuario.comprobante}
                 target="blank"
                 className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
                 type="button"
@@ -499,12 +531,13 @@ function Cuerpo(props) {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                <p>{props.data.usuario.comprobante}</p>
+                <p>{data.usuario.comprobante}</p>
               </a>
             </div>
           </div>
         </div>
       </div>
     );
+  }
 }
 export default PerfilUs;

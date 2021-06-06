@@ -22,8 +22,6 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { ValuesOfCorrectTypeRule } from "graphql";
-import { ajaxPrefilter } from "jquery";
 
 const stripePromise = loadStripe(
   "pk_test_51Iy9ReDYTftGTyoTbG28byXI8Su9qIQ9HHP1Jx7J223cpXKtLU43Jnkc7xoB7G9fQyBi2MEwGIMsP57ieT9v5lNA007L4GFs0M"
@@ -35,16 +33,6 @@ mutation ($altaDonacionUsuarioDonacionId: ID!, $altaDonacionUsuarioUsuarioId: ID
     message
   }
 }
-`;
-const USUARIO = gql`
-  query ($usuarioId: ID!) {
-    usuario(id: $usuarioId) {
-      id
-      nickname
-      apellidop
-      foto
-    }
-  }
 `;
 const CONSULTA_DON = gql`
   query {
@@ -63,22 +51,26 @@ const CONSULTA_DON = gql`
     }
   }
 `;
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+//Aquí link al soporte xfas jeje
+const rutaAyuda = "";
 function DonacionesUs(props) {
-  const { loading, error, data } = useQuery(USUARIO, {
-    variables: {
-      usuarioId: props.match.params.idUs,
-    },
-  });
-  if (loading) return null;
-  if (error) return <Error></Error>;
-  else {
-    return (
-      <div>
-        <Header data={data} />
-        <Cuerpo data={data} />
-      </div>
-    );
-  }
+if(localStorage.getItem('flagUsuario')){
+  return (
+    <div>
+      <Header />
+      <Cuerpo />
+    </div>
+  );
+}else{
+  return <Error/>
+}
+    
 }
 function Header(props) {
   const [estado, setEstado] = useState(false);
@@ -86,14 +78,6 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-  var rutaHome = "/HomeUs/" + props.data.usuario.id;
-  var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-  var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-  var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-  var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-  //Aquí link al soporte xfas jeje
-  var rutaAyuda = "";
   return (
     <div>
       <div
@@ -102,7 +86,7 @@ function Header(props) {
         style={{ color: "var(--white)" }}
       >
         <a className="texto-menu-sup" onClick={handleClick}>
-          <img className="rounded-circle" src={props.data.usuario.foto} />
+          <img className="rounded-circle" src={localStorage.getItem('fotoUsuario')} />
         </a>
         <Link to={rutaHome} className="texto-menu-sup">
           Adopciones
@@ -142,10 +126,10 @@ function Header(props) {
           <img
             className="rounded-circle imagen-perfil-menu"
             onClick={handleClick}
-            src={props.data.usuario.foto}
+            src={localStorage.getItem('fotoUsuario')}
           />
           <h6 className="text-white hola-menu">
-            Hola, {props.data.usuario.nickname}
+            Hola, {localStorage.getItem('nombreUsuario')}
           </h6>
           <Link
             to={rutaPerfil}
@@ -240,14 +224,6 @@ function Header(props) {
   );
 }
 function Cuerpo(props) {
-  var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-  var rutaHome = "/HomeUs/" + props.data.usuario.id;
-  var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-  var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-  var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-  var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-  //Aquí link al soporte xfas jeje
-  var rutaAyuda = "";
   return (
     <div className="container contenedor-main">
       <div className="row">
@@ -260,9 +236,9 @@ function Cuerpo(props) {
             <span className="text-left texto-menu-lateral-con-foto">
               <img
                 className="rounded-circle foto-perfil-menu-lateral"
-                src={props.data.usuario.foto}
+                src={localStorage.getItem('fotoUsuario')}
               />
-              <strong>{props.data.usuario.nickname}</strong>
+              <strong>{localStorage.getItem('nombreUsuario')}</strong>
             </span>
           </Link>
           <Link to={rutaHome} className="link-menu-lateral">
@@ -353,7 +329,7 @@ function Cuerpo(props) {
           </Link>
         </div>
         <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
-          <Donacion id={props.data.usuario.id}></Donacion>
+          <Donacion id={localStorage.getItem('idUsuario')}></Donacion>
         </div>
         <div className="col-12 col-lg-2 col-xl-3"></div>
       </div>
@@ -439,7 +415,7 @@ function FooterDonar(props) {
       e.preventDefault();
       if(parseInt(cantidad)<=(parseInt(props.meta-props.total))){
         console.log(props.stripeid)
-        fetch('http://localhost:4000/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
+        fetch('https://petlimits.xyz/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
           return response.json();
         }).then(function(responseJson) {
           var clientSecret = responseJson.client_secret;

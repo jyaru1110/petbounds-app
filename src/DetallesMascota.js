@@ -72,7 +72,14 @@ const USUARIO = gql`
     }
   }
 `;
-
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+const rutaEditarPerfil = "/EditarPerfilUs";
+const rutaAyuda = "";
 function DetallesMascota(props) {
   const { loading, error, data } = useQuery(USUARIO, {
     variables: {
@@ -96,13 +103,6 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
     //Aquí link al soporte xfas jeje
     var rutaAyuda = "";
     return (
@@ -252,14 +252,6 @@ function Header(props) {
 }
 function Cuerpo(props) {
 if(props.data.usuario.validacion){
-    var rutaPerfil = "/PerfilUs/" + props.data.usuario.id;
-    var rutaHome = "/HomeUs/" + props.data.usuario.id;
-    var rutaServicios = "/ServiciosUs/" + props.data.usuario.id;
-    var rutaDonaciones = "/DonacionesUs/" + props.data.usuario.id;
-    var rutaMisAdopciones = "/MisAdopcionesUs/" + props.data.usuario.id;
-    var rutaMisLikes = "/MisLikesUs/" + props.data.usuario.id;
-    //Aquí link al soporte xfas jeje
-    var rutaAyuda = "";
     return (
       <div className="container contenedor-main">
         <div className="row">

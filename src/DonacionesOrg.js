@@ -421,7 +421,7 @@ function Donacion(props) {
                     data-bss-hover-animate="pulse"
                     type="button"
                   >
-                    ver
+                    Stats
                   </button>
                 </div>
               </div>
