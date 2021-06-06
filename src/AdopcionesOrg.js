@@ -9,7 +9,7 @@ import "./assets/css/Navigation-with-Search.css";
 import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import perritoXD from './assets/img/perritoxd.png'
 import { gql, useQuery } from "@apollo/client";
 import "bootstrap";
@@ -107,6 +107,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
+  let history=useHistory()
     return (
       <div className="container contenedor-main">
         <div className="row">

@@ -10,7 +10,7 @@ import "./assets/css/Navigation-with-Search.css";
 import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { gql, useQuery, useMutation, rewriteURIForGET } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
@@ -151,6 +151,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
+  let history =  useHistory()
   const [campos, setCampo] = useState({
     titulo: "",
     desc: "",

@@ -113,6 +113,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
+  let history = useHistory()
     return (
       <div className="container contenedor-main">
         <div className="row">

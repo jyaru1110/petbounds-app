@@ -115,6 +115,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
+  let history = useHistory
   const [values,setValues]=useState({
     nombre:'',
     raza:'',
