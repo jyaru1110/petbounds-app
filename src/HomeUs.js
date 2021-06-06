@@ -806,7 +806,8 @@ function BotonLike(props) {
   );
 }
 function BotonDetalles(props) {
-  var ruta = "/Detalles/"+ localStorage.getItem('idUsuario') +'/'+ props.idMas;
+  var ruta =
+    "/Detalles/" + localStorage.getItem("idUsuario") + "/" + props.idMas;
   return (
     <Link
       to={ruta}

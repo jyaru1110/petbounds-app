@@ -414,15 +414,13 @@ function Dashboard(props) {
             </div>
           </div>
         </div>
-        <h3 className = "tituloRegDash">
-          Registro
-        </h3>
+        <h3 className="tituloRegDash">Registro</h3>
         <div className="row">
           <div className="col">
             <div className="table-responsive">
               <table className="table table-sm tabla-dash">
                 <thead>
-                  <tr >
+                  <tr>
                     <th>Nombre Completo</th>
                     <th>Correo</th>
                     <th>Monto</th>
@@ -430,15 +428,20 @@ function Dashboard(props) {
                   </tr>
                 </thead>
                 <tbody>
-                {data.consultaDonacionIndividual.donacionusuarios.map((donacionusuarios)=>(
-                <tr key={donacionusuarios.id}>
-                    <td>{donacionusuarios.usuario.nombre} {donacionusuarios.usuario.apellidop} {donacionusuarios.usuario.apellidom}</td>
-                    <td>{donacionusuarios.usuario.correo}</td>
-                    <td>{donacionusuarios.monto}</td>
-                    <td>{donacionusuarios.fechasubida}</td>
-                  </tr>
-                ))}
-                  
+                  {data.consultaDonacionIndividual.donacionusuarios.map(
+                    (donacionusuarios) => (
+                      <tr key={donacionusuarios.id}>
+                        <td>
+                          {donacionusuarios.usuario.nombre}{" "}
+                          {donacionusuarios.usuario.apellidop}{" "}
+                          {donacionusuarios.usuario.apellidom}
+                        </td>
+                        <td>{donacionusuarios.usuario.correo}</td>
+                        <td>{donacionusuarios.monto}</td>
+                        <td>{donacionusuarios.fechasubida}</td>
+                      </tr>
+                    )
+                  )}
                 </tbody>
               </table>
             </div>

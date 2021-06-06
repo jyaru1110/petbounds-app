@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -27,12 +27,20 @@ const stripePromise = loadStripe(
   "pk_test_51Iy9ReDYTftGTyoTbG28byXI8Su9qIQ9HHP1Jx7J223cpXKtLU43Jnkc7xoB7G9fQyBi2MEwGIMsP57ieT9v5lNA007L4GFs0M"
 );
 const ALTA_DON = gql`
-mutation ($altaDonacionUsuarioDonacionId: ID!, $altaDonacionUsuarioUsuarioId: ID!, $altaDonacionUsuarioMonto: Int!) {
-  altaDonacionUsuario(donacionId: $altaDonacionUsuarioDonacionId, usuarioId: $altaDonacionUsuarioUsuarioId, monto: $altaDonacionUsuarioMonto) {
-    success
-    message
+  mutation (
+    $altaDonacionUsuarioDonacionId: ID!
+    $altaDonacionUsuarioUsuarioId: ID!
+    $altaDonacionUsuarioMonto: Int!
+  ) {
+    altaDonacionUsuario(
+      donacionId: $altaDonacionUsuarioDonacionId
+      usuarioId: $altaDonacionUsuarioUsuarioId
+      monto: $altaDonacionUsuarioMonto
+    ) {
+      success
+      message
+    }
   }
-}
 `;
 const CONSULTA_DON = gql`
   query {
@@ -60,17 +68,16 @@ const rutaMisLikes = "/MisLikesUs";
 //Aquí link al soporte xfas jeje
 const rutaAyuda = "";
 function DonacionesUs(props) {
-if(localStorage.getItem('flagUsuario')){
-  return (
-    <div>
-      <Header />
-      <Cuerpo />
-    </div>
-  );
-}else{
-  return <Error/>
-}
-    
+  if (localStorage.getItem("flagUsuario")) {
+    return (
+      <div>
+        <Header />
+        <Cuerpo />
+      </div>
+    );
+  } else {
+    return <Error />;
+  }
 }
 function Header(props) {
   const [estado, setEstado] = useState(false);
@@ -86,7 +93,10 @@ function Header(props) {
         style={{ color: "var(--white)" }}
       >
         <a className="texto-menu-sup" onClick={handleClick}>
-          <img className="rounded-circle" src={localStorage.getItem('fotoUsuario')} />
+          <img
+            className="rounded-circle"
+            src={localStorage.getItem("fotoUsuario")}
+          />
         </a>
         <Link to={rutaHome} className="texto-menu-sup">
           Adopciones
@@ -126,10 +136,10 @@ function Header(props) {
           <img
             className="rounded-circle imagen-perfil-menu"
             onClick={handleClick}
-            src={localStorage.getItem('fotoUsuario')}
+            src={localStorage.getItem("fotoUsuario")}
           />
           <h6 className="text-white hola-menu">
-            Hola, {localStorage.getItem('nombreUsuario')}
+            Hola, {localStorage.getItem("nombreUsuario")}
           </h6>
           <Link
             to={rutaPerfil}
@@ -236,9 +246,9 @@ function Cuerpo(props) {
             <span className="text-left texto-menu-lateral-con-foto">
               <img
                 className="rounded-circle foto-perfil-menu-lateral"
-                src={localStorage.getItem('fotoUsuario')}
+                src={localStorage.getItem("fotoUsuario")}
               />
-              <strong>{localStorage.getItem('nombreUsuario')}</strong>
+              <strong>{localStorage.getItem("nombreUsuario")}</strong>
             </span>
           </Link>
           <Link to={rutaHome} className="link-menu-lateral">
@@ -329,7 +339,7 @@ function Cuerpo(props) {
           </Link>
         </div>
         <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
-          <Donacion id={localStorage.getItem('idUsuario')}></Donacion>
+          <Donacion id={localStorage.getItem("idUsuario")}></Donacion>
         </div>
         <div className="col-12 col-lg-2 col-xl-3"></div>
       </div>
@@ -372,8 +382,8 @@ function Donacion(props) {
                   total={donacionFeed.total}
                   meta={donacionFeed.meta}
                   stripeid={donacionFeed.organizacion.stripeid}
-                  idDon = {donacionFeed.id}
-                  idUs = {props.id}
+                  idDon={donacionFeed.id}
+                  idUs={props.id}
                 />
               </div>
             </div>
@@ -386,74 +396,105 @@ function Donacion(props) {
 function FooterDonar(props) {
   const [abierto, setAbierto] = useState(false);
   const CheckoutForm = () => {
-    const stripe = useStripe(); 
+    const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
-    const [cantidad,setCantidad] = useState(0);
-    const [altaDon] = useMutation(ALTA_DON,{
-      variables:{
-        "altaDonacionUsuarioDonacionId": props.idDon,
-        "altaDonacionUsuarioUsuarioId": props.idUs,
-        "altaDonacionUsuarioMonto": parseInt(cantidad*0.9)
+    const [cantidad, setCantidad] = useState(0);
+    const [altaDon] = useMutation(ALTA_DON, {
+      variables: {
+        altaDonacionUsuarioDonacionId: props.idDon,
+        altaDonacionUsuarioUsuarioId: props.idUs,
+        altaDonacionUsuarioMonto: parseInt(cantidad * 0.9),
       },
-      onCompleted({altaDonacionUsuario}){
-        if(altaDonacionUsuario.success){
-          setAbierto(false)
+      onCompleted({ altaDonacionUsuario }) {
+        if (altaDonacionUsuario.success) {
+          setAbierto(false);
         }
       },
-      update(proxy){
-        proxy.writeQuery({query:CONSULTA_DON,data:{
-          donacionFeed:{
-              "__ref":"infoDonacion:"+props.idDon+"",
-              total:(parseInt(cantidad*0.9))+"",
-              _typename:"infoDonacion",
-          }
-      }})
-      }
-    })
+      update(proxy) {
+        proxy.writeQuery({
+          query: CONSULTA_DON,
+          data: {
+            donacionFeed: {
+              __ref: "infoDonacion:" + props.idDon + "",
+              total: parseInt(cantidad * 0.9) + "",
+              _typename: "infoDonacion",
+            },
+          },
+        });
+      },
+    });
     const handleSubmit = async (e) => {
       e.preventDefault();
-      if(parseInt(cantidad)<=(parseInt(props.meta-props.total))){
-        fetch('https://petbounds.xyz/api/secret?monto='+cantidad*100+'&stripe='+props.stripeid,{method:'GET'}).then(function(response) {
-          return response.json();
-        }).then(function(responseJson) {
-          var clientSecret = responseJson.client_secret;
-          stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-              card: elements.getElement(CardElement)
-            }
-          },
-          setLoading(true)
-          ).then(function(result) {
-            if (result.error) {
-              setLoading(false)
-            } else {
-              setLoading(false)
-              if (result.paymentIntent.status === 'succeeded') {
-                altaDon()
-              }
-            }
+      if (parseInt(cantidad) <= parseInt(props.meta - props.total)) {
+        fetch(
+          "https://petbounds.xyz/api/secret?monto=" +
+            cantidad * 100 +
+            "&stripe=" +
+            props.stripeid,
+          { method: "GET" }
+        )
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (responseJson) {
+            var clientSecret = responseJson.client_secret;
+            stripe
+              .confirmCardPayment(
+                clientSecret,
+                {
+                  payment_method: {
+                    card: elements.getElement(CardElement),
+                  },
+                },
+                setLoading(true)
+              )
+              .then(function (result) {
+                if (result.error) {
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                  if (result.paymentIntent.status === "succeeded") {
+                    altaDon();
+                  }
+                }
+              });
           });
-        });   
-      }else{
-        alert('No puedes donar esa cantidad :/')
+      } else {
+        alert("No puedes donar esa cantidad :/");
       }
     };
-  
+
     return (
       <div className="confirmar-pago">
-      <form onSubmit={handleSubmit}>
-          <h3 style={{marginBottom:'20px'}}>Rellena tus datos</h3>
-            <CardElement/>
-            <input
-              className="form-control"
-              type="number"
-              name="cantidad"
-              placeholder="Cantidad a donar(minimo 10 pesos)"
-              onChange={(e)=>{setCantidad(e.target.value)}}
-            />
-          <button className="btn" id="cancelar" onClick={()=>{setAbierto(false)}}type="button">Cancelar</button>
-          <button disabled={!stripe} type="submit" className="btn btn-success" style={{fontFamily:"Lexend"}}>
+        <form onSubmit={handleSubmit}>
+          <h3 style={{ marginBottom: "20px" }}>Rellena tus datos</h3>
+          <CardElement />
+          <input
+            className="form-control"
+            type="number"
+            name="cantidad"
+            placeholder="Cantidad a donar(minimo 10 pesos)"
+            onChange={(e) => {
+              setCantidad(e.target.value);
+            }}
+          />
+          <button
+            className="btn"
+            id="cancelar"
+            onClick={() => {
+              setAbierto(false);
+            }}
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button
+            disabled={!stripe}
+            type="submit"
+            className="btn btn-success"
+            style={{ fontFamily: "Lexend" }}
+          >
             {loading ? (
               <div className="spinner-border text-light" role="status">
                 <span className="sr-only">Loading...</span>
@@ -465,33 +506,35 @@ function FooterDonar(props) {
         </form>
       </div>
     );
-  }
-  return(
-  <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
-    {abierto === false?(null):
-    (<Elements stripe={stripePromise}>
-      <CheckoutForm />
-    </Elements>)}
-    <div className="progress">
-      <div
-        style={{
-          width: (props.total / props.meta) * 100 + "%",
-        }}
-        value={props.total}
-        className="progress-bar bg-primary progress-bar-animated"
-        id="progreso"
-      >
-        ${props.total}
+  };
+  return (
+    <div className="card-footer text-white d-inline-flex justify-content-between align-items-center align-content-center">
+      {abierto === false ? null : (
+        <Elements stripe={stripePromise}>
+          <CheckoutForm />
+        </Elements>
+      )}
+      <div className="progress">
+        <div
+          style={{
+            width: (props.total / props.meta) * 100 + "%",
+          }}
+          value={props.total}
+          className="progress-bar bg-primary progress-bar-animated"
+          id="progreso"
+        >
+          ${props.total}
+        </div>
       </div>
+      <button
+        className="btn btn-primary button-donar"
+        data-bss-hover-animate="pulse"
+        type="button"
+        onClick={() => setAbierto(!abierto)}
+      >
+        Donar
+      </button>
     </div>
-    <button
-      className="btn btn-primary button-donar"
-      data-bss-hover-animate="pulse"
-      type="button"
-      onClick={() => setAbierto(!abierto)}
-    >
-      Donar
-    </button>
-  </div>);
+  );
 }
 export default DonacionesUs;

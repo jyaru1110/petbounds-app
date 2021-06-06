@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./assets/bootstrap/css/bootstrap.min.css";
 import "./assets/fonts/font-awesome.min.css";
 import "./assets/fonts/fontawesome5-overrides.min.css";
@@ -36,12 +35,12 @@ const MASCOTA = gql`
 `;
 
 function ConfirmacionSolicitud(props) {
-  const handleOnLoad=()=>{
-    if(localStorage.getItem('confirmacionReload')==='false'){
-      localStorage.setItem('confirmacionReload','true')
-      window.location.reload()
+  const handleOnLoad = () => {
+    if (localStorage.getItem("confirmacionReload") === "false") {
+      localStorage.setItem("confirmacionReload", "true");
+      window.location.reload();
     }
-  }
+  };
   const { loading, error, data } = useQuery(MASCOTA, {
     variables: {
       mascotaSelecId: props.match.params.idMas,
@@ -53,7 +52,11 @@ function ConfirmacionSolicitud(props) {
   } else {
     var ruta = "/HomeUs";
     return (
-      <section className="highlight-phone" style={{ background: "#222222" }} onLoad={handleOnLoad}>
+      <section
+        className="highlight-phone"
+        style={{ background: "#222222" }}
+        onLoad={handleOnLoad}
+      >
         <div className="container" style={{ height: "440.547px" }}>
           <div className="row">
             <div className="col-md-8">

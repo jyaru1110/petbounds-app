@@ -11,11 +11,10 @@ import "./index.css";
 import "./assets/fonts/font-awesome.min.css";
 import logo from "./assets/img/petbounds_blanco.png";
 import { Link, useHistory } from "react-router-dom";
-import { gql, useQuery, useMutation, rewriteURIForGET } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import "bootstrap";
 import "bootstrap/dist/js/bootstrap.js";
 import Error from "./Error";
-
 
 const CONSULTA_DON = gql`
   query ($consultaDonacionOrgId: ID!) {
@@ -53,20 +52,20 @@ const REGISTRO_DON = gql`
   }
 `;
 var rutaPerfil = "/PerfilOrg";
-  var rutaHome = "/HomeOrg";
-  var rutaAdopciones = "/AdopcionesOrg";
-  var rutaDonaciones = "/DonacionesOrg";
-  var rutaMisMascotas = "/MisMascotasOrg";
+var rutaHome = "/HomeOrg";
+var rutaAdopciones = "/AdopcionesOrg";
+var rutaDonaciones = "/DonacionesOrg";
+var rutaMisMascotas = "/MisMascotasOrg";
 function DonacionesOrg(props) {
-  if(localStorage.getItem('flagUsuario')==='true'){
+  if (localStorage.getItem("flagUsuario") === "true") {
     return (
       <div>
         <Header></Header>
         <Cuerpo></Cuerpo>
       </div>
     );
-  }else{
-    return(<Error></Error>)
+  } else {
+    return <Error></Error>;
   }
 }
 function Header(props) {
@@ -78,7 +77,10 @@ function Header(props) {
         style={{ color: "var(--white)" }}
       >
         <Link to={rutaPerfil} className="texto-menu-sup">
-          <img className="rounded-circle" src={localStorage.getItem('fotoOrga')} />
+          <img
+            className="rounded-circle"
+            src={localStorage.getItem("fotoOrga")}
+          />
         </Link>
         <Link to={rutaHome} className="icon-menu-org">
           <svg
@@ -142,7 +144,7 @@ function Header(props) {
 }
 
 function Cuerpo(props) {
-  let history =  useHistory()
+  let history = useHistory();
   const [campos, setCampo] = useState({
     titulo: "",
     desc: "",
@@ -153,7 +155,7 @@ function Cuerpo(props) {
   };
   const [crearDon] = useMutation(REGISTRO_DON, {
     variables: {
-      registroDonacionOrganizacionId: localStorage.getItem('idOrg'),
+      registroDonacionOrganizacionId: localStorage.getItem("idOrg"),
       registroDonacionTitulo: campos.titulo,
       registroDonacionDescripcion: campos.desc,
       registroDonacionMeta: parseInt(campos.meta),
@@ -192,9 +194,9 @@ function Cuerpo(props) {
             <span className="text-left texto-menu-lateral-con-foto">
               <img
                 className="rounded-circle foto-perfil-menu-lateral"
-                src={localStorage.getItem('fotoOrga')}
+                src={localStorage.getItem("fotoOrga")}
               />
-              <strong>{localStorage.getItem('nombreOrg')}</strong>
+              <strong>{localStorage.getItem("nombreOrg")}</strong>
             </span>
           </Link>
           <Link to={rutaHome} className="link-menu-lateral">
@@ -293,7 +295,7 @@ function Cuerpo(props) {
         </div>
         <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 principal">
           <div className="row justify-content-center">
-            {localStorage.getItem('stripeidOrg') !== 'null' ? (
+            {localStorage.getItem("stripeidOrg") !== "null" ? (
               <div>
                 <div className="row registro-donacion">
                   <div className="col">
@@ -327,17 +329,14 @@ function Cuerpo(props) {
                     </form>
                   </div>
                 </div>
-                <Donacion id={localStorage.getItem('idOrg')}></Donacion>
+                <Donacion id={localStorage.getItem("idOrg")}></Donacion>
               </div>
             ) : (
               <div className="div-error-stripe">
                 <h3 className="error-stripe">
                   No puedes recibir donaciones hasta haber configurado tus pagos
                 </h3>
-                <Link
-                  className="error-stripe"
-                  to={"/PerfilOrg"}
-                >
+                <Link className="error-stripe" to={"/PerfilOrg"}>
                   Configura tus pagos aquí
                 </Link>
               </div>
@@ -407,7 +406,7 @@ function Donacion(props) {
                     </div>
                   </div>
                   <Link
-                    to = {"/DashboardDonacion/"+consultaDonacionOrg.id}
+                    to={"/DashboardDonacion/" + consultaDonacionOrg.id}
                     className="btn btn-primary button-donar"
                     data-bss-hover-animate="pulse"
                     type="button"
