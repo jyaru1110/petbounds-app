@@ -57,7 +57,7 @@ var rutaAdopciones = "/AdopcionesOrg";
 var rutaDonaciones = "/DonacionesOrg";
 var rutaMisMascotas = "/MisMascotasOrg";
 function DonacionesOrg(props) {
-  if (localStorage.getItem("flagUsuario") === "true") {
+  if (localStorage.getItem("flagOrg") === "true") {
     return (
       <div>
         <Header></Header>
