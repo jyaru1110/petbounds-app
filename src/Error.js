@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Error(props) {
   return (
-    <div className="erro" style={{ textAlign: "center" }}>
+    <div className="erro" style={{ textAlign: "center" },{marginTop:'100px'}}>
       <h2>GUAU GUAU</h2>
       <h4>
         [Vaya, parece que hubo un error, nada que un par de patitas no puedan

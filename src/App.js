@@ -39,7 +39,7 @@ function App() {
       <Route exact path="/CrearOrg" component={CrearOrg} />
       <Route exact path="/HomeUs" component={HomeUs} />
       <Route exact path="/PerfilUs" component={PerfilUs} />
-      <Route exact path="/Detalles/idUs/:idMas" component={DetallesMascota} />
+      <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota} />
       <Route
         exact
         path="/ConfirmacionSolicitud/:idUs/:idMas"

@@ -61,13 +61,14 @@ function PerfilUs() {
     );
   }
 }
-function Header() {
-  let history = useHistory();
+function Header(props) {
+  let history = useHistory;
   const [estado, setEstado] = useState(false);
   const handleClick = () => {
     var estadoN = !estado;
     setEstado(estadoN);
   };
+
   return (
     <div>
       <div
@@ -375,7 +376,7 @@ function Cuerpo() {
             Salir
           </a>
           </div>
-          <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-perfil">
+          <div className="col-12 col-md-8 col-lg-8 col-xl-8 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-start align-items-center justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center principal-editar">
             <div
               className="dropleft d-md-flex justify-content-end align-self-end justify-content-md-center align-items-md-center"
               id="menu-perfil"
@@ -451,7 +452,7 @@ function Cuerpo() {
                   Eliminar cuenta
                 </button>
               </div>
-            </div>
+              </div>
             <img
               className="rounded-circle foto-perfil-perfil"
               src={data.usuario.foto}
@@ -459,6 +460,7 @@ function Cuerpo() {
             <h4 className="nick-name-perfil">
               <strong>{data.usuario.nickname}</strong>
             </h4>
+            
             <div className="align-self-start">
               <h6 className="title-nombre">Nombre completo:</h6>
               <h5 className="nombre-perfil-perfil">
@@ -474,8 +476,9 @@ function Cuerpo() {
                 <strong>{data.usuario.nacimiento}</strong>
               </h5>
             </div>
-            <div className="d-inline-flex flex-column align-self-start">
+            <div className="align-self-start">
               <h6 className="title-nombre">Documentos:</h6>
+            </div>
               <a
                 href={data.usuario.identificacion}
                 target="blank"
@@ -533,9 +536,8 @@ function Cuerpo() {
                 </svg>
                 <p>{data.usuario.comprobante}</p>
               </a>
-            </div>
-          </div>
-        </div>
+              </div>
+              </div>
       </div>
     );
   }

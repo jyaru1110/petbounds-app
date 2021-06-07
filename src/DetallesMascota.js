@@ -80,7 +80,7 @@ const USUARIO = gql`
     }
   }
 `;
-const rutaPerfil = "/#/PerfilUs";
+const rutaPerfil = "/PerfilUs";
 const rutaHome = "/HomeUs";
 const rutaServicios = "/ServiciosUs";
 const rutaDonaciones = "/DonacionesUs";
@@ -98,8 +98,8 @@ function DetallesMascota(props) {
   else {
     return (
       <div>
-        <Header />
-        <Cuerpo idMas={props.match.params.idMas} />
+        <Header data={data}/>
+        <Cuerpo data={data} idMas={props.match.params.idMas} />
       </div>
     );
   }
@@ -110,8 +110,6 @@ function Header(props) {
     var estadoN = !estado;
     setEstado(estadoN);
   };
-  //Aquí link al soporte xfas jeje
-  var rutaAyuda = "";
   return (
     <div>
       <div
