@@ -51,7 +51,7 @@ function CrearUsuario(props) {
   const [registro] = useMutation(REGISTRO_USUARIO, {
     onCompleted({ registroUsuario }) {
       if (registroUsuario != null) {
-        props.history.push("/#/IniciaSesion");
+        props.history.push("/IniciaSesion");
       } else {
         alert("El correo ya está registrado");
       }

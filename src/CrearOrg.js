@@ -45,7 +45,7 @@ function CrearOrg(props) {
   const [registro] = useMutation(REGISTRO_ORG, {
     onCompleted({ registroOrg }) {
       if (registroOrg != null) {
-        props.history.push("/#/IniciaSesion");
+        props.history.push("/IniciaSesion");
       } else {
         alert("El correo ya está registrado");
       }
