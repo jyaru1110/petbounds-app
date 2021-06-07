@@ -114,14 +114,6 @@ class PaginaInicio extends Component{
                                 <div className="social"><a href="https://www.facebook.com/Amseliux"><i className="fa fa-facebook-official"></i></a><a href="#"><i className="fa fa-twitter"></i></a><a href="https://www.instagram.com/amselcastillo/"><i className="fa fa-instagram"></i></a></div>
                             </div>
                         </div>
-                        <div className="col-md-6 col-lg-4 item">
-                            <div className="box"><img className="rounded-circle" src={gaelfoto}/>
-                                <h3 className="name">Gael Múñoz</h3>
-                                <p className="title">Músico</p>
-                                <p className="description">Tengo sueño&nbsp;😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴😴</p>
-                                <div className="social"><a href="https://www.facebook.com/dark.slasher324"><i className="fa fa-facebook-official"></i></a><a href="#"><i className="fa fa-twitter"></i></a><a href="https://www.instagram.com/meduele_lacabeza_jajsjxd/"><i className="fa fa-instagram"></i></a></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
