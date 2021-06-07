@@ -6,7 +6,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 
 const wsLink = new WebSocketLink({
-  uri: `wss://api.petbounds.xyz//subscriptions`,
+  uri: `wss://api.petbounds.xyz/subscriptions`,
   options: {
     reconnect: true,
   },
