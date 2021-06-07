@@ -50,7 +50,7 @@ function ConfirmacionSolicitud(props) {
   if (loading) {
     return null;
   } else {
-    var ruta = "/HomeUs";
+    var ruta = "/#/HomeUs";
     return (
       <section
         className="highlight-phone"

@@ -97,12 +97,12 @@ const FEED_MASCOTAS = gql`
     }
   }
 `;
-const rutaPerfil = "/PerfilUs";
-const rutaHome = "/HomeUs";
-const rutaServicios = "/ServiciosUs";
-const rutaDonaciones = "/DonacionesUs";
-const rutaMisAdopciones = "/MisAdopcionesUs";
-const rutaMisLikes = "/MisLikesUs";
+const rutaPerfil = "/#/PerfilUs";
+const rutaHome = "/#/HomeUs";
+const rutaServicios = "/#/ServiciosUs";
+const rutaDonaciones = "/#/DonacionesUs";
+const rutaMisAdopciones = "/#/MisAdopcionesUs";
+const rutaMisLikes = "/#/MisLikesUs";
 //Aquí link al soporte xfas jeje
 const rutaAyuda = "";
 function HomeUs() {
@@ -807,7 +807,7 @@ function BotonLike(props) {
 }
 function BotonDetalles(props) {
   var ruta =
-    "/Detalles/" + localStorage.getItem("idUsuario") + "/" + props.idMas;
+    "/#/Detalles/"+ localStorage.getItem("idUsuario") + "/" + props.idMas;
   return (
     <Link
       to={ruta}

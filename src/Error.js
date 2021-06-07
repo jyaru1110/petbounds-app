@@ -10,7 +10,7 @@ function Error(props) {
         arreglar]
       </h4>
       <img style={{ width: "500px" }} src={perritoRisas} />
-      <Link to="/Registrarse" className="LinkError">
+      <Link to="/#/Registrarse" className="LinkError">
         <h4>Registrate aquí (;</h4>
       </Link>
     </div>

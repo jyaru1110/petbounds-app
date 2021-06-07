@@ -31,36 +31,36 @@ function App() {
   return (
     <BrowserRouter>
       <Route exact path="/" component={PaginaInicio} />
-      <Route exact path="/IniciaSesion" component={LogIn} />
-      <Route exact path="/Registrarse" component={MenuRegistro} />
-      <Route exact path="/CrearUsuario" component={CrearUsuario} />
-      <Route exact path="/CrearNegocio" component={CrearNegocio} />
-      <Route exact path="/CrearOrg" component={CrearOrg} />
-      <Route exact path="/HomeUs" component={HomeUs} />
-      <Route exact path="/PerfilUs" component={PerfilUs} />
-      <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota} />
+      <Route exact path="/#/IniciaSesion" component={LogIn} />
+      <Route exact path="/#/Registrarse" component={MenuRegistro} />
+      <Route exact path="/#/CrearUsuario" component={CrearUsuario} />
+      <Route exact path="/#/CrearNegocio" component={CrearNegocio} />
+      <Route exact path="/#/CrearOrg" component={CrearOrg} />
+      <Route exact path="/#/HomeUs" component={HomeUs} />
+      <Route exact path="/#/PerfilUs" component={PerfilUs} />
+      <Route exact path="/#/Detalles/idUs/:idMas" component={DetallesMascota} />
       <Route
         exact
-        path="/ConfirmacionSolicitud/:idUs/:idMas"
+        path="/#/ConfirmacionSolicitud/:idUs/:idMas"
         component={ConfirmacionSolicitud}
       />
-      <Route exact path="/MisLikesUs" component={MisLikesUs} />
-      <Route exact path="/EditarPerfilUs" component={EditarPerfilUs} />
-      <Route exact path="/MisAdopcionesUs" component={MisAdopcionesUs} />
-      <Route exact path="/HomeOrg" component={HomeOrg} />
-      <Route exact path="/Validacion/:id" component={Validacion} />
-      <Route exact path="/AdopcionesOrg" component={AdopcionesOrg} />
-      <Route exact path="/MisMascotasOrg" component={MisMascotasOrg} />
-      <Route exact path="/EditarMascota/:idMas" component={EditarMascota} />
-      <Route exact path="/PerfilOrg" component={PerfilOrg} />
-      <Route exact path="/EditarPerfilOrg" component={EditarPerfilOrg} />
-      <Route exact path="/DonacionesOrg" component={DonacionesOrg} />
-      <Route exact path="/DonacionesUs" component={DonacionesUs} />
-      <Route exact path="/ChatUs/:idSol" component={ChatUs} />
-      <Route exact path="/ChatOrg/:idSol" component={ChatOrg} />
+      <Route exact path="/#/MisLikesUs" component={MisLikesUs} />
+      <Route exact path="/#/EditarPerfilUs" component={EditarPerfilUs} />
+      <Route exact path="/#/MisAdopcionesUs" component={MisAdopcionesUs} />
+      <Route exact path="/#/HomeOrg" component={HomeOrg} />
+      <Route exact path="/#/Validacion/:id" component={Validacion} />
+      <Route exact path="/#/AdopcionesOrg" component={AdopcionesOrg} />
+      <Route exact path="/#/MisMascotasOrg" component={MisMascotasOrg} />
+      <Route exact path="/#/EditarMascota/:idMas" component={EditarMascota} />
+      <Route exact path="/#/PerfilOrg" component={PerfilOrg} />
+      <Route exact path="/#/EditarPerfilOrg" component={EditarPerfilOrg} />
+      <Route exact path="/#/DonacionesOrg" component={DonacionesOrg} />
+      <Route exact path="/#/DonacionesUs" component={DonacionesUs} />
+      <Route exact path="/#/ChatUs/:idSol" component={ChatUs} />
+      <Route exact path="/#/ChatOrg/:idSol" component={ChatOrg} />
       <Route
         exact
-        path="/DashboardDonacion/:idDon"
+        path="/#/DashboardDonacion/:idDon"
         component={DashboardDonacion}
       />
     </BrowserRouter>

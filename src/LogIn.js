@@ -30,8 +30,8 @@ function LogIn (props){
     });
     const[inicioSesion]=useMutation(INICIO_SESION,{
             onCompleted({inicioSesion}){
-                    var rutaUs = '/HomeUs';
-                    var rutaOrg = '/HomeOrg';
+                    var rutaUs = '/#/HomeUs';
+                    var rutaOrg = '/#/HomeOrg';
                     
                     if(inicioSesion.flag){
                         switch(inicioSesion.cuenta){
@@ -90,7 +90,7 @@ function LogIn (props){
                         <div className="form-group"><input className="form-control" id='contra' type="password" name="contra" value={values.contra} onChange={handleCampos} required placeholder="Contraseña" style={{fontFamily:'Lexend'}}/></div>
                         <div className="form-group"><p className='errorCo' id='errorContra'></p></div>
                         <div className="form-group"><input className="btn btn-primary btn-block" type="submit" value="Iniciar Sesión"></input></div>
-                        <Link to="/Registrarse"><a className="forgot" style={{fontFamily: 'Lexend'}}>Regístrate en Petbounds</a></Link>
+                        <Link to="/#/Registrarse"><a className="forgot" style={{fontFamily: 'Lexend'}}>Regístrate en Petbounds</a></Link>
                     </form>
                 </section>
             </div>

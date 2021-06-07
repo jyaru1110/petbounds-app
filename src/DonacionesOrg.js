@@ -51,11 +51,11 @@ const REGISTRO_DON = gql`
     }
   }
 `;
-var rutaPerfil = "/PerfilOrg";
-var rutaHome = "/HomeOrg";
-var rutaAdopciones = "/AdopcionesOrg";
-var rutaDonaciones = "/DonacionesOrg";
-var rutaMisMascotas = "/MisMascotasOrg";
+var rutaPerfil = "/#/PerfilOrg";
+var rutaHome = "/#/HomeOrg";
+var rutaAdopciones = "/#/AdopcionesOrg";
+var rutaDonaciones = "/#/DonacionesOrg";
+var rutaMisMascotas = "/#/MisMascotasOrg";
 function DonacionesOrg(props) {
   if (localStorage.getItem("flagOrg") === "true") {
     return (
@@ -336,7 +336,7 @@ function Cuerpo(props) {
                 <h3 className="error-stripe">
                   No puedes recibir donaciones hasta haber configurado tus pagos
                 </h3>
-                <Link className="error-stripe" to={"/PerfilOrg"}>
+                <Link className="error-stripe" to={"/#/PerfilOrg"}>
                   Configura tus pagos aquí
                 </Link>
               </div>
@@ -406,7 +406,7 @@ function Donacion(props) {
                     </div>
                   </div>
                   <Link
-                    to={"/DashboardDonacion/" + consultaDonacionOrg.id}
+                    to={"/#/DashboardDonacion/" + consultaDonacionOrg.id}
                     className="btn btn-primary button-donar"
                     data-bss-hover-animate="pulse"
                     type="button"

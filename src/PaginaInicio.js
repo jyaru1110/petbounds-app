@@ -26,7 +26,7 @@ class PaginaInicio extends Component{
              <header className="header-blue">
         <nav className="navbar navbar-dark navbar-expand-md navigation-clean-search">
             <div className="container-fluid"><a className="navbar-brand divLogo"><img className="imagenLogo" src={logo}/></a>
-                    <form className="form-inline mr-auto" target="_self"></form><span className="navbar-text spanNavBarText"> <Link to="/IniciaSesion" className="login">Log In</Link></span><Link to="/Registrarse" className="btn btn-light action-button Registrate" role="button">Sign Up</Link>
+                    <form className="form-inline mr-auto" target="_self"></form><span className="navbar-text spanNavBarText"> <Link to="/#/IniciaSesion" className="login">Log In</Link></span><Link to="/#/Registrarse" className="btn btn-light action-button Registrate" role="button">Sign Up</Link>
             </div>
         </nav>
         <div className="container hero">

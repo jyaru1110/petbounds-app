@@ -120,11 +120,11 @@ const ELIMINAR_SOLICITUD = gql`
     }
   }
 `;
-var rutaPerfil = "/PerfilOrg";
-var rutaHome = "/HomeOrg";
-var rutaAdopciones = "/AdopcionesOrg";
-var rutaDonaciones = "/DonacionesOrg";
-var rutaMisMascotas = "/MisMascotasOrg";
+var rutaPerfil = "/#/PerfilOrg";
+var rutaHome = "/#/HomeOrg";
+var rutaAdopciones = "/#/AdopcionesOrg";
+var rutaDonaciones = "/#/DonacionesOrg";
+var rutaMisMascotas = "/#/MisMascotasOrg";
 function ChatOrg(props) {
   if (localStorage.getItem("flagOrg")) {
     return (

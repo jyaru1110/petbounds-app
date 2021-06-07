@@ -48,12 +48,12 @@ mutation ($modificacionOrgId: String!, $modificacionOrgStripeid: String) {
     }
   }
  `;
- var rutaPerfil = "/PerfilOrg";
- var rutaHome = "/HomeOrg";
- var rutaAdopciones = "/AdopcionesOrg";
- var rutaDonaciones = "/DonacionesOrg";
- var rutaMisMascotas = "/MisMascotasOrg";
- var rutaEditarPerfil = "/EditarPerfilOrg";
+ var rutaPerfil = "/#/PerfilOrg";
+ var rutaHome = "/#/HomeOrg";
+ var rutaAdopciones = "/#/AdopcionesOrg";
+ var rutaDonaciones = "/#/DonacionesOrg";
+ var rutaMisMascotas = "/#/MisMascotasOrg";
+ var rutaEditarPerfil = "/#/EditarPerfilOrg";
 function PerfilOrg(props) {
 if(localStorage.getItem('flagOrg')==='true'){
     return (
