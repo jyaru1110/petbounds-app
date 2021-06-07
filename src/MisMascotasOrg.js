@@ -56,12 +56,12 @@ mutation ($borrarMascotaId: ID!) {
     }
   }
   `;
-var rutaPerfil = "/#/PerfilOrg";
- var rutaHome = "/#/HomeOrg";
- var rutaAdopciones = "/#/AdopcionesOrg";
- var rutaDonaciones = "/#/DonacionesOrg";
- var rutaMisMascotas = "/#/MisMascotasOrg";
- var rutaEditarPerfil = "/#/EditarPerfilOrg";
+var rutaPerfil = "/PerfilOrg";
+ var rutaHome = "/HomeOrg";
+ var rutaAdopciones = "/AdopcionesOrg";
+ var rutaDonaciones = "/DonacionesOrg";
+ var rutaMisMascotas = "/MisMascotasOrg";
+ var rutaEditarPerfil = "/EditarPerfilOrg";
 function MisMascotasOrg(props) {
  if(localStorage.getItem('flagOrg')==='true'){
   return (
@@ -583,7 +583,7 @@ const [eliminarMascota]=useMutation(BORRAR_MASCOTA,{
         }})
     }
 })
-const ruta = "/#/EditarMascota/"+props.idMas;
+const ruta = "/EditarMascota/"+props.idMas;
 return (
     <div>
     {estado === false ? (<div className="eliminar-mascota">

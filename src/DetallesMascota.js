@@ -81,12 +81,11 @@ const USUARIO = gql`
   }
 `;
 const rutaPerfil = "/#/PerfilUs";
-const rutaHome = "/#/HomeUs";
-const rutaServicios = "/#/ServiciosUs";
-const rutaDonaciones = "/#/DonacionesUs";
-const rutaMisAdopciones = "/#/MisAdopcionesUs";
-const rutaMisLikes = "/#/MisLikesUs";
-const rutaEditarPerfil = "/#/EditarPerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
 const rutaAyuda = "";
 function DetallesMascota(props) {
   const { loading, error, data } = useQuery(USUARIO, {
@@ -470,7 +469,7 @@ function EstadoMascota(props) {
   const [hacerMensaje] = useMutation(HACER_MENSAJE, {
     onCompleted({ registroMensaje }) {
       if (registroMensaje.success) {
-        var route = "/#/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
+        var route = "/ConfirmacionSolicitud/" + props.idUs + "/" + props.idMas;
         localStorage.setItem("confirmacionReload", "false");
         history.push(route);
       }

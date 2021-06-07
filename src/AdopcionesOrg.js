@@ -44,11 +44,11 @@ const SOLICITUDES = gql`
     }
   }
 `;
-var rutaPerfil = "/#/PerfilOrg";
-var rutaHome = "/#/HomeOrg";
-var rutaAdopciones = "/#/AdopcionesOrg";
-var rutaDonaciones = "/#/DonacionesOrg";
-var rutaMisMascotas = "/#/MisMascotasOrg";
+var rutaPerfil = "/PerfilOrg";
+var rutaHome = "/HomeOrg";
+var rutaAdopciones = "/AdopcionesOrg";
+var rutaDonaciones = "/DonacionesOrg";
+var rutaMisMascotas = "/MisMascotasOrg";
 function AdopcionesOrg(props) {
   if (localStorage.getItem("flagOrg") === "true") {
     return (
@@ -288,7 +288,7 @@ function BloqueSoli(props) {
           {data.solicitudesOrg.map((solicitudesOrg) => (
             <Link
               key={solicitudesOrg.id}
-              to={"/#/ChatOrg/" + solicitudesOrg.id}
+              to={"/ChatOrg/" + solicitudesOrg.id}
               className="d-flex contenedor-solicitud"
             >
               <img

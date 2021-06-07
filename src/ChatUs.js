@@ -114,12 +114,12 @@ const ELIMINAR_SOLICITUD = gql`
     }
   }
 `;
-const rutaPerfil = "/#/PerfilUs";
-const rutaHome = "/#/HomeUs";
-const rutaServicios = "/#/ServiciosUs";
-const rutaDonaciones = "/#/DonacionesUs";
-const rutaMisAdopciones = "/#/MisAdopcionesUs";
-const rutaMisLikes = "/#/MisLikesUs";
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
 const rutaAyuda = "";
 function ChatUs(props) {
   if (localStorage.getItem("flagUsuario") === "true") {

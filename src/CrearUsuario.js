@@ -229,7 +229,7 @@ function CrearUsuario(props) {
                 Crear cuenta
               </button>
             </div>
-            <Link to="/#/IniciaSesion" className="already" href="login.html">
+            <Link to="/IniciaSesion" className="already" href="login.html">
               ¿Ya tienes una cuenta? Inicia sesión aquí
             </Link>
           </form>

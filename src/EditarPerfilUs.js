@@ -64,12 +64,12 @@ const UPDATE_USUARIO = gql`
     }
   }
 `;
-const rutaPerfil = "/#/PerfilUs";
-const rutaHome = "/#/HomeUs";
-const rutaServicios = "/#/ServiciosUs";
-const rutaDonaciones = "/#/DonacionesUs";
-const rutaMisAdopciones = "/#/MisAdopcionesUs";
-const rutaMisLikes = "/#/MisLikesUs";
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
 //Aquí link al soporte xfas jeje
 const rutaAyuda = "";
 function EditarPerfilUs() {

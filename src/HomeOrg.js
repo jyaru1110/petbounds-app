@@ -58,11 +58,11 @@ const REGISTRO_MAS = gql`
   }
 `;
 
-var rutaPerfil = "/#/PerfilOrg";
-var rutaHome = "/#/HomeOrg";
-var rutaAdopciones = "/#/AdopcionesOrg";
-var rutaDonaciones = "/#/DonacionesOrg";
-var rutaMisMascotas = "/#/MisMascotasOrg";
+var rutaPerfil = "/PerfilOrg";
+var rutaHome = "/HomeOrg";
+var rutaAdopciones = "/AdopcionesOrg";
+var rutaDonaciones = "/DonacionesOrg";
+var rutaMisMascotas = "/MisMascotasOrg";
 function HomeOrg(props) {
   const { loading, error, data } = useQuery(ORGANIZACION, {
     variables: {

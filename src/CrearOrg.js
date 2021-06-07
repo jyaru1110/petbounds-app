@@ -192,7 +192,7 @@ function CrearOrg(props) {
                 Crear cuenta
               </button>
             </div>
-            <Link to="/#/IniciaSesion" className="already">
+            <Link to="/IniciaSesion" className="already">
               ¿Ya tienes una cuenta? Inicia sesión aquí&nbsp;
             </Link>
           </form>

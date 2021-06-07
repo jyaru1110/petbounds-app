@@ -65,12 +65,12 @@ const MASCOTA_SELEC = gql`
   }
 `;
 
-var rutaPerfil = "/#/PerfilOrg";
-var rutaHome = "/#/HomeOrg";
-var rutaAdopciones = "/#/AdopcionesOrg";
-var rutaDonaciones = "/#/DonacionesOrg";
-var rutaMisMascotas = "/#/MisMascotasOrg";
-var rutaEditarPerfil = "/#/EditarPerfilOrg";
+var rutaPerfil = "/PerfilOrg";
+var rutaHome = "/HomeOrg";
+var rutaAdopciones = "/AdopcionesOrg";
+var rutaDonaciones = "/DonacionesOrg";
+var rutaMisMascotas = "/MisMascotasOrg";
+var rutaEditarPerfil = "/EditarPerfilOrg";
 function EditarMascota(props) {
   if (localStorage.getItem("flagOrg") === "true") {
     return (

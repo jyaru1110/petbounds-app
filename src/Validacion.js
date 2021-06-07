@@ -27,7 +27,7 @@ function Validacion(props){
         },
         onCompleted({regValidacion}){
             if(regValidacion.success){
-                props.history.push("/#/IniciaSesion")
+                props.history.push("/IniciaSesion")
             }
         }
     });

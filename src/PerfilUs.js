@@ -39,13 +39,13 @@ const ELIMINAR_USUARIO = gql`
     }
   }
 `;
-const rutaPerfil = "/#/PerfilUs";
-const rutaHome = "/#/HomeUs";
-const rutaServicios = "/#/ServiciosUs";
-const rutaDonaciones = "/#/DonacionesUs";
-const rutaMisAdopciones = "/#/MisAdopcionesUs";
-const rutaMisLikes = "/#/MisLikesUs";
-const rutaEditarPerfil = "/#/EditarPerfilUs";
+const rutaPerfil = "/PerfilUs";
+const rutaHome = "/HomeUs";
+const rutaServicios = "/ServiciosUs";
+const rutaDonaciones = "/DonacionesUs";
+const rutaMisAdopciones = "/MisAdopcionesUs";
+const rutaMisLikes = "/MisLikesUs";
+const rutaEditarPerfil = "/EditarPerfilUs";
 const rutaAyuda = "";
 function PerfilUs() {
   if (localStorage.getItem("flagUsuario") === "true") {
