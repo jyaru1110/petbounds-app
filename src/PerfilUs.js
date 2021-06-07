@@ -479,11 +479,13 @@ function Cuerpo() {
             <div className="align-self-start">
               <h6 className="title-nombre">Documentos:</h6>
             </div>
+            <div className="align-self-start">
               <a
                 href={data.usuario.identificacion}
                 target="blank"
                 className="btn btn-primary d-inline-flex align-items-center align-content-center boton-documento"
                 role="button"
+                style={{marginRight:'20px'}}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -503,7 +505,7 @@ function Cuerpo() {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                <p>{data.usuario.identificacion}</p>
+                <p>{data.usuario.identificacion.slice(53)}</p>
               </a>
               <a
                 href={data.usuario.comprobante}
@@ -534,8 +536,9 @@ function Cuerpo() {
                     d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"
                   ></path>
                 </svg>
-                <p>{data.usuario.comprobante}</p>
+                <p>{data.usuario.comprobante.slice(53)}</p>
               </a>
+              </div>
               </div>
               </div>
       </div>

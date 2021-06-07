@@ -26,6 +26,7 @@ import ChatOrg from "./ChatOrg";
 import DonacionesOrg from "./DonacionesOrg";
 import DonacionesUs from "./DonacionesUs";
 import DashboardDonacion from "./DashboardDonacion";
+import ServiciosUs from "./ServiciosUs";
 
 function App() {
   
@@ -39,6 +40,7 @@ function App() {
       <Route exact path="/CrearOrg" component={CrearOrg} />
       <Route exact path="/HomeUs" component={HomeUs} />
       <Route exact path="/PerfilUs" component={PerfilUs} />
+      <Route exact path="/ServiciosUs" component={ServiciosUs}/>
       <Route exact path="/Detalles/:idUs/:idMas" component={DetallesMascota} />
       <Route
         exact
