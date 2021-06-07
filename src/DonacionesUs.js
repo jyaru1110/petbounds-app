@@ -428,7 +428,7 @@ function FooterDonar(props) {
       e.preventDefault();
       if (parseInt(cantidad) <= parseInt(props.meta - props.total)) {
         fetch(
-          "https://petbounds.xyz/api/secret?monto=" +
+          "https://api.petbounds.xyz/api/secret?monto=" +
             cantidad * 100 +
             "&stripe=" +
             props.stripeid,

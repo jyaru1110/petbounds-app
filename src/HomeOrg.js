@@ -181,7 +181,7 @@ function Cuerpo(props) {
     setValues({ bandera: true });
     const reader = new FileReader();
     const enlaceFoto =
-      "https://petbounds.xyz/api/foto?nom=" +
+      "https://api.petbounds.xyz/api/foto?nom=" +
       fileList[0].name +
       "&cont=" +
       fileList[0].type;

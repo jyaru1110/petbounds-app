@@ -114,7 +114,7 @@ function Cuerpo(props) {
   let history=useHistory()
     const [estado,setEstado] = useState(true)
     const link=(id)=>{
-      fetch("https://petbounds.xyz/api/pago?id="+id,{ method: 'GET'}).then(res=>res.json()).then(data=>{
+      fetch("https://api.petbounds.xyz/api/pago?id="+id,{ method: 'GET'}).then(res=>res.json()).then(data=>{
         window.location.href=data.enlace.url
       }).catch(e => {
         console.log(e);
